@@ -1,11 +1,11 @@
-package com.fpt.fitme.models.appuser;
+package com.fpt.fitme.entity.appuser;
 
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "app_user_role")
 @Data
 public class AppUserRole {
 

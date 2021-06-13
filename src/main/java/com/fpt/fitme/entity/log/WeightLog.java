@@ -1,6 +1,6 @@
-package com.fpt.fitme.models.log;
+package com.fpt.fitme.entity.log;
 
-import com.fpt.fitme.models.appuser.AppUser;
+import com.fpt.fitme.entity.appuser.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;

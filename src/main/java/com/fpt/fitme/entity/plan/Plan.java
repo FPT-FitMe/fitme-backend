@@ -1,9 +1,8 @@
-package com.fpt.fitme.models.plan;
+package com.fpt.fitme.entity.plan;
 
-import com.fpt.fitme.models.meal.Meal;
-import com.fpt.fitme.models.tag.Tag;
-import com.fpt.fitme.models.target.Target;
-import com.fpt.fitme.models.workout.Workout;
+import com.fpt.fitme.entity.meal.Meal;
+import com.fpt.fitme.entity.target.Target;
+import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
 
 import javax.persistence.*;

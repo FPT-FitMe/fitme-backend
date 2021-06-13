@@ -1,4 +1,4 @@
-package com.fpt.fitme.models.workout;
+package com.fpt.fitme.entity.workout;
 
 import lombok.Data;
 

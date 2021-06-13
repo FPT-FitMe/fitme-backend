@@ -1,6 +1,6 @@
-package com.fpt.fitme.models.exercise;
+package com.fpt.fitme.entity.exercise;
 
-import com.fpt.fitme.models.workout.Workout;
+import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
 
 import javax.persistence.*;

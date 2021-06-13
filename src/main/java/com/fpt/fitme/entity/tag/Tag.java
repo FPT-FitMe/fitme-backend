@@ -1,4 +1,4 @@
-package com.fpt.fitme.models.tag;
+package com.fpt.fitme.entity.tag;
 
 import lombok.Data;
 

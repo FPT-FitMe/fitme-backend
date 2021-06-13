@@ -1,7 +1,7 @@
-package com.fpt.fitme.models.meal;
+package com.fpt.fitme.entity.meal;
 
-import com.fpt.fitme.models.tag.Tag;
-import com.fpt.fitme.models.appuser.AppUser;
+import com.fpt.fitme.entity.tag.Tag;
+import com.fpt.fitme.entity.appuser.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;
