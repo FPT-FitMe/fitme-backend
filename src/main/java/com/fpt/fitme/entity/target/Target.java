@@ -1,6 +1,6 @@
 package com.fpt.fitme.models.target;
 
-import com.fpt.fitme.models.user.User;
+import com.fpt.fitme.models.appuser.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,7 +17,7 @@ public class Target {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User trainee;
+    private AppUser trainee;
 
     @Column(name = "start_date", nullable = false)
     private Date startDate;

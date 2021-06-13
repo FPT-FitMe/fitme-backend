@@ -1,19 +1,24 @@
-package com.fpt.fitme.models.user;
+package com.fpt.fitme.models.appuser;
 
+import com.fpt.fitme.models.meal.Meal;
+import com.fpt.fitme.models.workout.Workout;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "User")
+@Table(name = "app_user")
 @Data
-public class User {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userID;
 
     @Column(name = "username", unique = true, nullable = false, length = 30)
     private String username;
@@ -36,7 +41,23 @@ public class User {
     private int gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserRole role;
+    private AppUserRole role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "trainee_favorite_workout",
+            joinColumns = { @JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "workout_id")}
+    )
+    private Set<Workout> traineeFavoriteWorkouts = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "trainee_favorite_meal",
+            joinColumns = { @JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "meal_id")}
+    )
+    private Set<Meal> traineeFavoriteMeals = new HashSet<>();
 
     @Column(name = "height")
     @Min(65)
@@ -54,4 +75,7 @@ public class User {
 
     @Column(name = "workout_intensity")
     private float workoutIntensity;
+
+    @Column(name = "isEnabled", nullable = false)
+    private boolean isEnabled;
 }

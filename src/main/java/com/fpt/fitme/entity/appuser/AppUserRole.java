@@ -1,16 +1,13 @@
-package com.fpt.fitme.models.user;
+package com.fpt.fitme.models.appuser;
 
 import lombok.Data;
-import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @Table(name = "user_role")
 @Data
-public class UserRole {
+public class AppUserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

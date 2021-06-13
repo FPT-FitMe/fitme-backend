@@ -1,7 +1,7 @@
 package com.fpt.fitme.models.workout;
 
 import com.fpt.fitme.models.tag.Tag;
-import com.fpt.fitme.models.user.User;
+import com.fpt.fitme.models.appuser.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,7 +22,7 @@ public class Workout {
     private CoachProfile coachProfile;
 
     @ManyToOne
-    private User creator;
+    private AppUser creator;
 
     @Column(name = "description")
     private String description;
@@ -34,4 +34,19 @@ public class Workout {
             inverseJoinColumns = { @JoinColumn(name = "tag_id")}
     )
     private Set<Tag> tags = new HashSet<>();
+
+    @Column(name = "estimated_duration")
+    private int estimatedDuration;
+
+    @Column(name = "estimated_calories")
+    private float estimatedCalories;
+
+    @Column(name = "level")
+    private int level;
+
+    @Column(name = "isPremium", nullable = false)
+    private boolean isPremium;
+
+    @Column(name = "imageFile", length = 150)
+    private String imageFile;
 }

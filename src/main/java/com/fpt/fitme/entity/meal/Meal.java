@@ -1,12 +1,11 @@
 package com.fpt.fitme.models.meal;
 
 import com.fpt.fitme.models.tag.Tag;
-import com.fpt.fitme.models.user.User;
+import com.fpt.fitme.models.appuser.AppUser;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,10 +16,10 @@ public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meal_id")
-    private Long id;
+    private Long mealID;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User creator;
+    private AppUser creator;
 
     @ManyToMany
     @JoinTable(
