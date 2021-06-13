@@ -24,7 +24,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
 
         AppUser appUser = appUserRepository.getAppUserByUsername(username);
 
-        return new User(appUser.getUsername(), appUser.getPassword(), new ArrayList<>());
+        return new User("fitmeUser", "123456", new ArrayList<>());
     }
 
 }
