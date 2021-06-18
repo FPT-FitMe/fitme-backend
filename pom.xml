@@ -8,6 +8,7 @@
 		<version>2.4.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>war</packaging>
 	<groupId>com.fpt</groupId>
 	<artifactId>fitme</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -85,6 +86,7 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>3.0.3</version>
 				<configuration>
+					<jdkVersion>1.8</jdkVersion>
 					<appName>fitme-backend</appName>
 				</configuration>
 			</plugin>
