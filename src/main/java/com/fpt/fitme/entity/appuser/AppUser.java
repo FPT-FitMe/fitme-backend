@@ -1,5 +1,6 @@
 package com.fpt.fitme.entity.appuser;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
@@ -35,12 +36,13 @@ public class AppUser {
     @Column(name = "age")
     @Min(14)
     @Max(70)
-    private int age;
+    private Integer age;
 
     @Column(name = "gender")
     private int gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUserRole role;
 
     @ManyToMany
@@ -62,20 +64,18 @@ public class AppUser {
     @Column(name = "height")
     @Min(65)
     @Max(300)
-    private float height;
+    private Float height;
 
     @Column(name = "diet_preference_type")
-    private int dietPreferenceType;
+    private Integer dietPreferenceType;
 
     @Column(name = "long_term_goal_type")
-    private int longTermGoalType;
+    private Integer longTermGoalType;
 
     @Column(name = "exercise_frequency_type")
-    private int exercise_frequency_type;
+    private Integer exerciseFrequencyType;
 
     @Column(name = "workout_intensity")
-    private float workoutIntensity;
+    private Float workoutIntensity;
 
-    @Column(name = "isEnabled", nullable = false)
-    private boolean isEnabled;
 }
