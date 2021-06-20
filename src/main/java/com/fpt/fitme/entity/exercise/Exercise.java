@@ -1,5 +1,6 @@
 package com.fpt.fitme.entity.exercise;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class Exercise {
     private Long exerciseID;
 
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Workout workout;
 
     @Column(name = "name")
@@ -28,10 +30,10 @@ public class Exercise {
     private String videoFile;
 
     @Column(name = "baseDuration")
-    private int baseDuration;
+    private Integer baseDuration;
 
     @Column(name = "baseRepPerRound")
-    private int baseRepPerRound;
+    private Integer baseRepPerRound;
 
     @Column(name = "imageFile")
     private String imageFile;

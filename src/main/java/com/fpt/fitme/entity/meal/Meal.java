@@ -36,20 +36,20 @@ public class Meal {
     private String description;
 
     @Column(name = "cooking_time")
-    private int cookingTime;
+    private Integer cookingTime;
 
     @Column(name = "is_premium")
-    private boolean isPremium;
+    private Boolean isPremium;
 
     @Column(name = "image_file")
     private String imageFile;
 
     @Column(name = "calories")
-    private float calories;
+    private Float calories;
 
     @Column(name = "carb_amount")
-    private float carbAmount;
+    private Float carbAmount;
 
     @Column(name = "fat_amount")
-    private float fatAmount;
+    private Float fatAmount;
 }

@@ -103,7 +103,7 @@ public class MealController {
             mealToUpdate.setCreator(meal.getCreator());
             mealToUpdate.setTags(meal.getTags());
             mealToUpdate.setCookingTime(meal.getCookingTime());
-            mealToUpdate.setPremium(meal.isPremium());
+            mealToUpdate.setIsPremium(meal.getIsPremium());
             mealToUpdate.setImageFile(meal.getImageFile());
             mealToUpdate.setCalories(meal.getCalories());
             mealToUpdate.setCarbAmount(meal.getCarbAmount());
