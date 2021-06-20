@@ -13,7 +13,7 @@ import java.util.Date;
 public class MealLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "meal_log_id")
     private Long mealLogID;
 

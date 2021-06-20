@@ -14,14 +14,17 @@ import java.util.Set;
 public class Workout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "workout_id")
     private Long workoutID;
+
+    @Column(name = "name")
+    private String name;
 
     @ManyToOne
     private CoachProfile coachProfile;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppUser creator;
 
     @Column(name = "description")

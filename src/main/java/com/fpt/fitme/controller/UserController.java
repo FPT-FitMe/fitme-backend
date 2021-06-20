@@ -1,9 +1,8 @@
 package com.fpt.fitme.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.repository.AppUserRepository;
+import com.fpt.fitme.util.JsonPatcherUtil;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +50,9 @@ public class UserController {
             AppUser savedAppUser = appUserRepository.save(appUser);
             return new ResponseEntity(savedAppUser, HttpStatus.CREATED);
         } catch (Exception e) {
+            if (e.getMessage().contains("duplicate")) {
+                return new ResponseEntity("Username is duplicated", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -61,7 +63,7 @@ public class UserController {
             Optional<AppUser> currentAppUser = appUserRepository.findById(id);
 
             if (currentAppUser.isPresent()) {
-                AppUser appUserPatched = applyPatchToUser(patch, currentAppUser.get());
+                AppUser appUserPatched = (AppUser) JsonPatcherUtil.applyPatch(patch, currentAppUser.get());
                 appUserRepository.save(appUserPatched);
                 return ResponseEntity.ok(appUserPatched);
             }  else {
@@ -97,18 +99,4 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-    private AppUser applyPatchToUser(JsonPatch patch, AppUser targetAppUser) {
-        ObjectMapper objectMapper;
-        AppUser result = null;
-        try {
-            objectMapper = new ObjectMapper();
-            JsonNode patched = patch.apply(objectMapper.convertValue(targetAppUser, JsonNode.class));
-            result = objectMapper.treeToValue(patched, AppUser.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 }

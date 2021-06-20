@@ -12,7 +12,7 @@ import java.util.Date;
 public class WeightLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "weight_log_id")
     private Long weightLogID;
 

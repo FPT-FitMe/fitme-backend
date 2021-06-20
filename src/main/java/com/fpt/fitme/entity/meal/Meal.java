@@ -14,7 +14,7 @@ import java.util.Set;
 public class Meal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "meal_id")
     private Long mealID;
 
