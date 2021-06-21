@@ -20,6 +20,9 @@ public class Exercise {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Workout workout;
 
+    @Column(name = "exercise_order")
+    private Integer exerciseOrder;
+
     @Column(name = "name")
     private String name;
 

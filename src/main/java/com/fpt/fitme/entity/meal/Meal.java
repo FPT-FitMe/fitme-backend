@@ -1,7 +1,9 @@
 package com.fpt.fitme.entity.meal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.workout.CoachProfile;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +21,12 @@ public class Meal {
     private Long mealID;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUser creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CoachProfile coachProfile;
 
     @ManyToMany
     @JoinTable(
