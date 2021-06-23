@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -46,6 +46,7 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity addUser(@RequestBody AppUser appUser) {
         try {
+            //lay password ra encrypt
             AppUser savedAppUser = appUserRepository.save(appUser);
             return new ResponseEntity(savedAppUser, HttpStatus.CREATED);
         } catch (Exception e) {

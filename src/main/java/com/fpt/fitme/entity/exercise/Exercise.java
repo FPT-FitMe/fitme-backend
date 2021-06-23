@@ -29,8 +29,8 @@ public class Exercise {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "videoFile")
-    private String videoFile;
+    @Column(name = "video_url")
+    private String videoUrl;
 
     @Column(name = "baseDuration")
     private Integer baseDuration;
@@ -38,6 +38,6 @@ public class Exercise {
     @Column(name = "baseRepPerRound")
     private Integer baseRepPerRound;
 
-    @Column(name = "imageFile")
-    private String imageFile;
+    @Column(name = "image_url")
+    private String imageUrl;
 }

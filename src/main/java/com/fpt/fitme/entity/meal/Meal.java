@@ -48,8 +48,8 @@ public class Meal {
     @Column(name = "is_premium")
     private Boolean isPremium;
 
-    @Column(name = "image_file")
-    private String imageFile;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(name = "calories")
     private Float calories;

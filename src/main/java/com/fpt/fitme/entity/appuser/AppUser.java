@@ -1,5 +1,6 @@
 package com.fpt.fitme.entity.appuser;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
@@ -25,6 +26,7 @@ public class AppUser {
     private String username;
 
     @Column(name = "password", nullable = false, length = 64)
+    @JsonIgnore
     private String password;
 
     @Column(name = "email", unique = true, length = 64)

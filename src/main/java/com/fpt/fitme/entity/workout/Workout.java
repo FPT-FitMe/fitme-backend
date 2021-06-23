@@ -53,6 +53,6 @@ public class Workout {
     @Column(name = "isPremium", nullable = false)
     private Boolean isPremium;
 
-    @Column(name = "imageFile", length = 150)
-    private String imageFile;
+    @Column(name = "image_url", length = 150)
+    private String imageUrl;
 }

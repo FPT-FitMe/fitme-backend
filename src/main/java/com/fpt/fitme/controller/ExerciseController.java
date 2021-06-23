@@ -88,10 +88,10 @@ public class ExerciseController {
             Exercise exerciseToUpdate = optionalExercise.get();
             exerciseToUpdate.setName(exercise.getName());
             exerciseToUpdate.setDescription(exercise.getDescription());
-            exerciseToUpdate.setVideoFile(exercise.getVideoFile());
+            exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
             exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
             exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
-            exerciseToUpdate.setImageFile(exercise.getImageFile());
+            exerciseToUpdate.setImageUrl(exercise.getImageUrl());
             return new ResponseEntity(exerciseRepository.save(exerciseToUpdate), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

@@ -112,7 +112,7 @@ public class WorkoutController {
             workoutToUpdate.setEstimatedCalories(workout.getEstimatedCalories());
             workoutToUpdate.setLevel(workout.getLevel());
             workoutToUpdate.setIsPremium(workout.getIsPremium());
-            workoutToUpdate.setImageFile(workout.getImageFile());
+            workoutToUpdate.setImageUrl(workout.getImageUrl());
             return new ResponseEntity(workoutRepository.save(workoutToUpdate), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
