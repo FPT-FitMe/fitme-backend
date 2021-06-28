@@ -30,4 +30,8 @@ public class Target {
 
     @Column(name = "target_bmi")
     private float targetBMI;
+
+    @Column(name = "has_finished")
+    private Boolean hasFinished;
+
 }

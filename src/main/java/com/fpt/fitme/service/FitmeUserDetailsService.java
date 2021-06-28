@@ -29,11 +29,11 @@ public class FitmeUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        AppUser appUser = appUserRepository.getAppUserByUsername(username);
+        AppUser appUser = appUserRepository.getAppUserByEmail(email);
 
-        return new User(appUser.getUsername(), appUser.getPassword(), new ArrayList<>());
+        return new User(appUser.getEmail(), appUser.getPassword(), new ArrayList<>());
     }
 
 }

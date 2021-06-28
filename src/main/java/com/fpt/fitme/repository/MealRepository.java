@@ -4,4 +4,6 @@ import com.fpt.fitme.entity.meal.Meal;
 import org.springframework.data.repository.CrudRepository;
 
 public interface MealRepository extends CrudRepository<Meal, Long> {
+
+    public List<Meal> getMealsByTags
 }

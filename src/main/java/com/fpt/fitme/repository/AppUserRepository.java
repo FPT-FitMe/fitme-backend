@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
-    public AppUser getAppUserByUsername(String username);
+    public AppUser getAppUserByEmail(String email);
 
 }

@@ -1,6 +1,7 @@
 package com.fpt.fitme.entity.workout;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fpt.fitme.entity.plan.PlanWorkout;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
 import lombok.Data;
@@ -41,11 +42,8 @@ public class Workout {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @Column(name = "estimated_duration")
-    private Integer estimatedDuration;
-
-    @Column(name = "estimated_calories")
-    private Float estimatedCalories;
+    @OneToMany(mappedBy = "workout", orphanRemoval = true)
+    private Set<PlanWorkout> planWorkouts;
 
     @Column(name = "level")
     private Integer level;
@@ -55,4 +53,12 @@ public class Workout {
 
     @Column(name = "image_url", length = 150)
     private String imageUrl;
+
+    public Set<PlanWorkout> getPlanWorkouts() {
+        return planWorkouts;
+    }
+
+    public void setPlanWorkouts(Set<PlanWorkout> planWorkouts) {
+        this.planWorkouts = planWorkouts;
+    }
 }

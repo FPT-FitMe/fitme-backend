@@ -1,10 +1,12 @@
 package com.fpt.fitme.entity.exercise;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "exercise")
@@ -16,9 +18,19 @@ public class Exercise {
     @Column(name = "exercise_id")
     private Long exerciseID;
 
-    @ManyToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Workout workout;
+    @ManyToMany
+    @JoinTable(name = "exercise_workout",
+            joinColumns = @JoinColumn(name = "exercise_id"),
+            inverseJoinColumns = @JoinColumn(name = "workout_id"))
+    private Set<Workout> workouts;
+
+    @ManyToMany
+    @JoinTable(
+            name = "exercise_tag",
+            joinColumns = { @JoinColumn(name = "exercise_id")},
+            inverseJoinColumns = { @JoinColumn(name = "tag_id")}
+    )
+    private Set<Tag> tags = new HashSet<>();
 
     @Column(name = "exercise_order")
     private Integer exerciseOrder;
@@ -40,4 +52,12 @@ public class Exercise {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public Set<Workout> getWorkouts() {
+        return workouts;
+    }
+
+    public void setWorkouts(Set<Workout> workouts) {
+        this.workouts = workouts;
+    }
 }

@@ -1,7 +1,6 @@
 package com.fpt.fitme.controller;
 
 import com.fpt.fitme.entity.exercise.Exercise;
-import com.fpt.fitme.entity.workout.Workout;
 import com.fpt.fitme.repository.ExerciseRepository;
 import com.fpt.fitme.repository.WorkoutRepository;
 import com.fpt.fitme.util.JsonPatcherUtil;
@@ -50,10 +49,10 @@ public class ExerciseController {
     @PostMapping("")
     public ResponseEntity addExercise(@RequestBody Exercise exercise) {
         try {
-            Optional<Workout> workout = workoutRepository.findById(exercise.getWorkout().getWorkoutID());
-
-            if (workout.isPresent()) {
-                exercise.setWorkout(workout.get());
+            //Optional<Workout> workout = workoutRepository.findById(exercise.getWorkout().getWorkoutID());
+            //if (workout.isPresent()) {
+            if (true) {
+                //exercise.setWorkout(workout.get());
                 Exercise savedExercise = exerciseRepository.save(exercise);
                 return new ResponseEntity(savedExercise, HttpStatus.CREATED);
             }
@@ -89,6 +88,7 @@ public class ExerciseController {
             exerciseToUpdate.setName(exercise.getName());
             exerciseToUpdate.setDescription(exercise.getDescription());
             exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
+            exerciseToUpdate.setTags(exercise.getTags());
             exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
             exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
             exerciseToUpdate.setImageUrl(exercise.getImageUrl());

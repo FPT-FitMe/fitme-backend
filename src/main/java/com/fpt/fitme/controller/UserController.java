@@ -80,7 +80,8 @@ public class UserController {
 
         if (optionalAppUser.isPresent()) {
             AppUser appUserToUpdate = optionalAppUser.get();
-            appUserToUpdate.setUsername(appUser.getUsername());
+            appUserToUpdate.setFirstName(appUser.getFirstName());
+            appUserToUpdate.setLastName(appUser.getLastName());
             appUserToUpdate.setPassword(appUser.getPassword());
             appUserToUpdate.setEmail(appUser.getEmail());
             appUserToUpdate.setPhone(appUser.getPhone());
@@ -91,12 +92,16 @@ public class UserController {
             appUserToUpdate.setTraineeFavoriteMeals(appUser.getTraineeFavoriteMeals());
             appUserToUpdate.setHeight(appUser.getHeight());
             appUserToUpdate.setDietPreferenceType(appUser.getDietPreferenceType());
-            appUserToUpdate.setLongTermGoalType(appUser.getLongTermGoalType());
             appUserToUpdate.setExerciseFrequencyType(appUser.getExerciseFrequencyType());
             appUserToUpdate.setWorkoutIntensity(appUser.getWorkoutIntensity());
             return new ResponseEntity(appUserRepository.save(appUserToUpdate), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PatchMapping("/completeSurvey?{id}")
+    public void updateUserProfileOnSurvey(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
+
     }
 }

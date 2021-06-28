@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -14,7 +16,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "app_user")
-@Data
+@Getter
+@Setter
+@Builder
 public class AppUser {
 
     @Id
@@ -22,8 +26,11 @@ public class AppUser {
     @Column(name = "user_id")
     private Long userID;
 
-    @Column(name = "username", unique = true, nullable = false, length = 30)
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "password", nullable = false, length = 64)
     @JsonIgnore
@@ -71,13 +78,13 @@ public class AppUser {
     @Column(name = "diet_preference_type")
     private Integer dietPreferenceType;
 
-    @Column(name = "long_term_goal_type")
-    private Integer longTermGoalType;
-
     @Column(name = "exercise_frequency_type")
     private Integer exerciseFrequencyType;
 
     @Column(name = "workout_intensity")
     private Float workoutIntensity;
+
+    @Column(name = "is_premium", nullable = false)
+    private Boolean isPremium = false;
 
 }

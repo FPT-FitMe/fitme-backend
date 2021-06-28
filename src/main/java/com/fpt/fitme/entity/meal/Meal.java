@@ -1,6 +1,7 @@
 package com.fpt.fitme.entity.meal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fpt.fitme.entity.plan.PlanMeal;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.workout.CoachProfile;
@@ -27,6 +28,9 @@ public class Meal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CoachProfile coachProfile;
+
+    @OneToMany(mappedBy = "meal", orphanRemoval = true)
+    private Set<PlanMeal> planMeals;
 
     @ManyToMany
     @JoinTable(
@@ -59,4 +63,12 @@ public class Meal {
 
     @Column(name = "fat_amount")
     private Float fatAmount;
+
+    public Set<PlanMeal> getPlanMeals() {
+        return planMeals;
+    }
+
+    public void setPlanMeals(Set<PlanMeal> planMeals) {
+        this.planMeals = planMeals;
+    }
 }
