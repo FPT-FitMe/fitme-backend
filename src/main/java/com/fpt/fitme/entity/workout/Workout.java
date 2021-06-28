@@ -41,12 +41,6 @@ public class Workout {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @Column(name = "estimated_duration")
-    private Integer estimatedDuration;
-
-    @Column(name = "estimated_calories")
-    private Float estimatedCalories;
-
     @Column(name = "level")
     private Integer level;
 
@@ -55,4 +49,8 @@ public class Workout {
 
     @Column(name = "image_url", length = 150)
     private String imageUrl;
+
+    @OneToMany(mappedBy = "workoutID")
+    private Set<Workout_Exercise> workout_exercises;
+
 }

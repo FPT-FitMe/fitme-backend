@@ -108,8 +108,6 @@ public class WorkoutController {
             workoutToUpdate.setCreator(workout.getCreator());
             workoutToUpdate.setDescription(workout.getDescription());
             workoutToUpdate.setTags(workout.getTags());
-            workoutToUpdate.setEstimatedDuration(workout.getEstimatedDuration());
-            workoutToUpdate.setEstimatedCalories(workout.getEstimatedCalories());
             workoutToUpdate.setLevel(workout.getLevel());
             workoutToUpdate.setIsPremium(workout.getIsPremium());
             workoutToUpdate.setImageUrl(workout.getImageUrl());

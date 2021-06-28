@@ -1,9 +1,12 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.exercise.Exercise;
+import com.fpt.fitme.entity.tag.Tag;
+import com.fpt.fitme.entity.workout.CoachProfile;
 import com.fpt.fitme.entity.workout.Workout;
-import com.fpt.fitme.repository.ExerciseRepository;
-import com.fpt.fitme.repository.WorkoutRepository;
+import com.fpt.fitme.entity.workout.Workout_Exercise;
+import com.fpt.fitme.repository.*;
 import com.fpt.fitme.util.JsonPatcherUtil;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +14,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("/exercises")
 public class ExerciseController {
+
+    private static final String ID_NOTFOUND_ERROR = " Check other relation's ID";
+
+    @Autowired
+    private AppUserRepository appUserRepository;
 
     @Autowired
     private ExerciseRepository exerciseRepository;
 
     @Autowired
     private WorkoutRepository workoutRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private WorkoutExerciseRepository workoutExerciseRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Exercise>> getAllExercises() {
@@ -47,17 +60,58 @@ public class ExerciseController {
         }
     }
 
+    //create exercise without workout
     @PostMapping("")
-    public ResponseEntity addExercise(@RequestBody Exercise exercise) {
+    public ResponseEntity createExercise(@RequestBody Exercise exercise) {
         try {
-            Optional<Workout> workout = workoutRepository.findById(exercise.getWorkout().getWorkoutID());
+//            if exercise
+            Optional<AppUser> creator = appUserRepository.findById(exercise.getCreator().getUserID());
+            if(creator.isPresent()){
+                Set<Tag> tags = new HashSet<>();
+                for (Tag tag : exercise.getTags()) {
+                    Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+                    if (tagToAdd.isPresent()) {
+                        tags.add(tagToAdd.get());
+                    }
+                }
+                exercise.setCreator(creator.get());
+                exercise.setTags(tags);
 
-            if (workout.isPresent()) {
-                exercise.setWorkout(workout.get());
                 Exercise savedExercise = exerciseRepository.save(exercise);
                 return new ResponseEntity(savedExercise, HttpStatus.CREATED);
             }
-            return new ResponseEntity("Check other relation's ID", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(ID_NOTFOUND_ERROR, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //create exercise with workout
+    @PostMapping("/workout")
+    public ResponseEntity createExerciserWorkout(@RequestParam("Workout_id") long id, @RequestBody Exercise exercise) {
+        try {
+            Optional<AppUser> creator = appUserRepository.findById(exercise.getCreator().getUserID());
+            Optional<Workout> workout=workoutRepository.findById(id);
+            if(workout.isPresent()&&creator.isPresent()){
+                Set<Tag> tags = new HashSet<>();
+                for (Tag tag : exercise.getTags()) {
+                    Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+                    if (tagToAdd.isPresent()) {
+                        tags.add(tagToAdd.get());
+                    }
+                }
+                exercise.setCreator(creator.get());
+                exercise.setTags(tags);
+                Exercise savedExercise = exerciseRepository.save(exercise);
+                if(savedExercise!=null){
+                    Workout_Exercise workout_exercise=new Workout_Exercise();
+                    workout_exercise.setExerciseID(savedExercise);
+                    workout_exercise.setWorkoutID(workout.get());
+                    workoutExerciseRepository.save(workout_exercise);
+                    return new ResponseEntity(savedExercise, HttpStatus.CREATED);
+                }
+            }
+            return new ResponseEntity(ID_NOTFOUND_ERROR, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,7 +126,7 @@ public class ExerciseController {
                 Exercise exercisePatched = (Exercise) JsonPatcherUtil.applyPatch(patch, currentExercise.get());
                 exerciseRepository.save(exercisePatched);
                 return ResponseEntity.ok(exercisePatched);
-            }  else {
+            } else {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
@@ -89,6 +143,7 @@ public class ExerciseController {
             exerciseToUpdate.setName(exercise.getName());
             exerciseToUpdate.setDescription(exercise.getDescription());
             exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
+            exerciseToUpdate.setTags(exercise.getTags());
             exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
             exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
             exerciseToUpdate.setImageUrl(exercise.getImageUrl());
