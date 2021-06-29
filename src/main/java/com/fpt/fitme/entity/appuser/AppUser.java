@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -16,9 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "app_user")
-@Getter
-@Setter
-@Builder
+@Data
 public class AppUser {
 
     @Id
@@ -48,7 +44,7 @@ public class AppUser {
     private Integer age;
 
     @Column(name = "gender")
-    private int gender;
+    private Integer gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -76,15 +72,18 @@ public class AppUser {
     private Float height;
 
     @Column(name = "diet_preference_type")
-    private Integer dietPreferenceType;
+    private Long dietPreferenceType;
 
     @Column(name = "exercise_frequency_type")
-    private Integer exerciseFrequencyType;
+    private Long exerciseFrequencyType;
 
     @Column(name = "workout_intensity")
     private Float workoutIntensity;
 
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium = false;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
 }

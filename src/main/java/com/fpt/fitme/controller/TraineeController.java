@@ -1,13 +1,15 @@
 package com.fpt.fitme.controller;
 
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.exercise.Exercise;
+import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.plan.Plan;
 import com.fpt.fitme.entity.plan.PlanMeal;
 import com.fpt.fitme.entity.plan.PlanWorkout;
+import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.target.Target;
-import com.fpt.fitme.repository.AppUserRepository;
-import com.fpt.fitme.repository.PlanRepository;
-import com.fpt.fitme.repository.TargetRepository;
+import com.fpt.fitme.entity.workout.Workout;
+import com.fpt.fitme.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -15,9 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -34,59 +34,92 @@ public class TraineeController {
     private TargetRepository targetRepository;
 
     @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private MealRepository mealRepository;
+
+    @Autowired
+    private PlanMealRepository planMealRepository;
+
+    @Autowired
+    private PlanWorkoutRepository planWorkoutRepository;
+
+    @Autowired
+    private WorkoutRepository workoutRepository;
+
+    @Autowired
     private Environment env;
 
     @PostMapping("/buildPlan")
     public ResponseEntity buildPlan(@PathVariable Long traineeId, @RequestBody Target target) {
         try {
-            List<PlanMeal> planMeals;
-            List<PlanWorkout> planWorkouts;
             Optional<AppUser> optionalTrainee = appUserRepository.findById(traineeId);
 
             if (optionalTrainee.isPresent()) {
                 AppUser trainee = optionalTrainee.get();
                 float startingBMI = target.getStartingBMI();
                 float targetBMI = target.getTargetBMI();
-                float height = trainee.getHeight() / 100;
+                float heightInMeter = trainee.getHeight() / 100;
+                float weightInKg = (float) (startingBMI * Math.pow(heightInMeter, 2));
                 long durationInDays = TimeUnit.DAYS.convert(
                         target.getCompleteDate().getTime() - (new Date()).getTime()
                         , TimeUnit.MILLISECONDS);
 
                 int caloriesPerDay;
 
-                float kgChangeRatePerMonth = (float) (Math.abs(targetBMI - startingBMI) * Math.pow(height, 2))
+                float kgChangeRatePerMonth = (float) (Math.abs(targetBMI - startingBMI) * Math.pow(heightInMeter, 2))
                         / (durationInDays * 30);
 
-                int exerciseFrequency = trainee.getExerciseFrequencyType();
-                float kgChangeInExercise;
+                Long exerciseFrequency = trainee.getExerciseFrequencyType();
+                int caloriesFromActivitiesPerDay;
+                float kgChangeFromActivities;
                 if (Integer.parseInt(env.getProperty("com.fpt.fitme.entity.appuser.EXERCISE_FREQUENCY_UNDER_3_TIMES_PER_WEEK")) == exerciseFrequency) {
-                    kgChangeInExercise = 0;
+                    // sinh hoat binh thuong k tap the duc
+                    caloriesFromActivitiesPerDay = 300;
+                    kgChangeFromActivities = 0;
                 } else if (Integer.parseInt(env.getProperty("com.fpt.fitme.entity.appuser.EXERCISE_FREQUENCY_3_TIMES_PER_WEEK")) == exerciseFrequency) {
-                    kgChangeInExercise = 0.8f;
+                    caloriesFromActivitiesPerDay = 500;
+                    kgChangeFromActivities = 1.2f;
                 } else if (Integer.parseInt(env.getProperty("com.fpt.fitme.entity.appuser.EXERCISE_FREQUENCY_4_TIMES_PER_WEEK")) == exerciseFrequency) {
-                    kgChangeInExercise = 1.2f;
+                    caloriesFromActivitiesPerDay = 600;
+                    kgChangeFromActivities = 1.6f;
                 } else if (Integer.parseInt(env.getProperty("com.fpt.fitme.entity.appuser.EXERCISE_FREQUENCY_5_TIMES_PER_WEEK")) == exerciseFrequency) {
-                    kgChangeInExercise = 1.6f;
+                    caloriesFromActivitiesPerDay = 700;
+                    kgChangeFromActivities = 2f;
                 } else {
-                    kgChangeInExercise = 2.4f;
+                    caloriesFromActivitiesPerDay = 900;
+                    kgChangeFromActivities = 2.8f;
                 }
 
                 if (targetBMI > startingBMI) {
-                    kgChangeRatePerMonth -= kgChangeInExercise;
+                    kgChangeRatePerMonth -= kgChangeFromActivities;
                 } else {
-                    kgChangeRatePerMonth += kgChangeInExercise;
+                    kgChangeRatePerMonth += kgChangeFromActivities;
                 }
+
+                caloriesPerDay = calculateBasalCaloriesPerDay(weightInKg, heightInMeter, trainee.getAge(), trainee.getGender())
+                        + caloriesFromActivitiesPerDay;
 
                 //Increase weight
-                if (kgChangeRatePerMonth > 2 && targetBMI > startingBMI) {
-                    caloriesPerDay = cal
+                if (kgChangeRatePerMonth >= 2 && targetBMI > startingBMI) {
+                    caloriesPerDay = Math.round(caloriesPerDay * Float.parseFloat(env.getProperty("com.fpt.fitme.plan.pace.INCREASE_WEIGHT")));
                 }
                 // Maintain weight
-                if (kgChangeRatePerMonth < 2) {
+                else if (kgChangeRatePerMonth < 1) {
 
                 }
-                if (kgChangeRatePerMonth < 4 && targetBMI < startingBMI) {
-                    caloriesPerMeal = Math.round(startingBMI)
+                //Mild weight loss
+                else if (kgChangeRatePerMonth < 2 && kgChangeRatePerMonth >= 1 && targetBMI < startingBMI) {
+                    caloriesPerDay = Math.round(caloriesPerDay * Float.parseFloat(env.getProperty("com.fpt.fitme.plan.pace.MILD_WEIGHT_LOSS")));
+                }
+                //Weight loss
+                else if (kgChangeRatePerMonth < 4 && kgChangeRatePerMonth >= 2 && targetBMI < startingBMI) {
+                    caloriesPerDay = Math.round(caloriesPerDay * Float.parseFloat(env.getProperty("com.fpt.fitme.plan.pace.WEIGHT_LOSS")));
+                }
+                //Fast weight loss
+                else {
+                    caloriesPerDay = Math.round(caloriesPerDay * Float.parseFloat(env.getProperty("com.fpt.fitme.plan.pace.FAST_WEIGHT_LOSS")));
                 }
 
                 //Save target
@@ -97,18 +130,60 @@ public class TraineeController {
                 //Generate plan for each week
                 int numberOfWeeks = Math.round(durationInDays / 7);
                 for (int i = 0; i < numberOfWeeks; i++) {
+                    int workoutIndex = 0;
 
+                    // Plan meal
+                    Long dietPreference = trainee.getDietPreferenceType();
+                    // Bua sang
+                    List<Meal> breakfasts = getMealsInPeriod(dietPreference, 4L);
+                    // Bua trua
+                    List<Meal> lunch = getMealsInPeriod(dietPreference, 5L);
+                    // Bua toi
+                    List<Meal> diners = getMealsInPeriod(dietPreference, 7L);
+
+                    //Plan workout
+                    Iterable<Workout> workoutsAllIter = workoutRepository.findAll();
+                    List<Workout> workoutsAll = new ArrayList<>();
+                    for (Workout workout : workoutsAllIter) {
+                        workoutsAll.add(workout);
+                    }
+                    Collections.shuffle(workoutsAll);
+
+                    for (int y = 0; y < 7; y++) {
+                        Long planDate = target.getStartDate().getTime() + i * 7 * 24 * 3600 * 1000 + y * 24 * 3600 * 1000;
+
+                        if (planDate < target.getCompleteDate().getTime()) {
+                            Plan plan = new Plan();
+                            plan.setDate(new Date(planDate));
+                            plan.setTarget(target);
+                            planRepository.save(plan);
+
+                            //save bua sang
+                            saveMealPlan(plan, breakfasts.get(y));
+                            saveMealPlan(plan, lunch.get(y));
+                            saveMealPlan(plan, diners.get(y));
+
+                            List<Workout> workouts = new ArrayList<>();
+                            int totalWorkoutCalories = 0;
+
+                            while (caloriesFromActivitiesPerDay - totalWorkoutCalories > 150) {
+                                Workout workoutToAdd = workoutsAll.get(y + workoutIndex);
+                                workouts.add(workoutToAdd);
+                                for (Exercise exercise : workoutToAdd.getExercises()) {
+                                    totalWorkoutCalories += exercise.getBaseCaloriesPerRound();
+                                }
+                                workoutIndex++;
+
+                                PlanWorkout planWorkout = new PlanWorkout();
+                                planWorkout.setPlan(plan);
+                                planWorkout.setWorkout(workoutToAdd);
+                                planWorkout.setIsFinished(false);
+                                planWorkout.setHasSkipped(false);
+                                planWorkoutRepository.save(planWorkout);
+                            }
+                        }
+                    }
                 }
-                Plan plan = new Plan();
-
-
-
-                plan.s
-
-
-
-                // Giam can nhe
-
             }
         } catch (Exception e) {
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -151,12 +226,31 @@ public class TraineeController {
         }
     }
 
-    private int calculateCaloriesPerDay(float weight, float height, int age, int gender) {
+    private int calculateBasalCaloriesPerDay(float weightKg, float heightMeter, int age, int gender) {
         // https://www.calculator.net/calorie-calculator.html?ctype=metric&cage=25&csex=m&cheightfeet=5&cheightinch=10&cpound=165&cheightmeter=180&ckg=65&cactivity=1.465&cmop=1&coutunit=c&cformula=m&cfatpct=20&printit=0&x=101&y=33
         if (gender == Integer.parseInt(env.getProperty("com.fpt.fitme.entity.appuser.GENDER_MALE"))) {
-            return (int) (10 * weight + 6.25 * height - 5 * age + 5);
+            return (int) (10 * weightKg + 6.25 * heightMeter * 100 - 5 * age + 5);
         } else {
-            return (int) (10 * weight + 6.25 * height - 5 * age - 161);
+            return (int) (10 * weightKg + 6.25 * heightMeter * 100 - 5 * age - 161);
         }
+    }
+
+    private List<Meal> getMealsInPeriod(Long dietPreference, Long mealPeriod) {
+        Set<Tag> mealTags = new HashSet<>();
+        mealTags.add(tagRepository.findById(dietPreference).get());
+        //Bua sang
+        mealTags.add(tagRepository.findById(mealPeriod).get());
+        List<Meal> meals = mealRepository.findMealsByTagsIn(mealTags);
+        Collections.shuffle(meals);
+        return meals;
+    }
+
+    private void saveMealPlan(Plan plan, Meal meal) {
+        PlanMeal planMeal = new PlanMeal();
+        planMeal.setPlan(plan);
+        planMeal.setMeal(meal);
+        planMeal.setHasSkipped(false);
+        planMeal.setIsFinished(false);
+        planMealRepository.save(planMeal);
     }
 }

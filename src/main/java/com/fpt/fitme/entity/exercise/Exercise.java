@@ -50,14 +50,9 @@ public class Exercise {
     @Column(name = "baseRepPerRound")
     private Integer baseRepPerRound;
 
+    @Column(name = "base_calories_per_round")
+    private Integer baseCaloriesPerRound;
+
     @Column(name = "image_url")
     private String imageUrl;
-
-    public Set<Workout> getWorkouts() {
-        return workouts;
-    }
-
-    public void setWorkouts(Set<Workout> workouts) {
-        this.workouts = workouts;
-    }
 }

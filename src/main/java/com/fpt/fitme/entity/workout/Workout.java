@@ -1,6 +1,7 @@
 package com.fpt.fitme.entity.workout;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.plan.PlanWorkout;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
@@ -8,6 +9,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,6 +44,12 @@ public class Workout {
     )
     private Set<Tag> tags = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "exercise_workout",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    private List<Exercise> exercises;
+
     @OneToMany(mappedBy = "workout", orphanRemoval = true)
     private Set<PlanWorkout> planWorkouts;
 
@@ -54,11 +62,4 @@ public class Workout {
     @Column(name = "image_url", length = 150)
     private String imageUrl;
 
-    public Set<PlanWorkout> getPlanWorkouts() {
-        return planWorkouts;
-    }
-
-    public void setPlanWorkouts(Set<PlanWorkout> planWorkouts) {
-        this.planWorkouts = planWorkouts;
-    }
 }
