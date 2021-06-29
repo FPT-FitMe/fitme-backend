@@ -1,6 +1,6 @@
 package com.fpt.fitme.entity.workout;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
 import lombok.Data;
@@ -53,4 +53,9 @@ public class Workout {
     @OneToMany(mappedBy = "workoutID")
     private Set<Workout_Exercise> workout_exercises;
 
+    @Column(name = "estimated_duration")
+    private Integer estimatedDuration;
+
+    @Column(name = "estimated_calories")
+    private Float estimatedCalories;
 }

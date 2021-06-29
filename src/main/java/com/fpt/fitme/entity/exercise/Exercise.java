@@ -3,12 +3,13 @@ package com.fpt.fitme.entity.exercise;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.tag.Tag;
-import com.fpt.fitme.entity.workout.Workout;
 import com.fpt.fitme.entity.workout.Workout_Exercise;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,8 +22,8 @@ public class Exercise {
     @Column(name = "exercise_id")
     private Long exerciseID;
 
-    @OneToMany(mappedBy = "exerciseID")
-    private Set<Workout_Exercise> workout_exercises;
+    @OneToMany
+    private List<Workout_Exercise> workout_exercises=new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

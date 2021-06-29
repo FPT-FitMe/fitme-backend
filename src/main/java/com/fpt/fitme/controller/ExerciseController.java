@@ -104,9 +104,12 @@ public class ExerciseController {
                 exercise.setTags(tags);
                 Exercise savedExercise = exerciseRepository.save(exercise);
                 if(savedExercise!=null){
+                    long quantity=workoutExerciseRepository.countWorkout_ExerciseByWorkoutID(workout.get());
                     Workout_Exercise workout_exercise=new Workout_Exercise();
                     workout_exercise.setExerciseID(savedExercise);
                     workout_exercise.setWorkoutID(workout.get());
+                    workout_exercise.setExerciseOrder(quantity+1);
+                    savedExercise.getWorkout_exercises().add(workout_exercise);
                     workoutExerciseRepository.save(workout_exercise);
                     return new ResponseEntity(savedExercise, HttpStatus.CREATED);
                 }
