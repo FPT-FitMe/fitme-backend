@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/authentication/login", "authentication/register",
+                .authorizeRequests().antMatchers("/authentication/login", "/authentication/register",
                 "/authentication/refreshToken").permitAll().anyRequest().authenticated()
         .and().httpBasic()
         .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)

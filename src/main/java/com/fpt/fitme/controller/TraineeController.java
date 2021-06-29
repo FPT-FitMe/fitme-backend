@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -214,21 +213,6 @@ public class TraineeController {
 
         }
         return null;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody AppUser appUser) {
-        try {
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            appUser.setPassword(bCryptPasswordEncoder.encode(appUser.getPassword()));
-            AppUser savedAppUser = appUserRepository.save(appUser);
-            return new ResponseEntity(savedAppUser, HttpStatus.CREATED);
-        } catch (Exception e) {
-            if (e.getMessage().contains("duplicate")) {
-                return new ResponseEntity("Username is duplicated", HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     private int calculateBasalCaloriesPerDay(float weightKg, float heightMeter, int age, int gender) {

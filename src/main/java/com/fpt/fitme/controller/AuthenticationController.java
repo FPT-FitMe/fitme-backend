@@ -1,8 +1,9 @@
 package com.fpt.fitme.controller;
 
-import com.fpt.fitme.domain.FitmeUserDetails;
+import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.model.AuthenticationRequest;
 import com.fpt.fitme.model.AuthenticationResponse;
+import com.fpt.fitme.model.FitMeUser;
 import com.fpt.fitme.service.FitmeUserDetailsService;
 import com.fpt.fitme.util.JwtUtil;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -55,7 +56,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<FitmeUserDetails> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<FitMeUser> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
 		try {
 			authenticationManager.authenticate(
@@ -65,12 +66,11 @@ public class AuthenticationController {
 			throw new Exception("Incorrect username or password", e);
 		}
 
-		final FitmeUserDetails userDetails = fitmeUserDetailsService
+		final UserDetails userDetails = fitmeUserDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
-		final String jwt = jwtUtil.generateToken(userDetails.getUser());
-		userDetails.setJwtToken(jwt);
+		final String jwt = jwtUtil.generateToken(userDetails);
 
-		return new ResponseEntity(userDetails, HttpStatus.OK);
+		return new ResponseEntity(fitmeUserDetailsService.getUserInfo(jwt, authenticationRequest.getEmail()), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/refreshToken", method = RequestMethod.GET)
@@ -86,7 +86,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
 
-	public Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
+	private Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
 		Map<String, Object> expectedMap = new HashMap<>();
 		for (Map.Entry<String, Object> entry : claims.entrySet()) {
 			expectedMap.put(entry.getKey(), entry.getValue());
@@ -94,6 +94,18 @@ public class AuthenticationController {
 		return expectedMap;
 	}
 
+	@PostMapping("/register")
+	public ResponseEntity register(@RequestBody FitMeUser fitMeUser) {
+		try {
+			AppUser appUser = fitmeUserDetailsService.register(fitMeUser);
+			return new ResponseEntity(appUser, HttpStatus.CREATED);
+		} catch (Exception e) {
+			if (e.getMessage().contains("duplicate")) {
+				return new ResponseEntity("Username is duplicated", HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	@GetMapping("/accountInfo") 
 	public String accountInfo(Model model) {

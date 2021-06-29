@@ -1,6 +1,5 @@
 package com.fpt.fitme.entity.appuser;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
@@ -15,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "app_user")
 @Data
+@JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 public class AppUser {
 
     @Id
@@ -29,7 +29,6 @@ public class AppUser {
     private String lastName;
 
     @Column(name = "password", nullable = false, length = 64)
-    @JsonIgnore
     private String password;
 
     @Column(name = "email", unique = true, length = 64)

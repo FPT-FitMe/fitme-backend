@@ -1,8 +1,9 @@
 package com.fpt.fitme.service;
 
-import com.fpt.fitme.domain.FitmeUserDetails;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.model.FitMeUser;
 import com.fpt.fitme.repository.AppUserRepository;
+import com.fpt.fitme.repository.AppUserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -26,6 +27,9 @@ public class FitmeUserDetailsService implements UserDetailsService {
     private AppUserRepository appUserRepository;
 
     @Autowired
+    private AppUserRoleRepository appUserRoleRepository;
+
+    @Autowired
     private PasswordEncoder bcryptEncoder;
 
     @Autowired
@@ -37,7 +41,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public FitmeUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         List<SimpleGrantedAuthority> roles = null;
 
         try {
@@ -49,24 +53,28 @@ public class FitmeUserDetailsService implements UserDetailsService {
             } else if (roleName.equals("Trainee")) {
                 roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
             }
-            return new FitmeUserDetails(new User(appUser.getEmail(), appUser.getPassword(), roles),
-                    appUser.getFirstName(), appUser.getLastName(),
-                    appUser.getRole().getRoleName(), appUser.getGender() == 1 ? "M" : "F", appUser.getPhone(),
-                    appUser.getProfileImageUrl(), appUser.getIsPremium());
+            return new User(appUser.getEmail(), appUser.getPassword(), roles);
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
     }
 
-    public AppUser save(FitmeUserDetails fitmeUserDetails) {
+    public FitMeUser getUserInfo(String token, String email) {
+        AppUser appUser = appUserRepository.getAppUserByEmail(email);
+        return new FitMeUser(appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
+                appUser.getLastName(), appUser.getGender() == 0 ? "M" : "F", appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
+                appUser.getPhone(), appUser.getProfileImageUrl(),
+                appUser.getIsPremium(), token);
+    }
+
+    public AppUser register(FitMeUser fitMeUser) {
         AppUser appUser = new AppUser();
-        appUser.setFirstName(fitmeUserDetails.getFirstName());
-        appUser.setLastName(fitmeUserDetails.getLastName());
-        appUser.setEmail(fitmeUserDetails.getUsername());
-        appUser.setPassword(fitmeUserDetails.getPassword());
-        appUser.setGender(fitmeUserDetails.getGender().equals("M") ? 1 : 0);
-        appUser.setProfileImageUrl(fitmeUserDetails.getProfileImageUrl());
-        appUser.setIsPremium(fitmeUserDetails.getPremium());
+        appUser.setFirstName(fitMeUser.getFirstName());
+        appUser.setLastName(fitMeUser.getLastName());
+        appUser.setEmail(fitMeUser.getEmail());
+        appUser.setRole(appUserRoleRepository.findById(0).get());
+        appUser.setPassword(bcryptEncoder.encode(fitMeUser.getPassword()));
+        appUser.setIsPremium(false);
 
         return appUserRepository.save(appUser);
     }
