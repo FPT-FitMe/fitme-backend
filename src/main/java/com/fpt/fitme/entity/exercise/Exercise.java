@@ -1,7 +1,7 @@
 package com.fpt.fitme.entity.exercise;
 
 import com.fpt.fitme.entity.tag.Tag;
-import com.fpt.fitme.entity.workout.Workout;
+import com.fpt.fitme.entity.workout.WorkoutExercise;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,11 +18,9 @@ public class Exercise {
     @Column(name = "exercise_id")
     private Long exerciseID;
 
-    @ManyToMany
-    @JoinTable(name = "exercise_workout",
-            joinColumns = @JoinColumn(name = "exercise_id"),
-            inverseJoinColumns = @JoinColumn(name = "workout_id"))
-    private Set<Workout> workouts;
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "exercise_id")
+    private Set<WorkoutExercise> workoutExercises;
 
     @ManyToMany
     @JoinTable(
@@ -55,4 +53,12 @@ public class Exercise {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public Set<WorkoutExercise> getWorkoutExercises() {
+        return workoutExercises;
+    }
+
+    public void setWorkoutExercises(Set<WorkoutExercise> workoutExercises) {
+        this.workoutExercises = workoutExercises;
+    }
 }

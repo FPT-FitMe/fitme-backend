@@ -80,8 +80,8 @@ public class AppUser {
     @Column(name = "workout_intensity")
     private Float workoutIntensity;
 
-    @Column(name = "is_premium", nullable = false)
-    private Boolean isPremium = false;
+    @Column(name = "is_premium")
+    private Boolean isPremium;
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;

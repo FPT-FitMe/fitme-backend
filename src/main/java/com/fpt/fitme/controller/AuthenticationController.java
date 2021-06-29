@@ -1,5 +1,6 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.domain.FitmeUserDetails;
 import com.fpt.fitme.model.AuthenticationRequest;
 import com.fpt.fitme.model.AuthenticationResponse;
 import com.fpt.fitme.service.FitmeUserDetailsService;
@@ -54,7 +55,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<FitmeUserDetails> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
 		try {
 			authenticationManager.authenticate(
@@ -64,11 +65,12 @@ public class AuthenticationController {
 			throw new Exception("Incorrect username or password", e);
 		}
 
-		final UserDetails userDetails = fitmeUserDetailsService
+		final FitmeUserDetails userDetails = fitmeUserDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
-		final String jwt = jwtUtil.generateToken(userDetails);
+		final String jwt = jwtUtil.generateToken(userDetails.getUser());
+		userDetails.setJwtToken(jwt);
 
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		return new ResponseEntity(userDetails, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/refreshToken", method = RequestMethod.GET)
@@ -77,7 +79,7 @@ public class AuthenticationController {
 		DefaultClaims claims = (io.jsonwebtoken.impl.DefaultClaims) request.getAttribute("claims");
 
 		if (claims == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("token is still active");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token or token not expired yet.");
 		}
 		Map<String, Object> expectedMap = getMapFromIoJsonwebtokenClaims(claims);
 		String token = jwtUtil.generateRefreshToken(expectedMap, expectedMap.get("sub").toString());

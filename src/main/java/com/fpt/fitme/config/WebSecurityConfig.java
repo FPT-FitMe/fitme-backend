@@ -21,9 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public String crossOriginAllowedHeaders="header1,header2, *" ;
-    public String crossOriginAllowedSites="site1,site2, * ";
-
     @Autowired
     private FitmeUserDetailsService fitmeUserDetailsService;
 
@@ -36,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/authentication/login", "/register").permitAll().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/authentication/login", "authentication/register",
+                "/authentication/refreshToken").permitAll().anyRequest().authenticated()
         .and().httpBasic()
         .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

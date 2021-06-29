@@ -9,6 +9,7 @@ import com.fpt.fitme.entity.plan.PlanWorkout;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.target.Target;
 import com.fpt.fitme.entity.workout.Workout;
+import com.fpt.fitme.entity.workout.WorkoutExercise;
 import com.fpt.fitme.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -47,6 +48,9 @@ public class TraineeController {
 
     @Autowired
     private WorkoutRepository workoutRepository;
+
+    @Autowired
+    private ExerciseRepository exerciseRepository;
 
     @Autowired
     private Environment env;
@@ -169,7 +173,8 @@ public class TraineeController {
                             while (caloriesFromActivitiesPerDay - totalWorkoutCalories > 150) {
                                 Workout workoutToAdd = workoutsAll.get(y + workoutIndex);
                                 workouts.add(workoutToAdd);
-                                for (Exercise exercise : workoutToAdd.getExercises()) {
+                                for (WorkoutExercise workoutExercise : workoutToAdd.getWorkoutExercises()) {
+                                    Exercise exercise = workoutExercise.getExercise();
                                     totalWorkoutCalories += exercise.getBaseCaloriesPerRound();
                                 }
                                 workoutIndex++;

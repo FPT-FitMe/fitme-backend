@@ -64,11 +64,4 @@ public class Meal {
     @Column(name = "fat_amount")
     private Float fatAmount;
 
-    public Set<PlanMeal> getPlanMeals() {
-        return planMeals;
-    }
-
-    public void setPlanMeals(Set<PlanMeal> planMeals) {
-        this.planMeals = planMeals;
-    }
 }

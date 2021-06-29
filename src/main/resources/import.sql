@@ -6,10 +6,10 @@ insert into app_user_role values
 insert into coach_profile values
     (0, 'coach_profile@gmail.com', 'Hi im Bob');
 
-insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, gender, height, is_premium, password, phone, workout_intensity, role_role_id, profile_image_url) values
-    (0, 18, 2, 'conmeo1@gmail.com', 2, 1, 182, true, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000001', 2, 0, 'image.com'),
-    (1, 18, 2, 'conmeo2@gmail.com', 2, 1, 182, true, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000003', 2, 0, 'image.com'),
-    (2, 40 , null, 'admin@fitme.vn', null , 1 , null , null, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 2, 1, 'image.com');
+insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name, gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity, role_role_id) values
+    (0, 18, 2, 'conmeo1@gmail.com', 2, 'first_name_1', 1, 182, true, 'last_name_1', '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000001', 'image.com', 2, 0),
+    (1, 18, 2, 'conmeo2@gmail.com', 2, 'first_name_2',1, 182, true, 'last_name_2', '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000003', 'image.com', 2, 0),
+    (2, 40 , null, 'admin@fitme.vn', null, 'first_name_admin_1', 1 , 'last_name_admin_1', null , null, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'image.com', 2, 1);
 
 insert into tag values
     (0, 'test'),
