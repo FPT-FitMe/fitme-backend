@@ -13,7 +13,7 @@ public class JsonPatcherUtil {
         try {
             objectMapper = new ObjectMapper();
             JsonNode patched = patch.apply(objectMapper.convertValue(target, JsonNode.class));
-            result = objectMapper.treeToValue(patched, AppUser.class);
+            result = objectMapper.treeToValue(patched, target.getClass());
         } catch (Exception e) {
             e.printStackTrace();
         }

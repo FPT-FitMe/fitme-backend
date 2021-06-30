@@ -5,14 +5,19 @@ import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.workout.CoachProfile;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "meal")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Meal {
 
     @Id
@@ -59,4 +64,15 @@ public class Meal {
 
     @Column(name = "fat_amount")
     private Float fatAmount;
+
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
 }
