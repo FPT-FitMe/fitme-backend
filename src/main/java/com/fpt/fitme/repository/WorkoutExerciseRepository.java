@@ -20,4 +20,7 @@ public interface WorkoutExerciseRepository extends CrudRepository<Workout_Exerci
 
     List<Workout_Exercise> getWorkout_ExerciseByExerciseIDAndWorkoutIDAndExerciseOrder( Exercise exerciseID,Workout workoutID,long exerciseOrder);
 
+    List<Workout_Exercise> getWorkout_ExerciseByExerciseID(Exercise exerciseID);
+
+    List<Workout_Exercise> getWorkout_ExerciseByWorkoutID(Workout workoutID);
 }

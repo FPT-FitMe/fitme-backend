@@ -58,7 +58,7 @@ public class ExerciseController {
     @PostMapping("/workout")
     public ResponseEntity createExerciserWorkout(@RequestParam("Workout_id") long id, @RequestBody Exercise exercise) {
         try {
-            ExerciseDTO dto = exerciseService.createExercise(exercise,id);
+            ExerciseDTO dto = exerciseService.createExercise(exercise, id);
             return new ResponseEntity(dto, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -68,7 +68,7 @@ public class ExerciseController {
     @PatchMapping("/{id}")
     public ResponseEntity patchExercise(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
         try {
-            DisableExerciseDTO dto = exerciseService.disableExercise(id,patch);
+            DisableExerciseDTO dto = exerciseService.disableExercise(id, patch);
             return ResponseEntity.ok(dto);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -77,11 +77,15 @@ public class ExerciseController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateWorkout(@PathVariable("id") Long id, @RequestBody Exercise exercise) {
-       ExerciseDTO dto=exerciseService.updateExercise(id,exercise);
-       if(dto!=null){
-           return new ResponseEntity(dto, HttpStatus.OK);
-       }
-        return new ResponseEntity<>(ID_NOTFOUND_ERROR, HttpStatus.BAD_REQUEST);
+        try {
+            ExerciseDTO dto = exerciseService.updateExercise(id, exercise);
+            if (dto != null) {
+                return new ResponseEntity(dto, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

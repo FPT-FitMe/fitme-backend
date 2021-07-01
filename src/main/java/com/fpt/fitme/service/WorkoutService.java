@@ -54,13 +54,13 @@ public class WorkoutService {
         return null;
     }
 
-    public WorkoutDTO createWorkout(Workout workout) {
+    public WorkoutDTO createWorkout(Workout workout) throws Exception {
         Optional<AppUser> creator = appUserRepository.findById(workout.getCreator().getUserID());
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
 
-        if (!coachProfile.isPresent()) throw new IllegalArgumentException("coachID not found!");
+        if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
-        if (!creator.isPresent()) throw new IllegalArgumentException("creatorID not found!");
+        if (!creator.isPresent()) throw new Exception("creatorID not found!");
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : workout.getTags()) {
@@ -81,22 +81,22 @@ public class WorkoutService {
         return modelMapper.map(savedWorkout, WorkoutDTO.class);
     }
 
-    public WorkoutDTO patchWorkout(Long id, JsonPatch patch) {
+    public WorkoutDTO patchWorkout(Long id, JsonPatch patch) throws Exception {
         Optional<Workout> currentWorkout = workoutRepository.findById(id);
 
         if (!(currentWorkout.isPresent() && currentWorkout.get().getIsActive()))
-            throw new IllegalArgumentException("workoutID not found!");
+            throw new Exception("workoutID not found!");
 
         Workout workoutPatched = (Workout) JsonPatcherUtil.applyPatch(patch, currentWorkout.get());
         workoutRepository.save(workoutPatched);
         return modelMapper.map(workoutPatched, WorkoutDTO.class);
     }
 
-    public DisableWorkoutDTO disableWorkout(Long id, JsonPatch patch) {
+    public DisableWorkoutDTO disableWorkout(Long id, JsonPatch patch) throws Exception {
         Optional<Workout> currentWorkout = workoutRepository.findById(id);
 
         if (!(currentWorkout.isPresent() && currentWorkout.get().getIsActive()))
-            throw new IllegalArgumentException("workoutID not found!");
+            throw new Exception("workoutID not found!");
 
         Workout workoutPatched = (Workout) JsonPatcherUtil.applyPatch(patch, currentWorkout.get());
         workoutRepository.save(workoutPatched);

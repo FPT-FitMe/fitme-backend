@@ -61,5 +61,19 @@ public class WorkoutExerciseController {
         }
     }
 
+    //update Exercise By Order
+    @PostMapping("/order")
+    public ResponseEntity<List<WorkoutExerciseDTO>> updateExerciseOrder(@RequestParam("Workout_id") long id, @RequestBody Exercise[] exercises) {
+        try {
+            List<WorkoutExerciseDTO> result = workoutExerciseService.updateExerciseListByOrder(id, exercises);
+            if (result != null) {
+                return new ResponseEntity<>(result, HttpStatus.CREATED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
