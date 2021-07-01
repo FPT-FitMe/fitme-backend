@@ -17,8 +17,6 @@ import java.util.*;
 @RequestMapping("/exercises")
 public class ExerciseController {
 
-    private static final String ID_NOTFOUND_ERROR = " exerciseID Not Found";
-
     @Autowired
     private ExerciseService exerciseService;
 
