@@ -6,7 +6,7 @@ import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.Workout;
-import com.fpt.fitme.entity.workout.Workout_Exercise;
+import com.fpt.fitme.entity.workout.WorkoutExercise;
 import com.fpt.fitme.repository.*;
 import com.fpt.fitme.util.JsonPatcherUtil;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -100,7 +100,7 @@ public class ExerciseService {
 
         if (savedExercise != null) {
             long quantity = workoutExerciseRepository.countWorkout_ExerciseByWorkoutID(workout.get());
-            Workout_Exercise workout_exercise = new Workout_Exercise();
+            WorkoutExercise workout_exercise = new WorkoutExercise();
             workout_exercise.setExerciseID(savedExercise);
             workout_exercise.setWorkoutID(workout.get());
             workout_exercise.setExerciseOrder(quantity + 1);
@@ -132,7 +132,7 @@ public class ExerciseService {
         exerciseRepository.save(exercisePatched);
 
         //neu thang exercise co trong workout nao thi xoa thang do di
-        List<Workout_Exercise> list = workoutExerciseRepository.getWorkout_ExerciseByExerciseID(currentExercise.get());
+        List<WorkoutExercise> list = workoutExerciseRepository.getWorkout_ExerciseByExerciseID(currentExercise.get());
 
         if (!list.isEmpty())
             workoutExerciseService.deleteAllByExerciseID(id);
@@ -156,9 +156,9 @@ public class ExerciseService {
             exerciseRepository.save(exerciseToUpdate);
 
             //neu exercise co trong workout nao thi update workout do
-            List<Workout_Exercise> listUpdate=workoutExerciseRepository.getWorkout_ExerciseByExerciseID(exerciseToUpdate);
+            List<WorkoutExercise> listUpdate=workoutExerciseRepository.getWorkout_ExerciseByExerciseID(exerciseToUpdate);
             if(!listUpdate.isEmpty()){
-                for (Workout_Exercise we:listUpdate) {
+                for (WorkoutExercise we:listUpdate) {
                     workoutExerciseService.updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());
                 }
             }

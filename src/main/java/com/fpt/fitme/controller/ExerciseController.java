@@ -54,7 +54,7 @@ public class ExerciseController {
 
     //create exercise with workout
     @PostMapping("/workout")
-    public ResponseEntity createExerciserWorkout(@RequestParam("Workout_id") long id, @RequestBody Exercise exercise) {
+    public ResponseEntity createExerciserWorkout(@RequestParam("workoutID") long id, @RequestBody Exercise exercise) {
         try {
             ExerciseDTO dto = exerciseService.createExercise(exercise, id);
             return new ResponseEntity(dto, HttpStatus.CREATED);
