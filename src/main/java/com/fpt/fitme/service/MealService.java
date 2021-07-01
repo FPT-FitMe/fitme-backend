@@ -91,25 +91,24 @@ public class MealService {
         return modelMapper.map(mealPatched, DisableMealDTO.class);
     }
 
-    public MealDTO updateMeal(Long id, Meal meal) throws Exception{
+    public MealDTO updateMeal(Long id, Meal meal) throws Exception {
         Optional<Meal> optionalMeal = mealRepository.findById(id);
 
-        if (optionalMeal.isPresent() && optionalMeal.get().getIsActive()) {
-            Meal mealToUpdate = optionalMeal.get();
-            mealToUpdate.setName(meal.getName());
-            mealToUpdate.setDescription(meal.getDescription());
-            mealToUpdate.setCreator(meal.getCreator());
-            mealToUpdate.setTags(meal.getTags());
-            mealToUpdate.setCookingTime(meal.getCookingTime());
-            mealToUpdate.setIsPremium(meal.getIsPremium());
-            mealToUpdate.setImageUrl(meal.getImageUrl());
-            mealToUpdate.setCalories(meal.getCalories());
-            mealToUpdate.setCarbAmount(meal.getCarbAmount());
-            mealToUpdate.setFatAmount(meal.getFatAmount());
-            mealRepository.save(mealToUpdate);
+        if (!(optionalMeal.isPresent() && optionalMeal.get().getIsActive())) throw new Exception("mealID not found!");
+        Meal mealToUpdate = optionalMeal.get();
+        mealToUpdate.setName(meal.getName());
+        mealToUpdate.setDescription(meal.getDescription());
+        mealToUpdate.setCreator(meal.getCreator());
+        mealToUpdate.setTags(meal.getTags());
+        mealToUpdate.setCookingTime(meal.getCookingTime());
+        mealToUpdate.setIsPremium(meal.getIsPremium());
+        mealToUpdate.setImageUrl(meal.getImageUrl());
+        mealToUpdate.setCalories(meal.getCalories());
+        mealToUpdate.setCarbAmount(meal.getCarbAmount());
+        mealToUpdate.setFatAmount(meal.getFatAmount());
+        mealRepository.save(mealToUpdate);
 
-            return modelMapper.map(mealToUpdate, MealDTO.class);
-        }
-        return null;
+        return modelMapper.map(mealToUpdate, MealDTO.class);
+
     }
 }
