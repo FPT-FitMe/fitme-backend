@@ -156,7 +156,7 @@ public class ExerciseService {
             exerciseRepository.save(exerciseToUpdate);
 
             //neu exercise co trong workout nao thi update workout do
-            List<Workout_Exercise> listUpdate=workoutExerciseRepository.getWorkout_ExerciseByExerciseID(exercise);
+            List<Workout_Exercise> listUpdate=workoutExerciseRepository.getWorkout_ExerciseByExerciseID(exerciseToUpdate);
             if(!listUpdate.isEmpty()){
                 for (Workout_Exercise we:listUpdate) {
                     workoutExerciseService.updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());

@@ -57,18 +57,7 @@ public class WorkoutExerciseService {
         }
         if (!listAdd.isEmpty()) {
             workoutExerciseRepository.saveAll(listAdd);
-
-            //save thanh cong thi update baseDuration/baseKcal
-            int totalDuration = -15;
-            int totalKcal = 0;
-            totalDuration += workoutOptional.get().getEstimatedDuration();
-            totalKcal += workoutOptional.get().getEstimatedCalories();
-
-            for (Workout_Exercise we : listAdd) {
-                totalDuration += we.getExerciseID().getBaseDuration() + 15;
-                totalKcal += we.getExerciseID().getBaseKcal();
-            }
-            workoutRepository.updateDurationCaloriesWorkout(workoutID, totalKcal, totalDuration);
+            updateAllByWorkoutID(workoutOptional.get().getWorkoutID());
 
             return getListExerciseByOrder(workoutID);
         }
@@ -117,7 +106,7 @@ public class WorkoutExerciseService {
 
     public void deleteAllByExerciseID(long exerciseID) throws Exception {
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(exerciseID);
-        if (!(exerciseOptional.isPresent() && exerciseOptional.get().getIsActive()))
+        if (!(exerciseOptional.isPresent()))
             throw new Exception("exerciseID not found!");
 
         List<Workout_Exercise> list = workoutExerciseRepository.getWorkout_ExerciseByExerciseID(exerciseOptional.get());
@@ -130,9 +119,7 @@ public class WorkoutExerciseService {
         //remove xong thi update lai workout baseDuration/baseKcal
         //update tung thang workout
         for (Workout_Exercise we : list) {
-            int duration = we.getWorkoutID().getEstimatedDuration() - we.getExerciseID().getBaseDuration() - 15;
-            int kcal = we.getWorkoutID().getEstimatedCalories() - we.getExerciseID().getBaseKcal();
-            workoutRepository.updateDurationCaloriesWorkout(we.getWorkoutID().getWorkoutID(), kcal, duration);
+           updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());
         }
     }
 

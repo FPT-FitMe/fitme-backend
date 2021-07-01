@@ -15,7 +15,6 @@ import java.util.*;
 @Entity
 @Table(name = "exercise")
 @Data
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "exerciseID")
 @EntityListeners(AuditingEntityListener.class)
 public class Exercise {
 
