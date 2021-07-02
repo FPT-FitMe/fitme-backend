@@ -3,7 +3,7 @@ package com.fpt.fitme.entity.exercise;
 import com.fasterxml.jackson.annotation.*;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.tag.Tag;
-import com.fpt.fitme.entity.workout.Workout_Exercise;
+import com.fpt.fitme.entity.workout.WorkoutExercise;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,7 +24,7 @@ public class Exercise {
     private Long exerciseID;
 
     @OneToMany
-    private List<Workout_Exercise> workout_exercises=new ArrayList<>();
+    private List<WorkoutExercise> workout_exercises=new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

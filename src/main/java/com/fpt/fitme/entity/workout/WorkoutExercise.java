@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "workout_exercise")
-public class Workout_Exercise {
+@Table(name = "workoutExercise")
+public class WorkoutExercise {
 
     //workout can have duplicate exercise
     @Id

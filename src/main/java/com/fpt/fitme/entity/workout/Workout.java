@@ -63,7 +63,7 @@ public class Workout {
     private String imageUrl;
 
     @OneToMany(mappedBy = "workoutID")
-    private Set<Workout_Exercise> workout_exercises;
+    private Set<WorkoutExercise> workout_exercises;
 
     @Column(name = "isActive", nullable = false)
     private Boolean isActive;
