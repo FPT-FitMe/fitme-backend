@@ -1,17 +1,23 @@
 package com.fpt.fitme.entity.workout;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "workout")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "workoutID")
+@EntityListeners(AuditingEntityListener.class)
 public class Workout {
 
     @Id
@@ -27,7 +33,7 @@ public class Workout {
     private CoachProfile coachProfile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","traineeFavoriteWorkouts"})
     private AppUser creator;
 
     @Column(name = "description")
@@ -45,7 +51,7 @@ public class Workout {
     private Integer estimatedDuration;
 
     @Column(name = "estimated_calories")
-    private Float estimatedCalories;
+    private Integer estimatedCalories;
 
     @Column(name = "level")
     private Integer level;
@@ -55,4 +61,18 @@ public class Workout {
 
     @Column(name = "image_url", length = 150)
     private String imageUrl;
+
+    @OneToMany(mappedBy = "workoutID")
+    private Set<Workout_Exercise> workout_exercises;
+
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
 }

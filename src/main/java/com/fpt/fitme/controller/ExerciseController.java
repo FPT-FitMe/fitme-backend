@@ -1,34 +1,30 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.dto.Exercise.DisableExerciseDTO;
+import com.fpt.fitme.dto.Exercise.ExerciseDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
-import com.fpt.fitme.entity.workout.Workout;
-import com.fpt.fitme.repository.ExerciseRepository;
-import com.fpt.fitme.repository.WorkoutRepository;
-import com.fpt.fitme.util.JsonPatcherUtil;
+import com.fpt.fitme.service.ExerciseService;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("/exercises")
 public class ExerciseController {
 
-    @Autowired
-    private ExerciseRepository exerciseRepository;
+    private static final String ID_NOTFOUND_ERROR = " exerciseID Not Found";
 
     @Autowired
-    private WorkoutRepository workoutRepository;
+    private ExerciseService exerciseService;
 
     @GetMapping("")
-    public ResponseEntity<List<Exercise>> getAllExercises() {
-        List<Exercise> result = new ArrayList<>();
-        exerciseRepository.findAll().forEach(result::add);
+    public ResponseEntity<List<ExerciseDTO>> getAllExercises() {
+        List<ExerciseDTO> result = exerciseService.getListExercise();
         if (!result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
@@ -37,65 +33,59 @@ public class ExerciseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Exercise> getExerciseByID(@PathVariable("id") long id) {
-        Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
+    public ResponseEntity<ExerciseDTO> getExerciseByID(@PathVariable("id") long id) {
+        ExerciseDTO dto = exerciseService.getExerciseByID(id);
 
-        if (exerciseOptional.isPresent()) {
-            return new ResponseEntity<>(exerciseOptional.get(), HttpStatus.OK);
+        if (dto != null) {
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
+    //create exercise without workout
     @PostMapping("")
-    public ResponseEntity addExercise(@RequestBody Exercise exercise) {
+    public ResponseEntity createExercise(@RequestBody Exercise exercise) {
         try {
-            Optional<Workout> workout = workoutRepository.findById(exercise.getWorkout().getWorkoutID());
-
-            if (workout.isPresent()) {
-                exercise.setWorkout(workout.get());
-                Exercise savedExercise = exerciseRepository.save(exercise);
-                return new ResponseEntity(savedExercise, HttpStatus.CREATED);
-            }
-            return new ResponseEntity("Check other relation's ID", HttpStatus.BAD_REQUEST);
+            ExerciseDTO dto = exerciseService.createExercise(exercise);
+            return new ResponseEntity(dto, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //create exercise with workout
+    @PostMapping("/workout")
+    public ResponseEntity createExerciserWorkout(@RequestParam("Workout_id") long id, @RequestBody Exercise exercise) {
+        try {
+            ExerciseDTO dto = exerciseService.createExercise(exercise, id);
+            return new ResponseEntity(dto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity patchMeal(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
+    public ResponseEntity patchExercise(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
         try {
-            Optional<Exercise> currentExercise = exerciseRepository.findById(id);
-
-            if (currentExercise.isPresent()) {
-                Exercise exercisePatched = (Exercise) JsonPatcherUtil.applyPatch(patch, currentExercise.get());
-                exerciseRepository.save(exercisePatched);
-                return ResponseEntity.ok(exercisePatched);
-            }  else {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
+            DisableExerciseDTO dto = exerciseService.disableExercise(id, patch);
+            return ResponseEntity.ok(dto);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateWorkout(@PathVariable("id") Long id, @RequestBody Exercise exercise) {
-        Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
-
-        if (optionalExercise.isPresent()) {
-            Exercise exerciseToUpdate = optionalExercise.get();
-            exerciseToUpdate.setName(exercise.getName());
-            exerciseToUpdate.setDescription(exercise.getDescription());
-            exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
-            exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
-            exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
-            exerciseToUpdate.setImageUrl(exercise.getImageUrl());
-            return new ResponseEntity(exerciseRepository.save(exerciseToUpdate), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            ExerciseDTO dto = exerciseService.updateExercise(id, exercise);
+            if (dto != null) {
+                return new ResponseEntity(dto, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

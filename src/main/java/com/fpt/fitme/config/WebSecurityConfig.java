@@ -2,11 +2,13 @@ package com.fpt.fitme.config;
 
 import com.fpt.fitme.filter.JwtRequestFilter;
 import com.fpt.fitme.service.FitmeUserDetailsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,6 +27,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 
 @Configuration
+@EnableJpaAuditing
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -89,5 +92,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
-
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 }
