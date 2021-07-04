@@ -19,4 +19,10 @@ public class CoachProfile {
 
     @Column(name = "contact")
     private String contact;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
 }

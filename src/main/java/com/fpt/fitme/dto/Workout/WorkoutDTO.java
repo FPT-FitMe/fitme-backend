@@ -1,7 +1,7 @@
 package com.fpt.fitme.dto.Workout;
 
 import com.fpt.fitme.dto.AppUserDTO;
-import com.fpt.fitme.dto.CoachProfileDTO;
+import com.fpt.fitme.dto.CoachProfile.CoachProfileDTO;
 import com.fpt.fitme.dto.TagDTO;
 import com.fpt.fitme.dto.WorkoutExercise.WorkoutExerciseDTO;
 
