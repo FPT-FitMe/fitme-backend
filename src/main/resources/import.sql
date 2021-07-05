@@ -5,13 +5,14 @@ values (0, 'Trainee'),
 insert into coach_profile (coach_id,coach_name,contact,introduction,image_url,is_active)
 values (0,'Bob','coach_profile@gmail.com','Hi im Bob','coach_image.jpg',true);
 
-insert into app_user
-values (0, 18, 2, 'conmeo1@gmail.com', 2, 1, 182, 4, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000001', 'fitmeUser', 2, 0),
-       (1, 18, 2, 'conmeo2@gmail.com', 2, 1, 182, 4, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000003', 'conmeo', 2, 0),
-       (2, 40, null, 'admin@fitme.vn', null, 1, null, null,
-        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'fitmeManager', 2, 1);
+insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
+                      gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity, role_role_id)
+values (DEFAULT, 18, 2, 'conmeo1@gmail.com', 2, 'firstNameMember1', 1, 182, true, 'lastNameMember1', '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
+        '00000001', 'memberImageLink1', 0.7, 0),
+       (DEFAULT, 18, 2, 'conmeo2@gmail.com', 2, 'firstNameMember1', 1, 182, false, 'lastNameMember1', '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
+        '00000003', 'memberImageLink2', 1, 0),
+       (DEFAULT, 40, null, 'admin@fitme.vn', null, 'firstNameAdmin1', 1, null, null, 'lastNameAdmin1',
+        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1);
 
 insert into tag
 values (0, 'test'),
