@@ -1,4 +1,4 @@
-package com.fpt.fitme.dto.CoachProfile;
+package com.fpt.fitme.dto.coachprofile;
 
 public class DisableCoachProfileDTO {
     private Long coachID;

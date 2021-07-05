@@ -1,4 +1,4 @@
-package com.fpt.fitme.dto.Exercise;
+package com.fpt.fitme.dto.exercise;
 
 public class DisableExerciseDTO {
     private Long exerciseID;

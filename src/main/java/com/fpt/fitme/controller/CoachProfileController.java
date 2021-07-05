@@ -1,7 +1,7 @@
 package com.fpt.fitme.controller;
 
-import com.fpt.fitme.dto.CoachProfile.DisableCoachProfileDTO;
-import com.fpt.fitme.dto.CoachProfile.CoachProfileDTO;
+import com.fpt.fitme.dto.coachprofile.DisableCoachProfileDTO;
+import com.fpt.fitme.dto.coachprofile.CoachProfileDTO;
 import com.fpt.fitme.entity.workout.CoachProfile;
 import com.fpt.fitme.service.CoachProfileService;
 import com.github.fge.jsonpatch.JsonPatch;
