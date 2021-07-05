@@ -1,6 +1,6 @@
-package com.fpt.fitme.dto.WorkoutExercise;
+package com.fpt.fitme.dto.workoutexercise;
 
-import com.fpt.fitme.dto.Exercise.ExerciseDTO;
+import com.fpt.fitme.dto.exercise.ExerciseDTO;
 
 public class WorkoutExerciseDTO {
     private ExerciseDTO exerciseID;
