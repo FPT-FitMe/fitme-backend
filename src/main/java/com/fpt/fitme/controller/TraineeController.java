@@ -39,6 +39,7 @@ public class TraineeController {
                     return new ResponseEntity("User already subscribed", HttpStatus.BAD_REQUEST);
                 }
                 appUser.setIsPremium(true);
+                appUserRepository.save(appUser);
             } else {
                 return new ResponseEntity("Invalid credentials", HttpStatus.BAD_REQUEST);
             }
