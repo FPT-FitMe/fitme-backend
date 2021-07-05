@@ -1,5 +1,6 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.domain.FitmeUserDetails;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.model.AuthenticationRequest;
 import com.fpt.fitme.model.AuthenticationResponse;
@@ -56,21 +57,22 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<FitMeUser> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
 			);
-		} catch (BadCredentialsException e) {
-			throw new Exception("Incorrect username or password", e);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Invalid email or password", HttpStatus.BAD_REQUEST);
 		}
 
 		final UserDetails userDetails = fitmeUserDetailsService
 				.loadUserByUsername(authenticationRequest.getEmail());
 		final String jwt = jwtUtil.generateToken(userDetails);
+		final FitMeUser fitMeUser = fitmeUserDetailsService.getUserInfo(authenticationRequest.getEmail());
 
-		return new ResponseEntity(fitmeUserDetailsService.getUserInfo(jwt, authenticationRequest.getEmail()), HttpStatus.OK);
+		return new ResponseEntity(new FitmeUserDetails(fitMeUser, jwt), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/refreshToken", method = RequestMethod.GET)

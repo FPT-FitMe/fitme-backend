@@ -59,7 +59,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
         }
     }
 
-    public FitMeUser getUserInfo(String token, String email) {
+    public FitMeUser getUserInfo(String email) {
         AppUser appUser = appUserRepository.getAppUserByEmail(email);
         // Khi moi register xong thi nhung field sau se bi null
         // gender, phone, profileImageUrl
@@ -70,7 +70,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
         return new FitMeUser(appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
                 appUser.getLastName(), gender, appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
                 appUser.getPhone(), appUser.getProfileImageUrl(),
-                appUser.getIsPremium(), token);
+                appUser.getIsPremium());
     }
 
     public AppUser register(FitMeUser fitMeUser) {
