@@ -2,10 +2,18 @@ package com.fpt.fitme.dto.CoachProfile;
 
 public class CoachProfileDTO {
     private Long coachID;
+    private String name;
     private String introduction;
     private String contact;
     private String imageUrl;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public Long getCoachID() {
         return coachID;
     }

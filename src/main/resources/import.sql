@@ -2,8 +2,8 @@ insert into app_user_role
 values (0, 'Trainee'),
        (1, 'Manager');
 
-insert into coach_profile (coach_id,contact,introduction,image_url,isActive)
-values (0, 'coach_profile@gmail.com', 'Hi im Bob','coach_image.jpg',true );
+insert into coach_profile (coach_id,coach_name,contact,introduction,image_url,is_active)
+values (0,'Bob','coach_profile@gmail.com','Hi im Bob','coach_image.jpg',true);
 
 insert into app_user
 values (0, 18, 2, 'conmeo1@gmail.com', 2, 1, 182, 4, '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',

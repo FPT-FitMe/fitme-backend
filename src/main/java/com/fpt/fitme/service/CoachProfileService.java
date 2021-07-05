@@ -73,6 +73,7 @@ public class CoachProfileService {
 
         if (!(optionalCoachProfile.isPresent() && optionalCoachProfile.get().getIsActive())) throw new Exception("coachID not found!");
         CoachProfile coachToUpdate = optionalCoachProfile.get();
+        coachToUpdate.setName(coach.getName());
         coachToUpdate.setContact(coach.getContact());
         coachToUpdate.setImageUrl(coach.getImageUrl());
         coachToUpdate.setIntroduction(coach.getIntroduction());
