@@ -1,81 +1,48 @@
-package com.fpt.fitme.domain;
+package com.fpt.fitme.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+@JsonIgnoreProperties(value = {"password"}, allowSetters = true)
+public class FitMeUser {
 
-@JsonIgnoreProperties(value = {"user", "password"}, allowSetters = true)
-public class FitmeUserDetails implements UserDetails {
-
-    private User user;
+    private String email;
+    private String password;
     private String firstName;
     private String lastName;
     private String gender;
+    private String role;
     private String phoneNumber;
     private String profileImageUrl;
     private Boolean isPremium;
     private String jwtToken;
 
-    public FitmeUserDetails(User user) {
-        this.user = user;
-    }
-
-    public FitmeUserDetails(User user, String firstName, String lastName, String gender, String phoneNumber, String profileImageUrl, Boolean isPremium) {
-        this.user = user;
+    public FitMeUser(String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium, String jwtToken) {
+        this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
+        this.role = role;
         this.phoneNumber = phoneNumber;
         this.profileImageUrl = profileImageUrl;
         this.isPremium = isPremium;
+        this.jwtToken = jwtToken;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getAuthority())).collect(Collectors.toList());
+    public String getEmail() {
+        return email;
     }
 
-    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
-    @Override
-    public String getUsername() {
-        return user.getUsername();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -132,5 +99,13 @@ public class FitmeUserDetails implements UserDetails {
 
     public void setJwtToken(String jwtToken) {
         this.jwtToken = jwtToken;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
