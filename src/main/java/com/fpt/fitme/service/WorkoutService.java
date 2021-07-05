@@ -1,7 +1,7 @@
 package com.fpt.fitme.service;
 
-import com.fpt.fitme.dto.Workout.DisableWorkoutDTO;
-import com.fpt.fitme.dto.Workout.WorkoutDTO;
+import com.fpt.fitme.dto.workout.DisableWorkoutDTO;
+import com.fpt.fitme.dto.workout.WorkoutDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.CoachProfile;

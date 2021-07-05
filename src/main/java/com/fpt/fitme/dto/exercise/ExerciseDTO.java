@@ -1,4 +1,4 @@
-package com.fpt.fitme.dto.Exercise;
+package com.fpt.fitme.dto.exercise;
 
 
 import com.fpt.fitme.dto.AppUserDTO;

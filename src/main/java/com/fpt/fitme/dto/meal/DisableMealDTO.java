@@ -1,4 +1,4 @@
-package com.fpt.fitme.dto.Meal;
+package com.fpt.fitme.dto.meal;
 
 public class DisableMealDTO {
     private Long mealID;
