@@ -1,7 +1,7 @@
 package com.fpt.fitme.controller;
 
-import com.fpt.fitme.dto.Exercise.DisableExerciseDTO;
-import com.fpt.fitme.dto.Exercise.ExerciseDTO;
+import com.fpt.fitme.dto.exercise.DisableExerciseDTO;
+import com.fpt.fitme.dto.exercise.ExerciseDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.service.ExerciseService;
 import com.github.fge.jsonpatch.JsonPatch;

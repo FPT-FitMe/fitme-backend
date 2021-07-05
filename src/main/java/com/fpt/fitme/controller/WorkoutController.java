@@ -1,18 +1,9 @@
 package com.fpt.fitme.controller;
 
-import com.fpt.fitme.dto.Exercise.ExerciseDTO;
-import com.fpt.fitme.dto.Workout.DisableWorkoutDTO;
-import com.fpt.fitme.dto.Workout.WorkoutDTO;
-import com.fpt.fitme.entity.appuser.AppUser;
-import com.fpt.fitme.entity.tag.Tag;
-import com.fpt.fitme.entity.workout.CoachProfile;
+import com.fpt.fitme.dto.workout.DisableWorkoutDTO;
+import com.fpt.fitme.dto.workout.WorkoutDTO;
 import com.fpt.fitme.entity.workout.Workout;
-import com.fpt.fitme.repository.AppUserRepository;
-import com.fpt.fitme.repository.CoachProfileRepository;
-import com.fpt.fitme.repository.TagRepository;
-import com.fpt.fitme.repository.WorkoutRepository;
 import com.fpt.fitme.service.WorkoutService;
-import com.fpt.fitme.util.JsonPatcherUtil;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
