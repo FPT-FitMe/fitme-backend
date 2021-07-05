@@ -61,8 +61,14 @@ public class FitmeUserDetailsService implements UserDetailsService {
 
     public FitMeUser getUserInfo(String token, String email) {
         AppUser appUser = appUserRepository.getAppUserByEmail(email);
+        // Khi moi register xong thi nhung field sau se bi null
+        // gender, phone, profileImageUrl
+        String gender = null;
+        if (appUser.getGender() != null) {
+            gender = appUser.getGender() == 0 ? "M" : "F";
+        }
         return new FitMeUser(appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
-                appUser.getLastName(), appUser.getGender() == 0 ? "M" : "F", appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
+                appUser.getLastName(), gender, appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
                 appUser.getPhone(), appUser.getProfileImageUrl(),
                 appUser.getIsPremium(), token);
     }

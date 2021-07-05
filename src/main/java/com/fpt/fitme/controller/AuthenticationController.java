@@ -100,8 +100,8 @@ public class AuthenticationController {
 			AppUser appUser = fitmeUserDetailsService.register(fitMeUser);
 			return new ResponseEntity(appUser, HttpStatus.CREATED);
 		} catch (Exception e) {
-			if (e.getMessage().contains("duplicate")) {
-				return new ResponseEntity("Username is duplicated", HttpStatus.BAD_REQUEST);
+			if (e.getMessage().contains("constraint [uk")) {
+				return new ResponseEntity("Email is duplicated", HttpStatus.BAD_REQUEST);
 			}
 			return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
