@@ -14,9 +14,8 @@ public class FitMeUser {
     private String phoneNumber;
     private String profileImageUrl;
     private Boolean isPremium;
-    private String jwtToken;
 
-    public FitMeUser(String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium, String jwtToken) {
+    public FitMeUser(String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -26,7 +25,6 @@ public class FitMeUser {
         this.phoneNumber = phoneNumber;
         this.profileImageUrl = profileImageUrl;
         this.isPremium = isPremium;
-        this.jwtToken = jwtToken;
     }
 
     public String getEmail() {
@@ -91,14 +89,6 @@ public class FitMeUser {
 
     public void setPremium(Boolean premium) {
         isPremium = premium;
-    }
-
-    public String getJwtToken() {
-        return jwtToken;
-    }
-
-    public void setJwtToken(String jwtToken) {
-        this.jwtToken = jwtToken;
     }
 
     public String getRole() {

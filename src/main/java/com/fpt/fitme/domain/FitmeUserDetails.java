@@ -1,43 +1,28 @@
 package com.fpt.fitme.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fpt.fitme.model.FitMeUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
-@JsonIgnoreProperties(value = {"user", "password"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"password", "authorities", "username"}, allowSetters = true)
 public class FitmeUserDetails implements UserDetails {
 
-    private User user;
-    private String firstName;
-    private String lastName;
-    private String gender;
-    private String phoneNumber;
-    private String profileImageUrl;
-    private Boolean isPremium;
+    private FitMeUser user;
     private String jwtToken;
 
-    public FitmeUserDetails(User user) {
+    public FitmeUserDetails(FitMeUser user, String jwtToken) {
         this.user = user;
-    }
-
-    public FitmeUserDetails(User user, String firstName, String lastName, String gender, String phoneNumber, String profileImageUrl, Boolean isPremium) {
-        this.user = user;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.profileImageUrl = profileImageUrl;
-        this.isPremium = isPremium;
+        this.jwtToken = jwtToken;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getAuthority())).collect(Collectors.toList());
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     @Override
@@ -47,7 +32,7 @@ public class FitmeUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override
@@ -70,60 +55,12 @@ public class FitmeUserDetails implements UserDetails {
         return true;
     }
 
-    public User getUser() {
+    public FitMeUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(FitMeUser user) {
         this.user = user;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public Boolean getPremium() {
-        return isPremium;
-    }
-
-    public void setPremium(Boolean premium) {
-        isPremium = premium;
     }
 
     public String getJwtToken() {
