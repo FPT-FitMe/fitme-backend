@@ -35,7 +35,7 @@ public class Exercise {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Tag> tags = new HashSet<>();
 
-    @Column(name = "name")
+    @Column(name = "exercise_name")
     private String name;
 
     @Column(name = "description")

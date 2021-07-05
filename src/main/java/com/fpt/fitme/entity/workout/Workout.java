@@ -25,7 +25,7 @@ public class Workout {
     @Column(name = "workout_id")
     private Long workoutID;
 
-    @Column(name = "name")
+    @Column(name = "workout_name")
     private String name;
 
     @ManyToOne
