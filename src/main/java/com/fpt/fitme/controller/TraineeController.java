@@ -138,11 +138,12 @@ public class TraineeController {
                     // Plan meal
                     Long dietPreference = trainee.getDietPreferenceType();
                     // Bua sang
-                    List<Meal> breakfasts = getMealsInPeriod(dietPreference, 4L);
+                    List<Meal> breakfasts = getMealsInPeriod(dietPreference, 4L, (int) (caloriesPerDay * 0.4));
+
                     // Bua trua
-                    List<Meal> lunch = getMealsInPeriod(dietPreference, 5L);
+                    List<Meal> lunch = getMealsInPeriod(dietPreference, 5L, (int) (caloriesPerDay * 0.3));
                     // Bua toi
-                    List<Meal> diners = getMealsInPeriod(dietPreference, 7L);
+                    List<Meal> diners = getMealsInPeriod(dietPreference, 7L, (int) (caloriesPerDay * 0.3));
 
                     //Plan workout
                     Iterable<Workout> workoutsAllIter = workoutRepository.findAll();
@@ -224,12 +225,29 @@ public class TraineeController {
         }
     }
 
-    private List<Meal> getMealsInPeriod(Long dietPreference, Long mealPeriod) {
+    private List<Meal> getMealsInPeriod(Long dietPreference, Long mealPeriod, int minCalo) {
         Set<Tag> mealTags = new HashSet<>();
         mealTags.add(tagRepository.findById(dietPreference).get());
-        //Bua sang
         mealTags.add(tagRepository.findById(mealPeriod).get());
         List<Meal> meals = mealRepository.findMealsByTagsIn(mealTags);
+        List<Meal> filteredMeals = new ArrayList<>();
+        for (Meal meal : meals) {
+            if (meal.getCalories() >= minCalo) {
+                filteredMeals.add(meal);
+            }
+        }
+        meals = filteredMeals;
+        if (filteredMeals.size() < 7) {
+            int lastIndex = filteredMeals.size() - 1;
+            int index = 0;
+            for (int i = 0; i < (7 - filteredMeals.size()); i++) {
+                meals.add(filteredMeals.get(index));
+                index++;
+                if (index == lastIndex) {
+                    index = 0;
+                }
+            }
+        }
         Collections.shuffle(meals);
         return meals;
     }
