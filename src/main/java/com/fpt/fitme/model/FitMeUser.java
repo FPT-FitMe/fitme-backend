@@ -9,13 +9,13 @@ public class FitMeUser {
     private String password;
     private String firstName;
     private String lastName;
-    private String gender;
+    private int gender;
     private String role;
     private String phoneNumber;
     private String profileImageUrl;
     private Boolean isPremium;
 
-    public FitMeUser(String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium) {
+    public FitMeUser(String email, String password, String firstName, String lastName, int gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -59,14 +59,6 @@ public class FitMeUser {
         this.lastName = lastName;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -97,5 +89,13 @@ public class FitMeUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }

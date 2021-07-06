@@ -48,10 +48,10 @@ public class FitmeUserDetailsService implements UserDetailsService {
             AppUser appUser = appUserRepository.getAppUserByEmail(email);
             String roleName = appUser.getRole().getRoleName();
             if (roleName.equals("Manager")) {
-                roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MANAGER"));
+                roles = Collections.singletonList(new SimpleGrantedAuthority("Manager"));
 
             } else if (roleName.equals("Trainee")) {
-                roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
+                roles = Collections.singletonList(new SimpleGrantedAuthority("Trainee"));
             }
             return new User(appUser.getEmail(), appUser.getPassword(), roles);
         } catch (UsernameNotFoundException e) {
@@ -63,12 +63,8 @@ public class FitmeUserDetailsService implements UserDetailsService {
         AppUser appUser = appUserRepository.getAppUserByEmail(email);
         // Khi moi register xong thi nhung field sau se bi null
         // gender, phone, profileImageUrl
-        String gender = null;
-        if (appUser.getGender() != null) {
-            gender = appUser.getGender() == 0 ? "M" : "F";
-        }
         return new FitMeUser(appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
-                appUser.getLastName(), gender, appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
+                appUser.getLastName(), appUser.getGender(), appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
                 appUser.getPhone(), appUser.getProfileImageUrl(),
                 appUser.getIsPremium());
     }

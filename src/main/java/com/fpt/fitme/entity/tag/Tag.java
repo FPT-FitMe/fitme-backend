@@ -16,4 +16,7 @@ public class Tag {
 
     @Column(name = "tag_name")
     private String name;
+
+    @Column(name = "tag_type")
+    private String tagType;
 }

@@ -66,7 +66,7 @@ public class AppUser {
     private Set<Meal> traineeFavoriteMeals = new HashSet<>();
 
     @Column(name = "height")
-    @Min(65)
+    @Min(120)
     @Max(300)
     private Float height;
 
