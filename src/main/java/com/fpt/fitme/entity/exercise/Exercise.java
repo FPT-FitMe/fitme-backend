@@ -19,7 +19,7 @@ import java.util.*;
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_id")
     private Long exerciseID;
 

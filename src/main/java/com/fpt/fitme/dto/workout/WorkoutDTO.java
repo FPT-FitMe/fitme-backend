@@ -2,7 +2,7 @@ package com.fpt.fitme.dto.workout;
 
 import com.fpt.fitme.dto.AppUserDTO;
 import com.fpt.fitme.dto.coachprofile.CoachProfileDTO;
-import com.fpt.fitme.dto.TagDTO;
+import com.fpt.fitme.dto.tag.TagDTO;
 import com.fpt.fitme.dto.workoutexercise.WorkoutExerciseDTO;
 
 import java.util.Date;
