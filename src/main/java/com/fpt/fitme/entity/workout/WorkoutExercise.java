@@ -15,7 +15,7 @@ public class WorkoutExercise {
 
     //workout can have duplicate exercise
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_exercise_id")
     private long workoutExerciseID;
 

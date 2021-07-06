@@ -21,7 +21,7 @@ import java.util.Set;
 public class Workout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_id")
     private Long workoutID;
 
