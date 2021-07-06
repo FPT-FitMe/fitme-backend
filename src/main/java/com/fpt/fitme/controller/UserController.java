@@ -7,6 +7,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class UserController {
     @Autowired
     AppUserRepository appUserRepository;
 
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
 
     @GetMapping("")
     public ResponseEntity<List<AppUser>> getAllAppUser() {
@@ -82,7 +85,7 @@ public class UserController {
             AppUser appUserToUpdate = optionalAppUser.get();
             appUserToUpdate.setFirstName(appUser.getFirstName());
             appUserToUpdate.setLastName(appUser.getLastName());
-            appUserToUpdate.setPassword(appUser.getPassword());
+            appUserToUpdate.setPassword(bcryptEncoder.encode(appUser.getPassword()));
             appUserToUpdate.setEmail(appUser.getEmail());
             appUserToUpdate.setPhone(appUser.getPhone());
             appUserToUpdate.setAge(appUser.getAge());
@@ -91,6 +94,7 @@ public class UserController {
             appUserToUpdate.setTraineeFavoriteWorkouts(appUser.getTraineeFavoriteWorkouts());
             appUserToUpdate.setTraineeFavoriteMeals(appUser.getTraineeFavoriteMeals());
             appUserToUpdate.setHeight(appUser.getHeight());
+            appUserToUpdate.setProfileImageUrl(appUser.getProfileImageUrl());
             appUserToUpdate.setDietPreferenceType(appUser.getDietPreferenceType());
             appUserToUpdate.setExerciseFrequencyType(appUser.getExerciseFrequencyType());
             appUserToUpdate.setWorkoutIntensity(appUser.getWorkoutIntensity());
