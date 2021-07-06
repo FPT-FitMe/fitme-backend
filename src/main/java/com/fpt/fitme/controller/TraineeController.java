@@ -274,8 +274,8 @@ public class TraineeController {
         List<Meal> meals = mealRepository.findMealsByTagsIn(mealTags);
         List<Meal> filteredMeals = new ArrayList<>();
         for (Meal meal : meals) {
-            if (meal.getCalories() >= minCalo && meal.getTags()
-                    .contains(tagRepository.findById(dietPreference).get())) {
+            if (meal.getCalories() >= minCalo &&
+                    (meal.getTags().contains(tagRepository.findById(dietPreference).get()) || dietPreference == 0)) {
                 filteredMeals.add(meal);
             }
         }
