@@ -108,7 +108,7 @@ public class TraineeController {
         } catch (Exception e) {
             return new ResponseEntity("Error ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(plans, HttpStatus.OK);
+        return new ResponseEntity("Succeed", HttpStatus.OK);
     }
 
     private List<Plan> buildPlan(AppUser trainee, float currentWeight, float targetWeight, int durationInDays) {
