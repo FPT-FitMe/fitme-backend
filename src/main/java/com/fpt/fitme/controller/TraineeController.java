@@ -16,6 +16,7 @@ import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.service.FitmeUserDetailsService;
 import com.fpt.fitme.service.LogService;
 import com.fpt.fitme.service.PlanService;
+import com.fpt.fitme.service.TraineeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,9 @@ public class TraineeController {
 
     @Autowired
     private PlanService planService;
+
+    @Autowired
+    private TraineeService traineeService;
 
     @Autowired
     private LogService logService;
@@ -87,6 +91,23 @@ public class TraineeController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("favorite/{type}/{id}")
+    public ResponseEntity<?> favoriteItem(@PathVariable String type, @PathVariable long id) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            if (type.equals("meal")) {
+                traineeService.favoriteMeal(trainee, id);
+                return new ResponseEntity<>("Succeed", HttpStatus.OK);
+            } else if (type.equals("workout")) {
+                traineeService.favoriteWorkout(trainee, id);
+                return new ResponseEntity<>("Succeed", HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/completeSurvey")
