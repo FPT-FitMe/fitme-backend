@@ -19,7 +19,7 @@ import java.util.*;
 public class WorkoutService {
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private FitmeUserDetailsService fitmeUserDetailsService;
 
     @Autowired
     private WorkoutRepository workoutRepository;
@@ -52,12 +52,10 @@ public class WorkoutService {
     }
 
     public WorkoutDTO createWorkout(Workout workout) throws Exception {
-        Optional<AppUser> creator = appUserRepository.findById(workout.getCreator().getUserID());
+        AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
 
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
-
-        if (!creator.isPresent()) throw new Exception("creatorID not found!");
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : workout.getTags()) {
@@ -68,7 +66,7 @@ public class WorkoutService {
         }
 
         workout.setCoachProfile(coachProfile.get());
-        workout.setCreator(creator.get());
+        workout.setCreator(appUser);
         workout.setTags(tags);
         workout.setEstimatedCalories(0);
         workout.setEstimatedDuration(0);
@@ -107,7 +105,6 @@ public class WorkoutService {
             Workout workoutToUpdate = optionalWorkout.get();
             workoutToUpdate.setName(workout.getName());
             workoutToUpdate.setCoachProfile(workout.getCoachProfile());
-            workoutToUpdate.setCreator(workout.getCreator());
             workoutToUpdate.setDescription(workout.getDescription());
             workoutToUpdate.setTags(workout.getTags());
             workoutToUpdate.setLevel(workout.getLevel());

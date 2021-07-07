@@ -23,6 +23,9 @@ public class ExerciseService {
     private ModelMapper modelMapper;
 
     @Autowired
+    private FitmeUserDetailsService fitmeUserDetailsService;
+
+    @Autowired
     private WorkoutExerciseService workoutExerciseService;
 
     @Autowired
@@ -59,9 +62,7 @@ public class ExerciseService {
     }
 
     public ExerciseDTO createExercise(Exercise exercise) throws Exception {
-        Optional<AppUser> creator = appUserRepository.findById(exercise.getCreator().getUserID());
-
-        if (!creator.isPresent()) throw new Exception("creatorID not found!");
+        AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : exercise.getTags()) {
@@ -70,7 +71,7 @@ public class ExerciseService {
                 tags.add(tagToAdd.get());
             }
         }
-        exercise.setCreator(creator.get());
+        exercise.setCreator(appUser);
         exercise.setTags(tags);
         exercise.setIsActive(true);
 

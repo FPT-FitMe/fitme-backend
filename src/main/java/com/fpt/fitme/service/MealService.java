@@ -6,7 +6,6 @@ import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.CoachProfile;
-import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.repository.CoachProfileRepository;
 import com.fpt.fitme.repository.MealRepository;
 import com.fpt.fitme.repository.TagRepository;
@@ -24,13 +23,13 @@ public class MealService {
     private MealRepository mealRepository;
 
     @Autowired
-    private AppUserRepository appUserRepository;
-
-    @Autowired
     private CoachProfileRepository coachProfileRepository;
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private FitmeUserDetailsService fitmeUserDetailsService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -54,10 +53,9 @@ public class MealService {
     }
 
     public MealDTO createMeal(Meal meal) throws Exception {
-        Optional<AppUser> creator = appUserRepository.findById(meal.getCreator().getUserID());
+        AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(meal.getCoachProfile().getCoachID());
 
-        if (!creator.isPresent()) throw new Exception("creatorID not found!");
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
         Set<Tag> tags = new HashSet<>();
@@ -69,7 +67,7 @@ public class MealService {
         }
 
         meal.setCoachProfile(coachProfile.get());
-        meal.setCreator(creator.get());
+        meal.setCreator(appUser);
         meal.setTags(tags);
         meal.setIsActive(true);
 
@@ -107,7 +105,6 @@ public class MealService {
         Meal mealToUpdate = optionalMeal.get();
         mealToUpdate.setName(meal.getName());
         mealToUpdate.setDescription(meal.getDescription());
-        mealToUpdate.setCreator(meal.getCreator());
         mealToUpdate.setTags(meal.getTags());
         mealToUpdate.setCookingTime(meal.getCookingTime());
         mealToUpdate.setIsPremium(meal.getIsPremium());
