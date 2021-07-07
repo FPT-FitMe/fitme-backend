@@ -1,8 +1,8 @@
-package com.fpt.fitme.entity.meal;
+package com.fpt.fitme.entity.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.CoachProfile;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,19 +11,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
-@Table(name = "meal")
+@Table(name = "post")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Meal {
-
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "meal_id")
-    private Long mealID;
+    @Column(name = "post_id")
+    private Long postID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -33,37 +31,20 @@ public class Meal {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CoachProfile coachProfile;
 
-    @ManyToMany
-    @JoinTable(
-            name = "meal_tag",
-            joinColumns = { @JoinColumn(name = "meal_id")},
-            inverseJoinColumns = { @JoinColumn(name = "tag_id")}
-    )
-    private Set<Tag> tags = new HashSet<>();
-
-    @Column(name = "name")
+    @Column(name = "post_name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "content_header")
+    private String contentHeader;
 
-    @Column(name = "cooking_time")
-    private Integer cookingTime;
+    @Column(name = "content_body")
+    private String contentBody;
 
-    @Column(name = "is_premium")
-    private Boolean isPremium;
+    @Column(name = "reading_time")
+    private Integer readingTime;
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @Column(name = "calories")
-    private Float calories;
-
-    @Column(name = "carb_amount")
-    private Float carbAmount;
-
-    @Column(name = "fat_amount")
-    private Float fatAmount;
 
     @Column(name = "isActive", nullable = false)
     private Boolean isActive;

@@ -10,13 +10,22 @@ import javax.persistence.*;
 public class CoachProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coach_id")
     private Long coachID;
+
+    @Column(name = "coach_name")
+    private String name;
 
     @Column(name = "introduction")
     private String introduction;
 
     @Column(name = "contact")
     private String contact;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
 }

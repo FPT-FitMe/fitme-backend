@@ -1,11 +1,13 @@
 package com.fpt.fitme.service;
 
-import com.fpt.fitme.dto.Meal.DisableMealDTO;
-import com.fpt.fitme.dto.Meal.MealDTO;
+import com.fpt.fitme.dto.meal.DisableMealDTO;
+import com.fpt.fitme.dto.meal.MealDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.tag.Tag;
+import com.fpt.fitme.entity.workout.CoachProfile;
 import com.fpt.fitme.repository.AppUserRepository;
+import com.fpt.fitme.repository.CoachProfileRepository;
 import com.fpt.fitme.repository.MealRepository;
 import com.fpt.fitme.repository.TagRepository;
 import com.fpt.fitme.util.JsonPatcherUtil;
@@ -23,6 +25,9 @@ public class MealService {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private CoachProfileRepository coachProfileRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -50,8 +55,10 @@ public class MealService {
 
     public MealDTO createMeal(Meal meal) throws Exception {
         Optional<AppUser> creator = appUserRepository.findById(meal.getCreator().getUserID());
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(meal.getCoachProfile().getCoachID());
 
         if (!creator.isPresent()) throw new Exception("creatorID not found!");
+        if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : meal.getTags()) {
@@ -60,6 +67,8 @@ public class MealService {
                 tags.add(tagToAdd.get());
             }
         }
+
+        meal.setCoachProfile(coachProfile.get());
         meal.setCreator(creator.get());
         meal.setTags(tags);
         meal.setIsActive(true);

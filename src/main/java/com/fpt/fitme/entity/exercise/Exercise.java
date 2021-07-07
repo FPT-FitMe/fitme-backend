@@ -19,7 +19,7 @@ import java.util.*;
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_id")
     private Long exerciseID;
 
@@ -35,7 +35,7 @@ public class Exercise {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Tag> tags = new HashSet<>();
 
-    @Column(name = "name")
+    @Column(name = "exercise_name")
     private String name;
 
     @Column(name = "description")

@@ -1,6 +1,6 @@
 package com.fpt.fitme.controller;
 
-import com.fpt.fitme.dto.WorkoutExercise.WorkoutExerciseDTO;
+import com.fpt.fitme.dto.workoutexercise.WorkoutExerciseDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.service.WorkoutExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
