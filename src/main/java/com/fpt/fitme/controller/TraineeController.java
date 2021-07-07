@@ -5,9 +5,12 @@ import com.fpt.fitme.dto.log.MealLogDTO;
 import com.fpt.fitme.dto.log.WeightLogDTO;
 import com.fpt.fitme.dto.log.WorkoutLogDTO;
 import com.fpt.fitme.dto.plan.PlanDTO;
+import com.fpt.fitme.dto.plan.PlanMealDTO;
+import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.log.WeightLog;
 import com.fpt.fitme.entity.log.WorkoutLog;
+import com.fpt.fitme.model.PlanStatusRequest;
 import com.fpt.fitme.model.SurveyCompletionRequest;
 import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.service.FitmeUserDetailsService;
@@ -108,8 +111,31 @@ public class TraineeController {
     @GetMapping("/dailyPlan/{date}")
     public ResponseEntity<?> getDailyPlan(@PathVariable String date) {
         try {
-            PlanDTO planDTO = planService.getDailyPlan(date);
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            PlanDTO planDTO = planService.getDailyPlan(trainee, date);
             return new ResponseEntity<>(planDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updatePlanMeal/{planMealId}")
+    public ResponseEntity<?> updatePlanMeal(@PathVariable long planMealId, @RequestBody PlanStatusRequest request) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            PlanMealDTO updateMealPlan = planService.updateMealPlan(trainee, planMealId, request.getStatus());
+            return new ResponseEntity<>(updateMealPlan, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updatePlanWorkout/{planWorkoutId}")
+    public ResponseEntity<?> updatePlanWorkout(@PathVariable long planWorkoutId, @RequestBody PlanStatusRequest request) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            PlanWorkoutDTO updateWorkoutPlan = planService.updateWorkoutPlan(trainee, planWorkoutId, request.getStatus());
+            return new ResponseEntity<>(updateWorkoutPlan, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,6 +1,8 @@
 package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.plan.PlanDTO;
+import com.fpt.fitme.dto.plan.PlanMealDTO;
+import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.meal.Meal;
@@ -53,18 +55,46 @@ public class PlanService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public PlanDTO getDailyPlan(String dateString) throws Exception {
+    public PlanDTO getDailyPlan(AppUser trainee, String dateString) throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = simpleDateFormat.parse(dateString);
-        Plan plan = planRepository.getPlanByDate(date);
+        Target target = targetRepository.getTargetByTrainee(trainee);
+        Plan plan = planRepository.getPlanByDateAndTarget(date, target);
         if (plan == null) {
             throw new NotFoundException("No plan found at date: " + dateString);
         }
-        Optional<Plan> finalPlan = planRepository.findById(plan.getPlanID());
-        if (finalPlan.isPresent()) {
-            plan = finalPlan.get();
-        }
         return modelMapper.map(plan, PlanDTO.class);
+    }
+
+    public PlanMealDTO updateMealPlan(AppUser trainee, long planMealId, String status) throws Exception {
+        Optional<PlanMeal> optionalPlanMeal = planMealRepository.findById(planMealId);
+        Plan toDayPlan = getToDayPlan(trainee);
+
+        if (optionalPlanMeal.isPresent()) {
+            PlanMeal planMealToSave = optionalPlanMeal.get();
+            if (!toDayPlan.getPlanMeals().contains(planMealToSave)) {
+                throw new Exception("Cannot not update a plan that is not today");
+            }
+            planMealToSave.setStatus(status);
+            planMealRepository.save(planMealToSave);
+            return modelMapper.map(planMealToSave, PlanMealDTO.class);
+        }
+        throw new NotFoundException("No meal plan found");
+    }
+
+    public PlanWorkoutDTO updateWorkoutPlan(AppUser trainee, long workoutPlanId, String status) throws Exception {
+        Optional<PlanWorkout> optionalPlanWorkout = planWorkoutRepository.findById(workoutPlanId);
+        Plan toDayPlan = getToDayPlan(trainee);
+        if (optionalPlanWorkout.isPresent()) {
+            PlanWorkout planWorkoutToSave = optionalPlanWorkout.get();
+            if (!toDayPlan.getPlanWorkouts().contains(planWorkoutToSave)) {
+                throw new Exception("Cannot not update a plan that is not today");
+            }
+            planWorkoutToSave.setStatus(status);
+            planWorkoutRepository.save(planWorkoutToSave);
+            return modelMapper.map(planWorkoutToSave, PlanWorkoutDTO.class);
+        }
+        throw new NotFoundException("No workout plan found");
     }
 
     public void buildPlan(AppUser trainee, float currentWeight, float targetWeight, int durationInDays) throws Exception {
@@ -254,4 +284,16 @@ public class PlanService {
         planMealRepository.save(planMeal);
     }
 
+    private Plan getToDayPlan(AppUser trainee) throws Exception {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date now = new Date();
+        String dateOnly = simpleDateFormat.format(now);
+        Date date = simpleDateFormat.parse(dateOnly);
+        Target target = targetRepository.getTargetByTrainee(trainee);
+        Plan plan = planRepository.getPlanByDateAndTarget(date, target);
+        if (plan == null) {
+            throw new NotFoundException("No plan found today: ");
+        }
+        return plan;
+    }
 }
