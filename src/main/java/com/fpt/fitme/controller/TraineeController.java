@@ -127,6 +127,23 @@ public class TraineeController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @GetMapping("favorite/{type}")
+    public ResponseEntity<?> getAllFavorite(@PathVariable String type) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            if (type.equals("meal")) {
+                return new ResponseEntity<>(traineeService.getAllFavoriteMeal(trainee), HttpStatus.OK);
+            } else if (type.equals("workout")) {
+                return new ResponseEntity<>(traineeService.getAllFavoriteWorkout(trainee), HttpStatus.OK);
+            } else if (type.equals("all")) {
+                return new ResponseEntity<>(traineeService.getAllFavorite(trainee), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @PostMapping("/completeSurvey")
     public ResponseEntity<?> updateAppUserOncompleteSurvey(@RequestBody SurveyCompletionRequest request) {
         try {

@@ -1,5 +1,8 @@
 package com.fpt.fitme.service;
 
+import com.fpt.fitme.dto.favorite.AllFavoriteDTO;
+import com.fpt.fitme.dto.favorite.MealFavoriteDTO;
+import com.fpt.fitme.dto.favorite.WorkoutFavoriteDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
@@ -7,6 +10,7 @@ import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.repository.MealRepository;
 import com.fpt.fitme.repository.WorkoutRepository;
 import javassist.NotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +28,21 @@ public class TraineeService {
 
     @Autowired
     private WorkoutRepository workoutRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public MealFavoriteDTO getAllFavoriteMeal(AppUser trainee) throws Exception {
+        return modelMapper.map(trainee, MealFavoriteDTO.class);
+    }
+
+    public WorkoutFavoriteDTO getAllFavoriteWorkout(AppUser trainee) throws Exception {
+        return modelMapper.map(trainee, WorkoutFavoriteDTO.class);
+    }
+
+    public AllFavoriteDTO getAllFavorite(AppUser trainee) throws Exception {
+        return modelMapper.map(trainee, AllFavoriteDTO.class);
+    }
 
     public void favoriteWorkout(AppUser trainee, Long workoutId) throws Exception {
         Set<Workout> traineeFavoriteWorkouts = trainee.getTraineeFavoriteWorkouts();

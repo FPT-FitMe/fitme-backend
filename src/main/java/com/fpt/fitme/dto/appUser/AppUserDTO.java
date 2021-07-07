@@ -16,6 +16,7 @@ public class AppUserDTO {
     private String phone;
     private Integer age;
     private Integer gender;
+    private RoleDTO role;
     private Set<WorkoutDTO> traineeFavoriteWorkouts;
     private Set<MealDTO> traineeFavoriteMeals;
     private Float height;
