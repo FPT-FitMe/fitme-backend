@@ -118,6 +118,32 @@ VALUES (10, 'Khởi động', 'exercise',true),
 select setval('tag_tag_id_seq', 14);
 -- alter sequence tag_tag_id_seq restart with 15;
 
+-- theo buoi
+INSERT INTO meal_tag (meal_id, tag_id)
+VALUES (11, 4),
+       (12, 7),
+       (13, 5),
+       (14, 7),
+       (15, 7),
+       (16, 7),
+       (17, 4),
+       (17, 5),
+       (18, 4),
+       (19, 5),
+       (20, 7);
+
+-- theo diet type: cai nay set cho nguoi an chay het
+INSERT INTO meal_tag (meal_id, tag_id)
+VALUES (11, 1),
+       (12, 1),
+       (13, 1),
+       (14, 1),
+       (16, 1),
+       (17, 1),
+       (18, 1),
+       (19, 1),
+       (20, 1);
+
 INSERT INTO public.workout (workout_id, created_date, description, estimated_calories, estimated_duration, image_url,
                             is_active, is_premium, last_modified_date, "level", workout_name, coach_profile_coach_id,
                             creator_user_id)
