@@ -40,7 +40,7 @@ public class PostService {
         return result;
     }
 
-    public List<PostDTO> getListPostByCoach(long coachID) throws Exception{
+    public List<PostDTO> getListPostByCoach(long coachID) throws Exception {
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(coachID);
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
@@ -62,7 +62,7 @@ public class PostService {
     }
 
     public PostDTO createPost(Post post) throws Exception {
-        AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
+        AppUser appUser = fitmeUserDetailsService.getUserByAuthorization();
 
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(post.getCoachProfile().getCoachID());
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
@@ -108,6 +108,7 @@ public class PostService {
         postToUpdate.setImageUrl(post.getImageUrl());
         postToUpdate.setContentHeader(post.getContentHeader());
         postToUpdate.setContentBody(post.getContentBody());
+        postToUpdate.setCoachProfile(post.getCoachProfile());
         postRepository.save(postToUpdate);
 
         return modelMapper.map(postToUpdate, PostDTO.class);
