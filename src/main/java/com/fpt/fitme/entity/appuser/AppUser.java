@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "app_user")
 @Data
-@JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 public class AppUser {
 
     @Id
@@ -84,5 +86,16 @@ public class AppUser {
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
+
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
 
 }

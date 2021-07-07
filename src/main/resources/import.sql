@@ -7,15 +7,15 @@ values (0,'Bob','coach_profile@gmail.com','Hi im Bob','coach_image.jpg',true);
 
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
                       gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity,
-                      role_role_id)
+                      role_role_id, is_active, created_date, last_modified_date)
 values (0, 18, 2, 'conmeo1@gmail.com', 2, 'firstNameMember1', 1, 182, true, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000001', 'memberImageLink1', 0.7, 0),
+        '00000001', 'memberImageLink1', 0.7, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (1, 18, 2, 'conmeo2@gmail.com', 2, 'firstNameMember1', 1, 182, false, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000003', 'memberImageLink2', 1, 0),
+        '00000003', 'memberImageLink2', 1, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (2, 40, null, 'admin@fitme.vn', null, 'firstNameAdmin1', 1, null, null, 'lastNameAdmin1',
-        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1);
+        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988');
 
 INSERT INTO exercise (exercise_id, base_duration, base_kcal, base_rep_per_round, created_date, description, image_url,
                       is_active, last_modified_date, name, video_url, creator_user_id)
