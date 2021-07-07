@@ -5,7 +5,6 @@ import com.fpt.fitme.dto.post.PostDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.post.Post;
 import com.fpt.fitme.entity.workout.CoachProfile;
-import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.repository.CoachProfileRepository;
 import com.fpt.fitme.repository.PostRepository;
 import com.fpt.fitme.util.JsonPatcherUtil;
@@ -22,7 +21,7 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private FitmeUserDetailsService fitmeUserDetailsService;
 
     @Autowired
     private CoachProfileRepository coachProfileRepository;
@@ -41,7 +40,7 @@ public class PostService {
         return result;
     }
 
-    public List<PostDTO> getListPostByCoach(long coachID) throws Exception{
+    public List<PostDTO> getListPostByCoach(long coachID) throws Exception {
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(coachID);
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
@@ -63,14 +62,13 @@ public class PostService {
     }
 
     public PostDTO createPost(Post post) throws Exception {
-        Optional<AppUser> creator = appUserRepository.findById(post.getCreator().getUserID());
-        if (!creator.isPresent()) throw new Exception("creatorID not found!");
+        AppUser appUser = fitmeUserDetailsService.getUserByAuthorization();
 
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(post.getCoachProfile().getCoachID());
         if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
 
         post.setCoachProfile(coachProfile.get());
-        post.setCreator(creator.get());
+        post.setCreator(appUser);
         post.setIsActive(true);
 
         Post savedPost = postRepository.save(post);
@@ -106,11 +104,11 @@ public class PostService {
         if (!(optionalPost.isPresent() && optionalPost.get().getIsActive())) throw new Exception("postID not found!");
         Post postToUpdate = optionalPost.get();
         postToUpdate.setName(post.getName());
-        postToUpdate.setCreator(post.getCreator());
         postToUpdate.setReadingTime(post.getReadingTime());
         postToUpdate.setImageUrl(post.getImageUrl());
         postToUpdate.setContentHeader(post.getContentHeader());
         postToUpdate.setContentBody(post.getContentBody());
+        postToUpdate.setCoachProfile(post.getCoachProfile());
         postRepository.save(postToUpdate);
 
         return modelMapper.map(postToUpdate, PostDTO.class);
