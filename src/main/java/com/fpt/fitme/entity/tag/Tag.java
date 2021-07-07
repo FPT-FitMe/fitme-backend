@@ -18,7 +18,6 @@ public class Tag {
     private String name;
 
     @Column(name = "tag_type")
-
     private String type; //2 type "meal" and "exercise"
 
     @Column(name = "isActive", nullable = false)

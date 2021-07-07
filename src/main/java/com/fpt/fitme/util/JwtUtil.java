@@ -57,10 +57,10 @@ public class JwtUtil {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
-        if (roles.contains(new SimpleGrantedAuthority("Manager"))) {
+        if (roles.contains(new SimpleGrantedAuthority("ROLE_MANAGER"))) {
             claims.put("isManager", true);
         }
-        if (roles.contains(new SimpleGrantedAuthority("Trainee"))) {
+        if (roles.contains(new SimpleGrantedAuthority("ROLE_MEMBER"))) {
             claims.put("isMember", true);
         }
         return createToken(claims, userDetails.getUsername());
@@ -103,10 +103,10 @@ public class JwtUtil {
         Boolean isManager = claims.get("isManager", Boolean.class);
         Boolean isMember = claims.get("isMember", Boolean.class);
         if (isManager != null && isManager) {
-            roles = Collections.singletonList(new SimpleGrantedAuthority("Manager"));
+            roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MANAGER"));
         }
         if (isMember != null && isMember) {
-            roles = Collections.singletonList(new SimpleGrantedAuthority("Trainee"));
+            roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MEMBER"));
         }
         return roles;
     }

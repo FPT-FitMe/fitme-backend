@@ -1,13 +1,17 @@
 package com.fpt.fitme.entity.plan;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fpt.fitme.entity.meal.Meal;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "plan_meal")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@ToString(exclude = {"plan"})
 public class PlanMeal {
 
     @Id
@@ -17,15 +21,13 @@ public class PlanMeal {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "plan_id", nullable = false)
+    @JsonBackReference
     private Plan plan;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "meal_id", nullable = false)
     private Meal meal;
 
-    @Column(name = "has_skipped")
-    private Boolean hasSkipped;
-
-    @Column(name = "is_finished")
-    private Boolean isFinished;
+    @Column(name = "status")
+    private String status;
 }

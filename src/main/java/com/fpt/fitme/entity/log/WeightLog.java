@@ -23,5 +23,5 @@ public class WeightLog {
     private Date createdAt;
 
     @Column(name = "value")
-    private float value;
+    private Float value;
 }

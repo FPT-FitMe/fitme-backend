@@ -1,33 +1,28 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.dto.appUser.AppUserDTO;
+import com.fpt.fitme.dto.appUser.DisabledAppUserDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
-import com.fpt.fitme.repository.AppUserRepository;
-import com.fpt.fitme.util.JsonPatcherUtil;
+import com.fpt.fitme.service.AppUserService;
 import com.github.fge.jsonpatch.JsonPatch;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    AppUserRepository appUserRepository;
-
-    @Autowired
-    private PasswordEncoder bcryptEncoder;
+    private AppUserService appUserService;
 
     @GetMapping("")
-    public ResponseEntity<List<AppUser>> getAllAppUser() {
-        List<AppUser> result = new ArrayList<>();
-        appUserRepository.findAll().forEach(result::add);
+    public ResponseEntity<List<AppUserDTO>> getAllAppUser() {
+        List<AppUserDTO> result = appUserService.getAllUsers();
         if (!result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
@@ -36,76 +31,37 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getAppUserByID(@PathVariable("id") long id) {
-        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+    public ResponseEntity<AppUserDTO> getAppUserByID(@PathVariable("id") long id) {
+        AppUserDTO appUserDTO = appUserService.getAppUserById(id);
 
-        if (appUserOptional.isPresent()) {
-            return new ResponseEntity<>(appUserOptional.get(), HttpStatus.OK);
+        if (appUserDTO != null) {
+            return new ResponseEntity<>(appUserDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("")
-    public ResponseEntity addUser(@RequestBody AppUser appUser) {
+    @PatchMapping("/disable/{id}")
+    public ResponseEntity disableUser(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
         try {
-            //lay password ra encrypt
-            AppUser savedAppUser = appUserRepository.save(appUser);
-            return new ResponseEntity(savedAppUser, HttpStatus.CREATED);
+            DisabledAppUserDTO disableUser = appUserService.disabledAppUser(id, patch);
+            return new ResponseEntity(disableUser, HttpStatus.OK);
         } catch (Exception e) {
-            if (e.getMessage().contains("duplicate")) {
-                return new ResponseEntity("Username is duplicated", HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity patchUser(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
-        try {
-            Optional<AppUser> currentAppUser = appUserRepository.findById(id);
-
-            if (currentAppUser.isPresent()) {
-                AppUser appUserPatched = (AppUser) JsonPatcherUtil.applyPatch(patch, currentAppUser.get());
-                appUserRepository.save(appUserPatched);
-                return ResponseEntity.ok(appUserPatched);
-            }  else {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateUser(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
-        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
-
-        if (optionalAppUser.isPresent()) {
-            AppUser appUserToUpdate = optionalAppUser.get();
-            appUserToUpdate.setFirstName(appUser.getFirstName());
-            appUserToUpdate.setLastName(appUser.getLastName());
-            appUserToUpdate.setPassword(bcryptEncoder.encode(appUser.getPassword()));
-            appUserToUpdate.setEmail(appUser.getEmail());
-            appUserToUpdate.setPhone(appUser.getPhone());
-            appUserToUpdate.setAge(appUser.getAge());
-            appUserToUpdate.setRole(appUser.getRole());
-            appUserToUpdate.setGender(appUser.getGender());
-            appUserToUpdate.setTraineeFavoriteWorkouts(appUser.getTraineeFavoriteWorkouts());
-            appUserToUpdate.setTraineeFavoriteMeals(appUser.getTraineeFavoriteMeals());
-            appUserToUpdate.setHeight(appUser.getHeight());
-            appUserToUpdate.setProfileImageUrl(appUser.getProfileImageUrl());
-            appUserToUpdate.setDietPreferenceType(appUser.getDietPreferenceType());
-            appUserToUpdate.setExerciseFrequencyType(appUser.getExerciseFrequencyType());
-            appUserToUpdate.setWorkoutIntensity(appUser.getWorkoutIntensity());
-            return new ResponseEntity(appUserRepository.save(appUserToUpdate), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            AppUserDTO appUserDTO = appUserService.updateUser(id, appUser);
+            if (appUserDTO != null) {
+                return new ResponseEntity(appUserDTO, HttpStatus.OK);
+            } else {
+                throw new NotFoundException("No such user found!");
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @PatchMapping("/completeSurvey?{id}")
-    public void updateUserProfileOnSurvey(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
-
     }
 }

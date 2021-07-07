@@ -11,15 +11,15 @@ select setval('coach_profile_coach_id_seq', 0);
 
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
                       gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity,
-                      role_role_id)
+                      role_role_id, is_active, created_date, last_modified_date)
 values (0, 18, 2, 'conmeo1@gmail.com', 2, 'firstNameMember1', 1, 182, true, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000001', 'memberImageLink1', 0.7, 0),
+        '00000001', 'memberImageLink1', 0.7, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (1, 18, 2, 'conmeo2@gmail.com', 2, 'firstNameMember1', 1, 182, false, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000003', 'memberImageLink2', 1, 0),
+        '00000003', 'memberImageLink2', 1, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (2, 40, null, 'admin@fitme.vn', null, 'firstNameAdmin1', 1, null, null, 'lastNameAdmin1',
-        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1);
+        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988');
 
 select setval('app_user_user_id_seq', 2);
 -- alter sequence app_user_user_id_seq restart with 3;
@@ -120,29 +120,29 @@ select setval('tag_tag_id_seq', 14);
 
 -- theo buoi
 INSERT INTO meal_tag (meal_id, tag_id)
-VALUES (11, 4),
-       (12, 7),
-       (13, 5),
-       (14, 7),
-       (15, 7),
-       (16, 7),
-       (17, 4),
-       (17, 5),
-       (18, 4),
-       (19, 5),
-       (20, 7);
+VALUES (1, 4),
+       (2, 7),
+       (3, 5),
+       (4, 7),
+       (5, 7),
+       (6, 7),
+       (7, 4),
+       (7, 5),
+       (8, 4),
+       (9, 5),
+       (10, 7);
 
 -- theo diet type: cai nay set cho nguoi an chay het
 INSERT INTO meal_tag (meal_id, tag_id)
-VALUES (11, 1),
-       (12, 1),
-       (13, 1),
-       (14, 1),
-       (16, 1),
-       (17, 1),
-       (18, 1),
-       (19, 1),
-       (20, 1);
+VALUES (1, 1),
+       (2, 1),
+       (3, 1),
+       (4, 1),
+       (5, 1),
+       (6, 1),
+       (8, 1),
+       (9, 1),
+       (10, 1);
 
 INSERT INTO public.workout (workout_id, created_date, description, estimated_calories, estimated_duration, image_url,
                             is_active, is_premium, last_modified_date, "level", workout_name, coach_profile_coach_id,

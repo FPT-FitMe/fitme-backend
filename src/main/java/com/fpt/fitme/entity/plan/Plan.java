@@ -1,5 +1,6 @@
 package com.fpt.fitme.entity.plan;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fpt.fitme.entity.target.Target;
 import lombok.Data;
 
@@ -21,9 +22,11 @@ public class Plan {
     private Target target;
 
     @OneToMany(mappedBy = "plan", orphanRemoval = true)
+    @JsonManagedReference
     private Set<PlanMeal> planMeals;
 
     @OneToMany(mappedBy = "plan", orphanRemoval = true)
+    @JsonManagedReference
     private Set<PlanWorkout> planWorkouts;
 
     @Column(name = "date")
