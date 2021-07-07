@@ -104,11 +104,11 @@ public class WorkoutDTO {
         this.level = level;
     }
 
-    public Boolean getPremium() {
+    public Boolean getIsPremium() {
         return isPremium;
     }
 
-    public void setPremium(Boolean premium) {
+    public void setIsPremium(Boolean premium) {
         isPremium = premium;
     }
 
