@@ -1,11 +1,9 @@
 package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.appUser.AppUserDTO;
-import com.fpt.fitme.dto.appUser.DisabledAppUserDTO;
+import com.fpt.fitme.dto.appUser.AppUserStatusDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.repository.AppUserRepository;
-import com.fpt.fitme.util.JsonPatcherUtil;
-import com.github.fge.jsonpatch.JsonPatch;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,16 +44,26 @@ public class AppUserService {
         return null;
     }
 
-    public DisabledAppUserDTO disabledAppUser(Long id, JsonPatch patch) throws Exception {
+    public AppUserStatusDTO changeAppUserStatus(Long id, boolean isActive) throws Exception {
         Optional<AppUser> currentAppUser = appUserRepository.findById(id);
 
-        if (!(currentAppUser.isPresent() && currentAppUser.get().getIsActive()))
-            throw new Exception("No such app user found");
 
-        AppUser appUserPatched = (AppUser) JsonPatcherUtil.applyPatch(patch, currentAppUser.get());
-        appUserRepository.save(appUserPatched);
-
-        return modelMapper.map(appUserPatched, DisabledAppUserDTO.class);
+        AppUser appUserPatched = null;
+        if (currentAppUser.isPresent()) {
+            appUserPatched = currentAppUser.get();
+            if (isActive && !appUserPatched.getIsActive()) {
+                appUserPatched.setIsActive(true);
+                appUserRepository.save(appUserPatched);
+            } else {
+                if (appUserPatched.getIsActive()) {
+                    appUserPatched.setIsActive(isActive);
+                    appUserRepository.save(appUserPatched);
+                } else {
+                    throw new Exception("No such app user found");
+                }
+            }
+        }
+        return modelMapper.map(appUserPatched, AppUserStatusDTO.class);
     }
 
     public AppUserDTO updateUser(Long id, AppUser appUser) {

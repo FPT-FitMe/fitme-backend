@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class DisabledAppUserDTO {
+public class AppUserStatusDTO {
 
     private Long userID;
     private String firstName;
