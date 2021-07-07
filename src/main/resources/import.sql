@@ -11,15 +11,15 @@ select setval('coach_profile_coach_id_seq', 0);
 
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
                       gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity,
-                      role_role_id)
+                      role_role_id, is_active, created_date, last_modified_date)
 values (0, 18, 2, 'conmeo1@gmail.com', 2, 'firstNameMember1', 1, 182, true, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000001', 'memberImageLink1', 0.7, 0),
+        '00000001', 'memberImageLink1', 0.7, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (1, 18, 2, 'conmeo2@gmail.com', 2, 'firstNameMember1', 1, 182, false, 'lastNameMember1',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu',
-        '00000003', 'memberImageLink2', 1, 0),
+        '00000003', 'memberImageLink2', 1, 0, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988'),
        (2, 40, null, 'admin@fitme.vn', null, 'firstNameAdmin1', 1, null, null, 'lastNameAdmin1',
-        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1);
+        '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988');
 
 select setval('app_user_user_id_seq', 2);
 -- alter sequence app_user_user_id_seq restart with 3;

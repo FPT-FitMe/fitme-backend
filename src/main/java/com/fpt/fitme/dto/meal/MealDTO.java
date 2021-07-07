@@ -1,6 +1,6 @@
 package com.fpt.fitme.dto.meal;
 
-import com.fpt.fitme.dto.AppUserDTO;
+import com.fpt.fitme.dto.appUser.AppUserDTO;
 import com.fpt.fitme.dto.coachprofile.CoachProfileDTO;
 import com.fpt.fitme.dto.tag.TagDTO;
 
