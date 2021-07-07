@@ -17,24 +17,24 @@ public class WorkoutLog {
     @Column(name = "workout_log_id")
     private Long workoutLogID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppUser trainee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Workout workout;
 
     @Column(name = "duration")
-    private int duration;
+    private Integer duration;
 
     @Column(name = "totalCalories")
-    private int totalCalories;
+    private Integer totalCalories;
 
     @Column(name = "createdAt")
     private Date createdAt;
 
     @Column(name = "difficult_feedback")
-    private int difficultFeedback;
+    private Integer difficultFeedback;
 
     @Column(name = "experience_feedback")
-    private int experienceFeedback;
+    private Integer experienceFeedback;
 }
