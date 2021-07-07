@@ -1,17 +1,20 @@
 package com.fpt.fitme.controller;
 
+import com.fpt.fitme.dto.appUser.AppUserDTO;
+import com.fpt.fitme.dto.log.MealLogDTO;
+import com.fpt.fitme.dto.log.WeightLogDTO;
+import com.fpt.fitme.dto.log.WorkoutLogDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.log.WeightLog;
+import com.fpt.fitme.entity.log.WorkoutLog;
 import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.service.FitmeUserDetailsService;
+import com.fpt.fitme.service.LogService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/trainee")
@@ -24,29 +27,59 @@ public class TraineeController {
     private FitmeUserDetailsService fitmeUserDetailsService;
 
     @Autowired
-    private Environment env;
+    private LogService logService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/buySubscription")
-    public ResponseEntity buySubscription() {
-        String email = null;
+    public ResponseEntity<?> buySubscription() {
         try {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                email = ((UserDetails)principal).getUsername();
-                AppUser appUser = appUserRepository.getAppUserByEmail(email);
-                if (appUser.getIsPremium()) {
-                    return new ResponseEntity("User already subscribed", HttpStatus.BAD_REQUEST);
-                }
-                appUser.setIsPremium(true);
-                appUserRepository.save(appUser);
-            } else {
-                return new ResponseEntity("Invalid credentials", HttpStatus.BAD_REQUEST);
+            AppUser appUser = fitmeUserDetailsService.getUserByAuthorization();
+            if (appUser.getIsPremium()) {
+                return new ResponseEntity<>("User already subscribed", HttpStatus.BAD_REQUEST);
             }
+            appUser.setIsPremium(true);
+            appUserRepository.save(appUser);
+            return new ResponseEntity<>(modelMapper.map(appUser, AppUserDTO.class), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("Error ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(fitmeUserDetailsService.getUserInfo(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/logMeal/{mealId}")
+    public ResponseEntity<?> logMeal(@PathVariable long mealId) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            MealLogDTO mealLogDTO = logService.createMealLog(mealId, trainee);
+            return new ResponseEntity<>(mealLogDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/logWorkout/{workoutId}")
+    public ResponseEntity<?> logWorkout(@PathVariable long workoutId, @RequestBody WorkoutLog workoutLog) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            WorkoutLogDTO workoutLogDTO = logService.createWorkoutLog(workoutId, trainee, workoutLog);
+            return new ResponseEntity<>(workoutLogDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/logWeight")
+    public ResponseEntity<?> logWeight(@RequestBody WeightLog weightLog) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            WeightLogDTO weightLogDTO = logService.createWeightLog(weightLog, trainee);
+            return new ResponseEntity<>(weightLogDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
+
+

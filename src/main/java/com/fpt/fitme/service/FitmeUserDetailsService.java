@@ -4,10 +4,12 @@ import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.model.FitMeUser;
 import com.fpt.fitme.repository.AppUserRepository;
 import com.fpt.fitme.repository.AppUserRoleRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -83,5 +85,25 @@ public class FitmeUserDetailsService implements UserDetailsService {
         appUser.setIsPremium(false);
 
         return appUserRepository.save(appUser);
+    }
+
+    public AppUser getUserByAuthorization() throws Exception {
+        String email;
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                email = ((UserDetails)principal).getUsername();
+                AppUser appUser = appUserRepository.getAppUserByEmail(email);
+                if (appUser == null) {
+                    throw new NotFoundException("No such user found");
+                }
+                return appUser;
+            } else {
+                throw new UsernameNotFoundException("Cannot get user from current session");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
