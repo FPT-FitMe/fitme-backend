@@ -2,7 +2,7 @@ package com.fpt.fitme.dto.exercise;
 
 
 import com.fpt.fitme.dto.appUser.AppUserDTO;
-import com.fpt.fitme.dto.TagDTO;
+import com.fpt.fitme.dto.tag.TagDTO;
 
 
 import java.util.Date;

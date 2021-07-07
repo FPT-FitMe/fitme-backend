@@ -17,10 +17,10 @@ public class WorkoutLog {
     @Column(name = "workout_log_id")
     private Long workoutLogID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppUser trainee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Workout workout;
 
     @Column(name = "duration")
