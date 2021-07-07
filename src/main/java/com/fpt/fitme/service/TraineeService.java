@@ -36,11 +36,33 @@ public class TraineeService {
         }
     }
 
+    public void unFavoriteWorkout(AppUser trainee, Long workoutId) throws Exception {
+        Set<Workout> traineeFavoriteWorkouts = trainee.getTraineeFavoriteWorkouts();
+        Optional<Workout> workout = workoutRepository.findById(workoutId);
+        if (workout.isPresent() && workout.get().getIsActive()) {
+            traineeFavoriteWorkouts.remove(workout.get());
+            appUserRepository.save(trainee);
+        } else {
+            throw new NotFoundException("Workout not found");
+        }
+    }
+
     public void favoriteMeal(AppUser trainee, Long mealId) throws Exception {
         Set<Meal> traineeFavoriteMeals = trainee.getTraineeFavoriteMeals();
         Optional<Meal> meal = mealRepository.findById(mealId);
         if (meal.isPresent() && meal.get().getIsActive()) {
             traineeFavoriteMeals.add(meal.get());
+            appUserRepository.save(trainee);
+        } else {
+            throw new NotFoundException("Meal not found");
+        }
+    }
+
+    public void unFavoriteMeal(AppUser trainee, Long mealId) throws Exception {
+        Set<Meal> traineeFavoriteMeals = trainee.getTraineeFavoriteMeals();
+        Optional<Meal> meal = mealRepository.findById(mealId);
+        if (meal.isPresent() && meal.get().getIsActive()) {
+            traineeFavoriteMeals.remove(meal.get());
             appUserRepository.save(trainee);
         } else {
             throw new NotFoundException("Meal not found");

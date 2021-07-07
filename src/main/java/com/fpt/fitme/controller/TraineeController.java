@@ -110,6 +110,23 @@ public class TraineeController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("unFavorite/{type}/{id}")
+    public ResponseEntity<?> unFavoriteItem(@PathVariable String type, @PathVariable long id) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            if (type.equals("meal")) {
+                traineeService.unFavoriteMeal(trainee, id);
+                return new ResponseEntity<>("Succeed", HttpStatus.OK);
+            } else if (type.equals("workout")) {
+                traineeService.unFavoriteWorkout(trainee, id);
+                return new ResponseEntity<>("Succeed", HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @PostMapping("/completeSurvey")
     public ResponseEntity<?> updateAppUserOncompleteSurvey(@RequestBody SurveyCompletionRequest request) {
         try {
