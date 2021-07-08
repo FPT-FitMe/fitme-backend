@@ -83,17 +83,8 @@ public class WorkoutService {
 
         if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
-        Set<Tag> tags = new HashSet<>();
-        for (Tag tag : workout.getTags()) {
-            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
-            if (tagToAdd.isPresent()) {
-                tags.add(tagToAdd.get());
-            }
-        }
-
         workout.setCoachProfile(coachProfile.get());
         workout.setCreator(appUser);
-        workout.setTags(tags);
         workout.setEstimatedCalories(0);
         workout.setEstimatedDuration(0);
         workout.setIsActive(true);
@@ -130,19 +121,11 @@ public class WorkoutService {
 
         if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
-        Set<Tag> tags = new HashSet<>();
-        for (Tag tag : workout.getTags()) {
-            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
-            if (!(tagToAdd.isPresent() && tagToAdd.get().getIsActive())) throw new Exception("tagID not found!");
-            tags.add(tagToAdd.get());
-        }
-
         if (optionalWorkout.isPresent() && optionalWorkout.get().getIsActive()) {
             Workout workoutToUpdate = optionalWorkout.get();
             workoutToUpdate.setName(workout.getName());
             workoutToUpdate.setCoachProfile(coachProfile.get());
             workoutToUpdate.setDescription(workout.getDescription());
-            workoutToUpdate.setTags(tags);
             workoutToUpdate.setLevel(workout.getLevel());
             workoutToUpdate.setIsPremium(workout.getIsPremium());
             workoutToUpdate.setImageUrl(workout.getImageUrl());

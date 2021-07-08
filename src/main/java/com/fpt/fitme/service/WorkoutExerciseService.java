@@ -2,9 +2,11 @@ package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.workoutexercise.WorkoutExerciseDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
+import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.workout.Workout;
 import com.fpt.fitme.entity.workout.WorkoutExercise;
 import com.fpt.fitme.repository.ExerciseRepository;
+import com.fpt.fitme.repository.TagRepository;
 import com.fpt.fitme.repository.WorkoutExerciseRepository;
 import com.fpt.fitme.repository.WorkoutRepository;
 import org.hibernate.collection.spi.PersistentCollection;
@@ -12,9 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,9 @@ public class WorkoutExerciseService {
     private ExerciseRepository exerciseRepository;
 
     @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     //return list Exercise trong workoutId da dua
@@ -43,7 +46,6 @@ public class WorkoutExerciseService {
         if (workoutExerciseRepository.findMaxExerciseOrder(workoutOptional.get()) != null) {
             exerciseOrder = workoutExerciseRepository.findMaxExerciseOrder(workoutOptional.get());
         }
-
         for (Exercise exercise : exercises) {
             Optional<Exercise> exerciseOptional = exerciseRepository.findById(exercise.getExerciseID());
             if (!(exerciseOptional.isPresent() && exerciseOptional.get().getIsActive()))
@@ -58,7 +60,6 @@ public class WorkoutExerciseService {
         if (!listAdd.isEmpty()) {
             workoutExerciseRepository.saveAll(listAdd);
             updateAllByWorkoutID(workoutOptional.get().getWorkoutID());
-
             return getListExerciseByOrder(workoutID);
         }
         return null;
@@ -82,9 +83,7 @@ public class WorkoutExerciseService {
         workoutExerciseRepository.deleteById(list.get(0).getWorkoutExerciseID());
 
         //remove xong thi update lai workout baseDuration/baseKcal
-        int totalDuration = workoutOptional.get().getEstimatedDuration() - exerciseOptional.get().getBaseDuration() - 15;
-        int totalKcal = workoutOptional.get().getEstimatedCalories() - exerciseOptional.get().getBaseKcal();
-        workoutRepository.updateDurationCaloriesWorkout(workoutID, totalKcal, totalDuration);
+        updateAllByWorkoutID(workoutID);
 
         return true;
     }
@@ -95,10 +94,10 @@ public class WorkoutExerciseService {
         if (!(workoutOptional.isPresent() && workoutOptional.get().getIsActive()))
             throw new Exception("workoutID not found!");
 
-        modelMapper.getConfiguration()
-                .setPropertyCondition(context ->
-                        !(context.getSource() instanceof PersistentCollection)
-                );
+//        modelMapper.getConfiguration()
+//                .setPropertyCondition(context ->
+//                        !(context.getSource() instanceof PersistentCollection)
+//                );
 
         List<WorkoutExercise> result = workoutExerciseRepository.findByWorkoutIDOrderByExerciseOrderAsc(workoutOptional.get());
         return result.stream().map(workout_exercise -> modelMapper.map(workout_exercise, WorkoutExerciseDTO.class)).collect(Collectors.toList());
@@ -130,15 +129,18 @@ public class WorkoutExerciseService {
             throw new Exception("workoutID not found!");
 
         List<WorkoutExercise> list = workoutExerciseRepository.getWorkout_ExerciseByWorkoutID(workoutOptional.get());
-        if (list.isEmpty())
-            throw new Exception("Workout does not have any Exercise!");
         int totalDuration = -15;
         int totalKcal = 0;
+        Set<Tag>tags=new HashSet<>();
         for (WorkoutExercise we : list) {
             totalDuration+=we.getExerciseID().getBaseDuration()+15;
             totalKcal+=we.getExerciseID().getBaseKcal();
+            tags.addAll(we.getExerciseID().getTags());
         }
-        workoutRepository.updateDurationCaloriesWorkout(workoutID, totalKcal, totalDuration);
+        workoutOptional.get().setTags(tags);
+        workoutOptional.get().setEstimatedDuration(totalDuration);
+        workoutOptional.get().setEstimatedCalories(totalKcal);
+        workoutRepository.save(workoutOptional.get());
     }
 
     public void deleteAllByWorkoutID(long workoutID) throws Exception {
@@ -151,6 +153,7 @@ public class WorkoutExerciseService {
             throw new Exception("Workout does not have any Exercise!");
 
         workoutExerciseRepository.deleteAll(list);
+        workoutOptional.get().setTags(null);//setTag null -> workout empty
     }
 
     public List<WorkoutExerciseDTO> updateExerciseListByOrder(long workoutID, Exercise[] exercises) throws Exception{
