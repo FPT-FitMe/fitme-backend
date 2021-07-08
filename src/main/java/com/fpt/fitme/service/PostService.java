@@ -100,6 +100,9 @@ public class PostService {
 
     public PostDTO updatePost(Long id, Post post) throws Exception {
         Optional<Post> optionalPost = postRepository.findById(id);
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(post.getCoachProfile().getCoachID());
+
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
         if (!(optionalPost.isPresent() && optionalPost.get().getIsActive())) throw new Exception("postID not found!");
         Post postToUpdate = optionalPost.get();
@@ -108,7 +111,7 @@ public class PostService {
         postToUpdate.setImageUrl(post.getImageUrl());
         postToUpdate.setContentHeader(post.getContentHeader());
         postToUpdate.setContentBody(post.getContentBody());
-        postToUpdate.setCoachProfile(post.getCoachProfile());
+        postToUpdate.setCoachProfile(coachProfile.get());
         postRepository.save(postToUpdate);
 
         return modelMapper.map(postToUpdate, PostDTO.class);
