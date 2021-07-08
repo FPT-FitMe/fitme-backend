@@ -95,7 +95,6 @@ public class ExerciseController {
                 return new ResponseEntity(list, HttpStatus.OK);
             return new ResponseEntity("List Empty!",HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace();
             return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

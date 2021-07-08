@@ -144,7 +144,6 @@ public class ExerciseService {
 
     public ExerciseDTO updateExercise(Long id, Exercise exercise) throws Exception{
         Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
-
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : exercise.getTags()) {
             Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
@@ -171,7 +170,7 @@ public class ExerciseService {
                     workoutExerciseService.updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());
                 }
             }
-
+            System.out.println(exerciseToUpdate.getCreator());
             return modelMapper.map(exerciseToUpdate, ExerciseDTO.class);
         }
         return null;
