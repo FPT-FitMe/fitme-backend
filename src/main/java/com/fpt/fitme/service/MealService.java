@@ -45,6 +45,19 @@ public class MealService {
         return result;
     }
 
+    public List<MealDTO> getListMealByTagID(long tagID) throws Exception{
+        List<MealDTO> result = new ArrayList<>();
+        Optional<Tag> tag=tagRepository.findById(tagID);
+        if(!(tag.isPresent()&&tag.get().getIsActive())) throw new Exception("tagID not found!");
+        mealRepository.findMealsByTags(tag.get()).forEach(meal -> {
+            if (meal.getIsActive()) {
+                MealDTO dto = modelMapper.map(meal, MealDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
     public MealDTO getMealByID(long id) {
         Optional<Meal> mealOptional = mealRepository.findById(id);
         if (mealOptional.isPresent() && mealOptional.get().getIsActive())

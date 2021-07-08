@@ -21,15 +21,27 @@ public class WorkoutController {
     @Autowired
     private WorkoutService workoutService;
 
+
+
     @GetMapping("")
-    public ResponseEntity<List<WorkoutDTO>> getAllWorkout() {
-        List<WorkoutDTO> result = workoutService.getListWorkout();
+    public ResponseEntity<List<WorkoutDTO>> getAllWorkout(@RequestParam(required = false,name ="tagID")Long tagID) {
+        List<WorkoutDTO> result;
+        try {
+            if(tagID!=null){
+                result=workoutService.getListWorkoutByTagID(tagID);
+            }else{
+                result = workoutService.getListWorkout();
+            }
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         if (!result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("List Empty!", HttpStatus.NOT_FOUND);
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<WorkoutDTO> getWorkoutByID(@PathVariable("id") long id) {
