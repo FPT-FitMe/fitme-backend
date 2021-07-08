@@ -78,9 +78,13 @@ public class WorkoutController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateWorkout(@PathVariable("id") Long id, @RequestBody Workout workout) {
-        WorkoutDTO dto = workoutService.updateWorkout(id, workout);
-        if (dto != null) {
-            return new ResponseEntity(dto, HttpStatus.OK);
+        try {
+            WorkoutDTO dto = workoutService.updateWorkout(id, workout);
+            if (dto != null) {
+                return new ResponseEntity(dto, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(ID_NOTFOUND_ERROR, HttpStatus.BAD_REQUEST);
     }
