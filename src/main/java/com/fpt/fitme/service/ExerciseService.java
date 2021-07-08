@@ -102,12 +102,12 @@ public class ExerciseService {
 
         if (savedExercise != null) {
             long quantity = workoutExerciseRepository.countWorkout_ExerciseByWorkoutID(workout.get());
-            WorkoutExercise workout_exercise = new WorkoutExercise();
-            workout_exercise.setExerciseID(savedExercise);
-            workout_exercise.setWorkoutID(workout.get());
-            workout_exercise.setExerciseOrder(quantity + 1);
-            savedExercise.getWorkout_exercises().add(workout_exercise);
-            workoutExerciseRepository.save(workout_exercise);
+            WorkoutExercise workoutExercise = new WorkoutExercise();
+            workoutExercise.setExerciseID(savedExercise);
+            workoutExercise.setWorkoutID(workout.get());
+            workoutExercise.setExerciseOrder(quantity + 1);
+            savedExercise.getWorkoutExercises().add(workoutExercise);
+            workoutExerciseRepository.save(workoutExercise);
             return modelMapper.map(savedExercise, ExerciseDTO.class);
         }
         return null;

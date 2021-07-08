@@ -56,16 +56,16 @@ public class Workout {
     @Column(name = "level")
     private Integer level;
 
-    @Column(name = "isPremium", nullable = false)
+    @Column(name = "is_premium", nullable = false)
     private Boolean isPremium;
 
     @Column(name = "image_url", length = 150)
     private String imageUrl;
 
     @OneToMany(mappedBy = "workoutID")
-    private Set<WorkoutExercise> workout_exercises;
+    private Set<WorkoutExercise> workoutExercises;
 
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @CreatedDate

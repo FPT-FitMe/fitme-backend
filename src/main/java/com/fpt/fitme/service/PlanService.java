@@ -211,7 +211,7 @@ public class PlanService {
                         while (caloriesFromActivitiesPerDay - totalWorkoutCalories > 150 && isHaving(workoutDays, dayIndex)) {
                             Workout workoutToAdd = workoutsAll.get(workoutIndex);
                             workouts.add(workoutToAdd);
-                            for (WorkoutExercise workoutExercise : workoutToAdd.getWorkout_exercises()) {
+                            for (WorkoutExercise workoutExercise : workoutToAdd.getWorkoutExercises()) {
                                 Exercise exercise = workoutExercise.getExerciseID();
                                 totalWorkoutCalories += exercise.getBaseKcal();
                             }

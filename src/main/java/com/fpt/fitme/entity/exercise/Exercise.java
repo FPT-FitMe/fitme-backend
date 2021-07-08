@@ -24,7 +24,7 @@ public class Exercise {
     private Long exerciseID;
 
     @OneToMany
-    private List<WorkoutExercise> workout_exercises=new ArrayList<>();
+    private List<WorkoutExercise> workoutExercises =new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -44,13 +44,13 @@ public class Exercise {
     @Column(name = "video_url")
     private String videoUrl;
 
-    @Column(name = "baseDuration")
+    @Column(name = "base_duration")
     private Integer baseDuration;
 
-    @Column(name = "baseRepPerRound")
+    @Column(name = "base_rep_per_round")
     private Integer baseRepPerRound;
 
-    @Column(name = "baseKcal")
+    @Column(name = "base_kcal")
     private Integer baseKcal;
 
     @Column(name = "image_url")
@@ -60,7 +60,7 @@ public class Exercise {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","traineeFavoriteWorkouts"})
     private AppUser creator;
 
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @CreatedDate
