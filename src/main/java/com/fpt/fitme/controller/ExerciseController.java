@@ -2,7 +2,6 @@ package com.fpt.fitme.controller;
 
 import com.fpt.fitme.dto.exercise.DisableExerciseDTO;
 import com.fpt.fitme.dto.exercise.ExerciseDTO;
-import com.fpt.fitme.dto.exercise.ExerciseTagDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.service.ExerciseService;
@@ -89,9 +88,9 @@ public class ExerciseController {
     }
 
     @PostMapping("/tags")
-    public ResponseEntity<List<ExerciseTagDTO>> createExercise(@RequestBody Tag[] tags) {
+    public ResponseEntity<List<ExerciseDTO>> createExercise(@RequestBody Tag[] tags) {
         try {
-            List<ExerciseTagDTO> list = exerciseService.getListExerciseByListTag(tags);
+            List<ExerciseDTO> list = exerciseService.getListExerciseByListTag(tags);
             if(!list.isEmpty())
                 return new ResponseEntity(list, HttpStatus.OK);
             return new ResponseEntity("List Empty!",HttpStatus.NOT_FOUND);
