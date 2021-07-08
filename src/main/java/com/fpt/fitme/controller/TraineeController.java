@@ -106,30 +106,9 @@ public class TraineeController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>("Succeed", HttpStatus.OK);
     }
 
-    @PostMapping("/logWorkout/{workoutId}")
-    public ResponseEntity<?> logWorkout(@PathVariable long workoutId, @RequestBody WorkoutLog workoutLog) {
-        try {
-            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
-            WorkoutLogDTO workoutLogDTO = logService.createWorkoutLog(workoutId, trainee, workoutLog);
-            return new ResponseEntity<>(workoutLogDTO, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/logWeight")
-    public ResponseEntity<?> logWeight(@RequestBody WeightLog weightLog) {
-        try {
-            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
-            WeightLogDTO weightLogDTO = logService.createWeightLog(weightLog, trainee);
-            return new ResponseEntity<>(weightLogDTO, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity("Succeed", HttpStatus.OK);
-    }
 
     @GetMapping("/dailyPlan/{date}")
     public ResponseEntity<?> getDailyPlan(@PathVariable String date) {
