@@ -2,6 +2,7 @@ package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.exercise.DisableExerciseDTO;
 import com.fpt.fitme.dto.exercise.ExerciseDTO;
+import com.fpt.fitme.dto.exercise.ExerciseTagDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.tag.Tag;
@@ -10,11 +11,13 @@ import com.fpt.fitme.entity.workout.WorkoutExercise;
 import com.fpt.fitme.repository.*;
 import com.fpt.fitme.util.JsonPatcherUtil;
 import com.github.fge.jsonpatch.JsonPatch;
+import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService {
@@ -167,5 +170,19 @@ public class ExerciseService {
             return modelMapper.map(exerciseToUpdate, ExerciseDTO.class);
         }
         return null;
+    }
+
+    //getListExercise by eachTag in ListTagID
+    public List<ExerciseTagDTO> getListExerciseByListTag(Tag[] tags){
+        Set<Exercise> result=new HashSet<>();
+        for (Tag t:tags) {
+            Optional<Tag> tagOptional=tagRepository.findById(t.getId());
+            List<Exercise> list=new ArrayList<>();
+            if(tagOptional.isPresent()){
+                list=exerciseRepository.getExercisesByTags(t);
+            }
+            result.addAll(list);
+        }
+        return result.stream().map(exercise -> modelMapper.map(exercise,ExerciseTagDTO.class)).collect(Collectors.toList());
     }
 }

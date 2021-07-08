@@ -6,7 +6,7 @@ values (0, 'Trainee'),
 insert into coach_profile (coach_id,coach_name,contact,introduction,image_url,is_active)
 values (0,'Bob','coach_profile@gmail.com','Hi im Bob','coach_image.jpg',true);
 
-select setval('coach_profile_coach_id_seq', 0);
+-- select setval('coach_profile_coach_id_seq', 1);
 -- alter sequence coach_profile_coach_id_seq restart with 1;
 
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
@@ -234,6 +234,7 @@ VALUES (51, 1, 7, 10),
        (55, 5, 1, 10);
 
 select setval('workout_workout_id_seq', 10);
+select setval('workout_exercise_workout_exercise_id_seq', 55);
 -- alter sequence workout_workout_id_seq restart with 11;
 
 
