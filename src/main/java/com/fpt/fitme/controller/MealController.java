@@ -20,12 +20,15 @@ public class MealController {
    private MealService mealService;
 
     @GetMapping("")
-    public ResponseEntity<List<MealDTO>> getAllMeals(@RequestParam(required = false,name ="tagID")Long tagID) {
+    public ResponseEntity<List<MealDTO>> getAllMeals(@RequestParam(required = false,name ="tagID")Long tagID,@RequestParam(required = false,name ="coachID")Long coachID) {
         List<MealDTO> result;
         try {
             if(tagID!=null){
                 result=mealService.getListMealByTagID(tagID);
-            }else{
+            }else if(coachID!=null){
+                result=mealService.getListMealByCoachID(coachID);
+            }
+            else{
                 result = mealService.getListMeal();
             }
         }catch (Exception e){

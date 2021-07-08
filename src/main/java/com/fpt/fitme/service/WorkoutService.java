@@ -51,10 +51,10 @@ public class WorkoutService {
         return null;
     }
 
-    public List<WorkoutDTO> getListWorkoutByTagID(long tagID) throws Exception{
+    public List<WorkoutDTO> getListWorkoutByTagID(long tagID) throws Exception {
         List<WorkoutDTO> result = new ArrayList<>();
-        Optional<Tag> tag=tagRepository.findById(tagID);
-        if(!(tag.isPresent()&&tag.get().getIsActive())) throw new Exception("tagID not found!");
+        Optional<Tag> tag = tagRepository.findById(tagID);
+        if (!(tag.isPresent() && tag.get().getIsActive())) throw new Exception("tagID not found!");
         workoutRepository.getWorkoutsByTags(tag.get()).forEach(workout -> {
             if (workout.getIsActive()) {
                 WorkoutDTO dto = modelMapper.map(workout, WorkoutDTO.class);
@@ -64,11 +64,24 @@ public class WorkoutService {
         return result;
     }
 
+    public List<WorkoutDTO> getListWorkoutByCoachID(long coachID) throws Exception {
+        List<WorkoutDTO> result = new ArrayList<>();
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(coachID);
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        workoutRepository.getWorkoutsByCoachProfile(coachProfile.get()).forEach(workout -> {
+            if (workout.getIsActive()) {
+                WorkoutDTO dto = modelMapper.map(workout, WorkoutDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
     public WorkoutDTO createWorkout(Workout workout) throws Exception {
-        AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
+        AppUser appUser = fitmeUserDetailsService.getUserByAuthorization();
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
 
-        if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : workout.getTags()) {
@@ -111,15 +124,25 @@ public class WorkoutService {
         return modelMapper.map(workoutPatched, DisableWorkoutDTO.class);
     }
 
-    public WorkoutDTO updateWorkout(Long id,Workout workout){
+    public WorkoutDTO updateWorkout(Long id, Workout workout) throws Exception {
         Optional<Workout> optionalWorkout = workoutRepository.findById(id);
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
+
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+
+        Set<Tag> tags = new HashSet<>();
+        for (Tag tag : workout.getTags()) {
+            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+            if (!(tagToAdd.isPresent() && tagToAdd.get().getIsActive())) throw new Exception("tagID not found!");
+            tags.add(tagToAdd.get());
+        }
 
         if (optionalWorkout.isPresent() && optionalWorkout.get().getIsActive()) {
             Workout workoutToUpdate = optionalWorkout.get();
             workoutToUpdate.setName(workout.getName());
-            workoutToUpdate.setCoachProfile(workout.getCoachProfile());
+            workoutToUpdate.setCoachProfile(coachProfile.get());
             workoutToUpdate.setDescription(workout.getDescription());
-            workoutToUpdate.setTags(workout.getTags());
+            workoutToUpdate.setTags(tags);
             workoutToUpdate.setLevel(workout.getLevel());
             workoutToUpdate.setIsPremium(workout.getIsPremium());
             workoutToUpdate.setImageUrl(workout.getImageUrl());

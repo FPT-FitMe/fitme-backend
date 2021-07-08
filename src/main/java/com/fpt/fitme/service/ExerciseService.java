@@ -145,12 +145,19 @@ public class ExerciseService {
     public ExerciseDTO updateExercise(Long id, Exercise exercise) throws Exception{
         Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
 
+        Set<Tag> tags = new HashSet<>();
+        for (Tag tag : exercise.getTags()) {
+            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+            if (!(tagToAdd.isPresent() && tagToAdd.get().getIsActive())) throw new Exception("tagID not found!");
+            tags.add(tagToAdd.get());
+        }
+
         if (optionalExercise.isPresent() && optionalExercise.get().getIsActive()) {
             Exercise exerciseToUpdate = optionalExercise.get();
             exerciseToUpdate.setName(exercise.getName());
             exerciseToUpdate.setDescription(exercise.getDescription());
             exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
-            exerciseToUpdate.setTags(exercise.getTags());
+            exerciseToUpdate.setTags(tags);
             exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
             exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
             exerciseToUpdate.setBaseKcal(exercise.getBaseKcal());
