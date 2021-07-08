@@ -29,8 +29,8 @@ public class Exercise {
     @ManyToMany
     @JoinTable(
             name = "exercise_tag",
-            joinColumns = { @JoinColumn(name = "exercise_id")},
-            inverseJoinColumns = { @JoinColumn(name = "tag_id")}
+            joinColumns = { @JoinColumn(name = "exercise_id",referencedColumnName = "exercise_id")},
+            inverseJoinColumns = { @JoinColumn(name = "tag_id",referencedColumnName = "tag_id")}
     )
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Tag> tags = new HashSet<>();

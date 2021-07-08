@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService {
@@ -167,5 +168,19 @@ public class ExerciseService {
             return modelMapper.map(exerciseToUpdate, ExerciseDTO.class);
         }
         return null;
+    }
+
+    //getListExercise by eachTag in ListTagID
+    public List<ExerciseDTO> getListExerciseByListTag(Tag[] tags){
+        Set<Exercise> result=new HashSet<>();
+        for (Tag t:tags) {
+            Optional<Tag> tagOptional=tagRepository.findById(t.getId());
+            List<Exercise> list=new ArrayList<>();
+            if(tagOptional.isPresent()){
+                list=exerciseRepository.getExercisesByTags(t);
+            }
+            result.addAll(list);
+        }
+        return result.stream().map(exercise -> modelMapper.map(exercise,ExerciseDTO.class)).collect(Collectors.toList());
     }
 }
