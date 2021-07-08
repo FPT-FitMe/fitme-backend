@@ -170,7 +170,6 @@ public class ExerciseService {
                     workoutExerciseService.updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());
                 }
             }
-            System.out.println(exerciseToUpdate.getCreator());
             return modelMapper.map(exerciseToUpdate, ExerciseDTO.class);
         }
         return null;
