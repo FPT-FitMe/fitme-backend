@@ -64,6 +64,19 @@ public class WorkoutService {
         return result;
     }
 
+    public List<WorkoutDTO> getListWorkoutByCoachID(long coachID) throws Exception{
+        List<WorkoutDTO> result = new ArrayList<>();
+        Optional<CoachProfile> coachProfile=coachProfileRepository.findById(coachID);
+        if(!(coachProfile.isPresent()&&coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        workoutRepository.getWorkoutsByCoachProfile(coachProfile.get()).forEach(workout -> {
+            if (workout.getIsActive()) {
+                WorkoutDTO dto = modelMapper.map(workout, WorkoutDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
     public WorkoutDTO createWorkout(Workout workout) throws Exception {
         AppUser appUser=fitmeUserDetailsService.getUserByAuthorization();
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());

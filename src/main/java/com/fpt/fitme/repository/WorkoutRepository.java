@@ -1,6 +1,7 @@
 package com.fpt.fitme.repository;
 
 import com.fpt.fitme.entity.tag.Tag;
+import com.fpt.fitme.entity.workout.CoachProfile;
 import com.fpt.fitme.entity.workout.Workout;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface WorkoutRepository extends CrudRepository<Workout, Long> {
     int updateDurationCaloriesWorkout(@Param("workoutID") long workoutID,@Param("kcalTotal") int kcalTotal,@Param("durationTotal") int durationTotal);
 
     List<Workout> getWorkoutsByTags(Tag tag);
+
+    List<Workout> getWorkoutsByCoachProfile(CoachProfile coachProfile);
 }

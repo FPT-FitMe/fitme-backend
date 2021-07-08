@@ -24,11 +24,13 @@ public class WorkoutController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<WorkoutDTO>> getAllWorkout(@RequestParam(required = false,name ="tagID")Long tagID) {
+    public ResponseEntity<List<WorkoutDTO>> getAllWorkout(@RequestParam(required = false,name ="tagID")Long tagID,@RequestParam(required = false,name ="coachID")Long coachID) {
         List<WorkoutDTO> result;
         try {
             if(tagID!=null){
                 result=workoutService.getListWorkoutByTagID(tagID);
+            }else if(coachID!=null){
+                result=workoutService.getListWorkoutByCoachID(coachID);
             }else{
                 result = workoutService.getListWorkout();
             }
