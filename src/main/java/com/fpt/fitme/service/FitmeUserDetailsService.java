@@ -82,6 +82,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
         appUser.setEmail(fitMeUser.getEmail());
         appUser.setRole(appUserRoleRepository.findById(0).get());
         appUser.setPassword(bcryptEncoder.encode(fitMeUser.getPassword()));
+        appUser.setIsActive(true);
         appUser.setIsPremium(false);
 
         return appUserRepository.save(appUser);
