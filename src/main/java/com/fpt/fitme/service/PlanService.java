@@ -4,7 +4,6 @@ import com.fpt.fitme.dto.plan.PlanDTO;
 import com.fpt.fitme.dto.plan.PlanMealDTO;
 import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
-import com.fpt.fitme.entity.exercise.Exercise;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.plan.Plan;
 import com.fpt.fitme.entity.plan.PlanMeal;
@@ -12,7 +11,6 @@ import com.fpt.fitme.entity.plan.PlanWorkout;
 import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.entity.target.Target;
 import com.fpt.fitme.entity.workout.Workout;
-import com.fpt.fitme.entity.workout.WorkoutExercise;
 import com.fpt.fitme.repository.*;
 import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
@@ -205,16 +203,10 @@ public class PlanService {
                         saveMealPlan(plan, lunch.get(dayIndex));
                         saveMealPlan(plan, diners.get(dayIndex));
 
-                        List<Workout> workouts = new ArrayList<>();
-                        int totalWorkoutCalories = 0;
+                        //int totalWorkoutCalories = 0;
 
-                        while (caloriesFromActivitiesPerDay - totalWorkoutCalories > 150 && isHaving(workoutDays, dayIndex)) {
+                        if (isHaving(workoutDays, dayIndex)) {
                             Workout workoutToAdd = workoutsAll.get(workoutIndex);
-                            workouts.add(workoutToAdd);
-                            for (WorkoutExercise workoutExercise : workoutToAdd.getWorkoutExercises()) {
-                                Exercise exercise = workoutExercise.getExerciseID();
-                                totalWorkoutCalories += exercise.getBaseKcal();
-                            }
                             workoutIndex++;
 
                             PlanWorkout planWorkout = new PlanWorkout();
