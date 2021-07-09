@@ -19,7 +19,7 @@ import java.util.*;
 public class WorkoutService {
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private FitmeUserDetailsService fitmeUserDetailsService;
 
     @Autowired
     private WorkoutRepository workoutRepository;
@@ -51,25 +51,40 @@ public class WorkoutService {
         return null;
     }
 
+    public List<WorkoutDTO> getListWorkoutByTagID(long tagID) throws Exception {
+        List<WorkoutDTO> result = new ArrayList<>();
+        Optional<Tag> tag = tagRepository.findById(tagID);
+        if (!(tag.isPresent() && tag.get().getIsActive())) throw new Exception("tagID not found!");
+        workoutRepository.getWorkoutsByTags(tag.get()).forEach(workout -> {
+            if (workout.getIsActive()) {
+                WorkoutDTO dto = modelMapper.map(workout, WorkoutDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
+    public List<WorkoutDTO> getListWorkoutByCoachID(long coachID) throws Exception {
+        List<WorkoutDTO> result = new ArrayList<>();
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(coachID);
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        workoutRepository.getWorkoutsByCoachProfile(coachProfile.get()).forEach(workout -> {
+            if (workout.getIsActive()) {
+                WorkoutDTO dto = modelMapper.map(workout, WorkoutDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
     public WorkoutDTO createWorkout(Workout workout) throws Exception {
-        Optional<AppUser> creator = appUserRepository.findById(workout.getCreator().getUserID());
+        AppUser appUser = fitmeUserDetailsService.getUserByAuthorization();
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
 
-        if (!coachProfile.isPresent()) throw new Exception("coachID not found!");
-
-        if (!creator.isPresent()) throw new Exception("creatorID not found!");
-
-        Set<Tag> tags = new HashSet<>();
-        for (Tag tag : workout.getTags()) {
-            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
-            if (tagToAdd.isPresent()) {
-                tags.add(tagToAdd.get());
-            }
-        }
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
         workout.setCoachProfile(coachProfile.get());
-        workout.setCreator(creator.get());
-        workout.setTags(tags);
+        workout.setCreator(appUser);
         workout.setEstimatedCalories(0);
         workout.setEstimatedDuration(0);
         workout.setIsActive(true);
@@ -100,16 +115,17 @@ public class WorkoutService {
         return modelMapper.map(workoutPatched, DisableWorkoutDTO.class);
     }
 
-    public WorkoutDTO updateWorkout(Long id,Workout workout){
+    public WorkoutDTO updateWorkout(Long id, Workout workout) throws Exception {
         Optional<Workout> optionalWorkout = workoutRepository.findById(id);
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
+
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
 
         if (optionalWorkout.isPresent() && optionalWorkout.get().getIsActive()) {
             Workout workoutToUpdate = optionalWorkout.get();
             workoutToUpdate.setName(workout.getName());
-            workoutToUpdate.setCoachProfile(workout.getCoachProfile());
-            workoutToUpdate.setCreator(workout.getCreator());
+            workoutToUpdate.setCoachProfile(coachProfile.get());
             workoutToUpdate.setDescription(workout.getDescription());
-            workoutToUpdate.setTags(workout.getTags());
             workoutToUpdate.setLevel(workout.getLevel());
             workoutToUpdate.setIsPremium(workout.getIsPremium());
             workoutToUpdate.setImageUrl(workout.getImageUrl());

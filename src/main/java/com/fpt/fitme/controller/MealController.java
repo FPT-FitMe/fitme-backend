@@ -20,12 +20,25 @@ public class MealController {
    private MealService mealService;
 
     @GetMapping("")
-    public ResponseEntity<List<MealDTO>> getAllMeals() {
-        List<MealDTO> result = mealService.getListMeal();
+    public ResponseEntity<List<MealDTO>> getAllMeals(@RequestParam(required = false,name ="tagID")Long tagID,@RequestParam(required = false,name ="coachID")Long coachID) {
+        List<MealDTO> result;
+        try {
+            if(tagID!=null){
+                result=mealService.getListMealByTagID(tagID);
+            }else if(coachID!=null){
+                result=mealService.getListMealByCoachID(coachID);
+            }
+            else{
+                result = mealService.getListMeal();
+            }
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         if (!result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("List empty!", HttpStatus.NOT_FOUND);
         }
     }
 

@@ -79,11 +79,11 @@ public class MealDTO {
         this.cookingTime = cookingTime;
     }
 
-    public Boolean getPremium() {
+    public Boolean getIsPremium() {
         return isPremium;
     }
 
-    public void setPremium(Boolean premium) {
+    public void setIsPremium(Boolean premium) {
         isPremium = premium;
     }
 

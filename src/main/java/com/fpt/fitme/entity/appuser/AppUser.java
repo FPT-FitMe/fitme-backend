@@ -6,6 +6,7 @@ import com.fpt.fitme.entity.workout.Workout;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "app_user")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class AppUser {
 
     @Id
@@ -47,11 +49,11 @@ public class AppUser {
     @Column(name = "gender")
     private Integer gender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUserRole role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "trainee_favorite_workout",
             joinColumns = { @JoinColumn(name = "user_id")},
@@ -59,7 +61,7 @@ public class AppUser {
     )
     private Set<Workout> traineeFavoriteWorkouts = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "trainee_favorite_meal",
             joinColumns = { @JoinColumn(name = "user_id")},

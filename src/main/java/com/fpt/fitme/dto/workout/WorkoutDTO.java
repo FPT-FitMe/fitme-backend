@@ -15,7 +15,7 @@ public class WorkoutDTO {
     private AppUserDTO creator;
     private String description;
     private Set<TagDTO> tags;
-    private Set<WorkoutExerciseDTO> workout_exercises;
+    private Set<WorkoutExerciseDTO> workoutExercises;
     private Integer estimatedDuration;
     private Integer estimatedCalories;
     private Integer level;
@@ -72,12 +72,12 @@ public class WorkoutDTO {
         this.tags = tags;
     }
 
-    public Set<WorkoutExerciseDTO> getWorkout_exercises() {
-        return workout_exercises;
+    public Set<WorkoutExerciseDTO> getWorkoutExercises() {
+        return workoutExercises;
     }
 
-    public void setWorkout_exercises(Set<WorkoutExerciseDTO> workout_exercises) {
-        this.workout_exercises = workout_exercises;
+    public void setWorkoutExercises(Set<WorkoutExerciseDTO> workoutExercises) {
+        this.workoutExercises = workoutExercises;
     }
 
     public Integer getEstimatedDuration() {
@@ -104,11 +104,11 @@ public class WorkoutDTO {
         this.level = level;
     }
 
-    public Boolean getPremium() {
+    public Boolean getIsPremium() {
         return isPremium;
     }
 
-    public void setPremium(Boolean premium) {
+    public void setIsPremium(Boolean premium) {
         isPremium = premium;
     }
 

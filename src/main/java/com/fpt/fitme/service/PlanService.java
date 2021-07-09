@@ -207,12 +207,6 @@ public class PlanService {
 
                         if (isHaving(workoutDays, dayIndex)) {
                             Workout workoutToAdd = workoutsAll.get(workoutIndex);
-                            /*
-                            for (WorkoutExercise workoutExercise : workoutToAdd.getWorkout_exercises()) {
-                                Exercise exercise = workoutExercise.getExerciseID();
-                                totalWorkoutCalories += exercise.getBaseKcal();
-                            }
-                            */
                             workoutIndex++;
 
                             PlanWorkout planWorkout = new PlanWorkout();

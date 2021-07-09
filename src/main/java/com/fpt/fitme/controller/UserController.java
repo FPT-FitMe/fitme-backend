@@ -1,7 +1,7 @@
 package com.fpt.fitme.controller;
 
 import com.fpt.fitme.dto.appUser.AppUserDTO;
-import com.fpt.fitme.dto.appUser.DisabledAppUserDTO;
+import com.fpt.fitme.dto.appUser.AppUserStatusDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.service.AppUserService;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -42,10 +42,20 @@ public class UserController {
     }
 
     @PatchMapping("/disable/{id}")
-    public ResponseEntity disableUser(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
+    public ResponseEntity disableUser(@PathVariable("id") Long id) {
         try {
-            DisabledAppUserDTO disableUser = appUserService.disabledAppUser(id, patch);
+            AppUserStatusDTO disableUser = appUserService.changeAppUserStatus(id, false);
             return new ResponseEntity(disableUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/enable/{id}")
+    public ResponseEntity enableUser(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {
+        try {
+            AppUserStatusDTO enabledUser = appUserService.changeAppUserStatus(id, true);
+            return new ResponseEntity(enabledUser, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -4,6 +4,7 @@ import com.fpt.fitme.dto.appUser.AppUserDTO;
 import com.fpt.fitme.dto.log.MealLogDTO;
 import com.fpt.fitme.dto.log.WeightLogDTO;
 import com.fpt.fitme.dto.log.WorkoutLogDTO;
+
 import com.fpt.fitme.dto.plan.PlanDTO;
 import com.fpt.fitme.dto.plan.PlanMealDTO;
 import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
@@ -158,10 +159,11 @@ public class TraineeController {
             //handle build plan with durationInDays, targetWeight, age, gender, height, currentWeight
             planService.buildPlan(trainee, request.getWeightInKg(), request.getTargetWeightInKg(), request.getDurationInDays());
         } catch (Exception e) {
-            return new ResponseEntity("Error ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity("Succeed", HttpStatus.OK);
+        return new ResponseEntity<>("Succeed", HttpStatus.OK);
     }
+
 
     @GetMapping("/dailyPlan/{date}")
     public ResponseEntity<?> getDailyPlan(@PathVariable String date) {
@@ -196,3 +198,5 @@ public class TraineeController {
         }
     }
 }
+
+

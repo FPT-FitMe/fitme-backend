@@ -3,6 +3,7 @@ package com.fpt.fitme.controller;
 import com.fpt.fitme.dto.exercise.DisableExerciseDTO;
 import com.fpt.fitme.dto.exercise.ExerciseDTO;
 import com.fpt.fitme.entity.exercise.Exercise;
+import com.fpt.fitme.entity.tag.Tag;
 import com.fpt.fitme.service.ExerciseService;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,4 +87,15 @@ public class ExerciseController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("/tags")
+    public ResponseEntity<List<ExerciseDTO>> createExercise(@RequestBody Tag[] tags) {
+        try {
+            List<ExerciseDTO> list = exerciseService.getListExerciseByListTag(tags);
+            if(!list.isEmpty())
+                return new ResponseEntity(list, HttpStatus.OK);
+            return new ResponseEntity("List Empty!",HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

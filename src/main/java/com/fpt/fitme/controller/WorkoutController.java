@@ -21,15 +21,29 @@ public class WorkoutController {
     @Autowired
     private WorkoutService workoutService;
 
+
+
     @GetMapping("")
-    public ResponseEntity<List<WorkoutDTO>> getAllWorkout() {
-        List<WorkoutDTO> result = workoutService.getListWorkout();
+    public ResponseEntity<List<WorkoutDTO>> getAllWorkout(@RequestParam(required = false,name ="tagID")Long tagID,@RequestParam(required = false,name ="coachID")Long coachID) {
+        List<WorkoutDTO> result;
+        try {
+            if(tagID!=null){
+                result=workoutService.getListWorkoutByTagID(tagID);
+            }else if(coachID!=null){
+                result=workoutService.getListWorkoutByCoachID(coachID);
+            }else{
+                result = workoutService.getListWorkout();
+            }
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         if (!result.isEmpty()) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("List Empty!", HttpStatus.NOT_FOUND);
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<WorkoutDTO> getWorkoutByID(@PathVariable("id") long id) {
@@ -64,9 +78,13 @@ public class WorkoutController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateWorkout(@PathVariable("id") Long id, @RequestBody Workout workout) {
-        WorkoutDTO dto = workoutService.updateWorkout(id, workout);
-        if (dto != null) {
-            return new ResponseEntity(dto, HttpStatus.OK);
+        try {
+            WorkoutDTO dto = workoutService.updateWorkout(id, workout);
+            if (dto != null) {
+                return new ResponseEntity(dto, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(ID_NOTFOUND_ERROR, HttpStatus.BAD_REQUEST);
     }
