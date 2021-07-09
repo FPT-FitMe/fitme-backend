@@ -109,9 +109,9 @@ public class TraineeController {
                     return new ResponseEntity<>(weightLogDTOS, HttpStatus.OK);
                 case "all":
                     AllLogsDTO allLogsDTO = new AllLogsDTO();
-                    allLogsDTO.setWorkoutLogDTOS(logService.getAllWorkoutLogsByDate(trainee, date));
-                    allLogsDTO.setMealLogDTOS(logService.getAllMealLogsByDate(trainee, date));
-                    allLogsDTO.setWeightLogDTOS(logService.getAllWeightLogsByDate(trainee, date));
+                    allLogsDTO.setWorkoutLogs(logService.getAllWorkoutLogsByDate(trainee, date));
+                    allLogsDTO.setMealLogs(logService.getAllMealLogsByDate(trainee, date));
+                    allLogsDTO.setWeightLogs(logService.getAllWeightLogsByDate(trainee, date));
                     return new ResponseEntity<>(allLogsDTO, HttpStatus.OK);
             }
 
