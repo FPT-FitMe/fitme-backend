@@ -15,8 +15,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LogService {
@@ -74,5 +78,53 @@ public class LogService {
         weightLog.setCreatedAt(new Date());
         weightLogRepository.save(weightLog);
         return modelMapper.map(weightLog, WeightLogDTO.class);
+    }
+
+    public Set<WorkoutLogDTO> getAllWorkoutLogsByDate(AppUser trainee, String dateString) throws Exception {
+        Set<WorkoutLogDTO> result;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = simpleDateFormat.parse(dateString);
+        Date toDate = new Date(date.getTime() + TimeUnit.DAYS.toMillis(1));
+        Set<WorkoutLog> workoutLogs = workoutLogRepository.findAllByCreatedAtBetweenAndTrainee(date, toDate, trainee);
+        if (workoutLogs.isEmpty()) {
+            throw new NotFoundException("No log found in date: " + simpleDateFormat.format(date));
+        }
+        result = new HashSet<>();
+        for (WorkoutLog workoutLog : workoutLogs) {
+            result.add(modelMapper.map(workoutLog, WorkoutLogDTO.class));
+        }
+        return result;
+    }
+
+    public Set<MealLogDTO> getAllMealLogsByDate(AppUser trainee, String dateString) throws Exception {
+        Set<MealLogDTO> result;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = simpleDateFormat.parse(dateString);
+        Date toDate = new Date(date.getTime() + TimeUnit.DAYS.toMillis(1));
+        Set<MealLog> mealLogs = mealLogRepository.findAllByCreatedAtBetweenAndTrainee(date, toDate, trainee);
+        if (mealLogs.isEmpty()) {
+            throw new NotFoundException("No log found in date: " + simpleDateFormat.format(date));
+        }
+        result = new HashSet<>();
+        for (MealLog mealLog : mealLogs) {
+            result.add(modelMapper.map(mealLog, MealLogDTO.class));
+        }
+        return result;
+    }
+
+    public Set<WeightLogDTO> getAllWeightLogsByDate(AppUser trainee, String dateString) throws Exception {
+        Set<WeightLogDTO> result;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = simpleDateFormat.parse(dateString);
+        Date toDate = new Date(date.getTime() + TimeUnit.DAYS.toMillis(1));
+        Set<WeightLog> weightLogs = weightLogRepository.findAllByCreatedAtBetweenAndTrainee(date, toDate, trainee);
+        if (weightLogs.isEmpty()) {
+            throw new NotFoundException("No log found in date: " + simpleDateFormat.format(date));
+        }
+        result = new HashSet<>();
+        for (WeightLog weightLog : weightLogs) {
+            result.add(modelMapper.map(weightLog, WeightLogDTO.class));
+        }
+        return result;
     }
 }

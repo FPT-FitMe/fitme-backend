@@ -1,6 +1,7 @@
 package com.fpt.fitme.controller;
 
 import com.fpt.fitme.dto.appUser.AppUserDTO;
+import com.fpt.fitme.dto.log.AllLogsDTO;
 import com.fpt.fitme.dto.log.MealLogDTO;
 import com.fpt.fitme.dto.log.WeightLogDTO;
 import com.fpt.fitme.dto.log.WorkoutLogDTO;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/trainee")
@@ -87,6 +90,35 @@ public class TraineeController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/log/{type}/{date}")
+    public ResponseEntity<?> getLogByDateAndType(@PathVariable String type, @PathVariable String date) {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+
+            switch (type) {
+                case "workout":
+                    Set<WorkoutLogDTO> workoutLogDTOS = logService.getAllWorkoutLogsByDate(trainee, date);
+                    return new ResponseEntity<>(workoutLogDTOS, HttpStatus.OK);
+                case "meal":
+                    Set<MealLogDTO> mealLogDTOS = logService.getAllMealLogsByDate(trainee, date);
+                    return new ResponseEntity<>(mealLogDTOS, HttpStatus.OK);
+                case "weight":
+                    Set<WeightLogDTO> weightLogDTOS = logService.getAllWeightLogsByDate(trainee, date);
+                    return new ResponseEntity<>(weightLogDTOS, HttpStatus.OK);
+                case "all":
+                    AllLogsDTO allLogsDTO = new AllLogsDTO();
+                    allLogsDTO.setWorkoutLogDTOS(logService.getAllWorkoutLogsByDate(trainee, date));
+                    allLogsDTO.setMealLogDTOS(logService.getAllMealLogsByDate(trainee, date));
+                    allLogsDTO.setWeightLogDTOS(logService.getAllWeightLogsByDate(trainee, date));
+                    return new ResponseEntity<>(allLogsDTO, HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @PostMapping("/completeSurvey")
