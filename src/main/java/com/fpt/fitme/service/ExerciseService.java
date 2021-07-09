@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService {
@@ -101,12 +102,12 @@ public class ExerciseService {
 
         if (savedExercise != null) {
             long quantity = workoutExerciseRepository.countWorkout_ExerciseByWorkoutID(workout.get());
-            WorkoutExercise workout_exercise = new WorkoutExercise();
-            workout_exercise.setExerciseID(savedExercise);
-            workout_exercise.setWorkoutID(workout.get());
-            workout_exercise.setExerciseOrder(quantity + 1);
-            savedExercise.getWorkout_exercises().add(workout_exercise);
-            workoutExerciseRepository.save(workout_exercise);
+            WorkoutExercise workoutExercise = new WorkoutExercise();
+            workoutExercise.setExerciseID(savedExercise);
+            workoutExercise.setWorkoutID(workout.get());
+            workoutExercise.setExerciseOrder(quantity + 1);
+            savedExercise.getWorkoutExercises().add(workoutExercise);
+            workoutExerciseRepository.save(workoutExercise);
             return modelMapper.map(savedExercise, ExerciseDTO.class);
         }
         return null;
@@ -143,13 +144,19 @@ public class ExerciseService {
 
     public ExerciseDTO updateExercise(Long id, Exercise exercise) throws Exception{
         Optional<Exercise> optionalExercise = exerciseRepository.findById(id);
+        Set<Tag> tags = new HashSet<>();
+        for (Tag tag : exercise.getTags()) {
+            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+            if (!(tagToAdd.isPresent() && tagToAdd.get().getIsActive())) throw new Exception("tagID not found!");
+            tags.add(tagToAdd.get());
+        }
 
         if (optionalExercise.isPresent() && optionalExercise.get().getIsActive()) {
             Exercise exerciseToUpdate = optionalExercise.get();
             exerciseToUpdate.setName(exercise.getName());
             exerciseToUpdate.setDescription(exercise.getDescription());
             exerciseToUpdate.setVideoUrl(exercise.getVideoUrl());
-            exerciseToUpdate.setTags(exercise.getTags());
+            exerciseToUpdate.setTags(tags);
             exerciseToUpdate.setBaseDuration(exercise.getBaseDuration());
             exerciseToUpdate.setBaseRepPerRound(exercise.getBaseRepPerRound());
             exerciseToUpdate.setBaseKcal(exercise.getBaseKcal());
@@ -163,9 +170,22 @@ public class ExerciseService {
                     workoutExerciseService.updateAllByWorkoutID(we.getWorkoutID().getWorkoutID());
                 }
             }
-
             return modelMapper.map(exerciseToUpdate, ExerciseDTO.class);
         }
         return null;
+    }
+
+    //getListExercise by eachTag in ListTagID
+    public List<ExerciseDTO> getListExerciseByListTag(Tag[] tags){
+        Set<Exercise> result=new HashSet<>();
+        for (Tag t:tags) {
+            Optional<Tag> tagOptional=tagRepository.findById(t.getId());
+            List<Exercise> list=new ArrayList<>();
+            if(tagOptional.isPresent()){
+                list=exerciseRepository.getExercisesByTags(t);
+            }
+            result.addAll(list);
+        }
+        return result.stream().map(exercise -> modelMapper.map(exercise,ExerciseDTO.class)).collect(Collectors.toList());
     }
 }

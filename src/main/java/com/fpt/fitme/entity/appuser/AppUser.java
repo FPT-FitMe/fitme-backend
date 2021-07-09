@@ -49,11 +49,11 @@ public class AppUser {
     @Column(name = "gender")
     private Integer gender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUserRole role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "trainee_favorite_workout",
             joinColumns = { @JoinColumn(name = "user_id")},
@@ -61,7 +61,7 @@ public class AppUser {
     )
     private Set<Workout> traineeFavoriteWorkouts = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "trainee_favorite_meal",
             joinColumns = { @JoinColumn(name = "user_id")},

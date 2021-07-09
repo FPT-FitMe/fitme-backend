@@ -45,6 +45,32 @@ public class MealService {
         return result;
     }
 
+    public List<MealDTO> getListMealByTagID(long tagID) throws Exception{
+        List<MealDTO> result = new ArrayList<>();
+        Optional<Tag> tag=tagRepository.findById(tagID);
+        if(!(tag.isPresent()&&tag.get().getIsActive())) throw new Exception("tagID not found!");
+        mealRepository.findMealsByTags(tag.get()).forEach(meal -> {
+            if (meal.getIsActive()) {
+                MealDTO dto = modelMapper.map(meal, MealDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
+    public List<MealDTO> getListMealByCoachID(long coachID) throws Exception{
+        List<MealDTO> result = new ArrayList<>();
+        Optional<CoachProfile> coachProfile=coachProfileRepository.findById(coachID);
+        if(!(coachProfile.isPresent()&&coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        mealRepository.getMealsByCoachProfile(coachProfile.get()).forEach(meal -> {
+            if (meal.getIsActive()) {
+                MealDTO dto = modelMapper.map(meal, MealDTO.class);
+                result.add(dto);
+            }
+        });
+        return result;
+    }
+
     public MealDTO getMealByID(long id) {
         Optional<Meal> mealOptional = mealRepository.findById(id);
         if (mealOptional.isPresent() && mealOptional.get().getIsActive())
@@ -100,18 +126,29 @@ public class MealService {
 
     public MealDTO updateMeal(Long id, Meal meal) throws Exception {
         Optional<Meal> optionalMeal = mealRepository.findById(id);
-
         if (!(optionalMeal.isPresent() && optionalMeal.get().getIsActive())) throw new Exception("mealID not found!");
+
+        Optional<CoachProfile> coachProfile = coachProfileRepository.findById(meal.getCoachProfile().getCoachID());
+        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+
+        Set<Tag> tags = new HashSet<>();
+        for (Tag tag : meal.getTags()) {
+            Optional<Tag> tagToAdd = tagRepository.findById(tag.getId());
+            if (!(tagToAdd.isPresent() && tagToAdd.get().getIsActive())) throw new Exception("tagID not found!");
+            tags.add(tagToAdd.get());
+        }
+
         Meal mealToUpdate = optionalMeal.get();
         mealToUpdate.setName(meal.getName());
         mealToUpdate.setDescription(meal.getDescription());
-        mealToUpdate.setTags(meal.getTags());
+        mealToUpdate.setTags(tags);
         mealToUpdate.setCookingTime(meal.getCookingTime());
         mealToUpdate.setIsPremium(meal.getIsPremium());
         mealToUpdate.setImageUrl(meal.getImageUrl());
         mealToUpdate.setCalories(meal.getCalories());
         mealToUpdate.setCarbAmount(meal.getCarbAmount());
         mealToUpdate.setFatAmount(meal.getFatAmount());
+        mealToUpdate.setCoachProfile(coachProfile.get());
         mealRepository.save(mealToUpdate);
 
         return modelMapper.map(mealToUpdate, MealDTO.class);
