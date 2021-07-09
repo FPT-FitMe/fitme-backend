@@ -1,8 +1,8 @@
 package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.favorite.AllFavoriteDTO;
-import com.fpt.fitme.dto.favorite.MealFavoriteDTO;
-import com.fpt.fitme.dto.favorite.WorkoutFavoriteDTO;
+import com.fpt.fitme.dto.workout.WorkoutDTOLazy;
+import com.fpt.fitme.dto.meal.MealDTOLazy;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.workout.Workout;
@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,12 +33,20 @@ public class TraineeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public MealFavoriteDTO getAllFavoriteMeal(AppUser trainee) throws Exception {
-        return modelMapper.map(trainee, MealFavoriteDTO.class);
+    public Set<MealDTOLazy> getAllFavoriteMeal(AppUser trainee) throws Exception {
+        Set<MealDTOLazy> result = new HashSet<>();
+        for (Meal meal : trainee.getTraineeFavoriteMeals()) {
+            result.add(modelMapper.map(meal, MealDTOLazy.class));
+        }
+        return result;
     }
 
-    public WorkoutFavoriteDTO getAllFavoriteWorkout(AppUser trainee) throws Exception {
-        return modelMapper.map(trainee, WorkoutFavoriteDTO.class);
+    public Set<WorkoutDTOLazy> getAllFavoriteWorkout(AppUser trainee) throws Exception {
+        Set<WorkoutDTOLazy> result = new HashSet<>();
+        for (Workout workout : trainee.getTraineeFavoriteWorkouts()) {
+            result.add(modelMapper.map(workout, WorkoutDTOLazy.class));
+        }
+        return result;
     }
 
     public AllFavoriteDTO getAllFavorite(AppUser trainee) throws Exception {
