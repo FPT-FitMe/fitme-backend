@@ -124,7 +124,8 @@ public class TraineeController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);
-      
+    }
+
     @PostMapping("favorite/{type}/{id}")
     public ResponseEntity<?> favoriteItem(@PathVariable String type, @PathVariable long id) {
         try {
