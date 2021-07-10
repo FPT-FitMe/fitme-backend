@@ -59,7 +59,7 @@ public class Workout {
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium;
 
-    @Column(name = "image_url", length = 150)
+    @Column(name = "image_url")
     private String imageUrl;
 
     @OneToMany(mappedBy = "workoutID")
