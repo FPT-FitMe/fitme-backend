@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 public class FitMeUser {
 
+    private Long id;
     private String email;
     private String password;
     private String firstName;
@@ -15,7 +16,8 @@ public class FitMeUser {
     private String profileImageUrl;
     private Boolean isPremium;
 
-    public FitMeUser(String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium) {
+    public FitMeUser(Long id, String email, String password, String firstName, String lastName, String gender, String role, String phoneNumber, String profileImageUrl, Boolean isPremium) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -97,5 +99,13 @@ public class FitMeUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
