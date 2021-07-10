@@ -61,7 +61,15 @@ public class PlanService {
         if (plan == null) {
             throw new NotFoundException("No plan found at date: " + dateString);
         }
-        return modelMapper.map(plan, PlanDTO.class);
+        HashMap<Integer, PlanMealDTO> planMealsOrdered = new HashMap<>();
+        int index = 0;
+        for (PlanMeal planMeal : planMealRepository.getAllByPlanOrderByIdAsc(plan)) {
+            planMealsOrdered.put(index, modelMapper.map(planMeal, PlanMealDTO.class));
+            index++;
+        }
+        PlanDTO result = modelMapper.map(plan, PlanDTO.class);
+        result.setPlanMeals(planMealsOrdered);
+        return result;
     }
 
     public PlanMealDTO updateMealPlan(AppUser trainee, long planMealId, String status) throws Exception {
