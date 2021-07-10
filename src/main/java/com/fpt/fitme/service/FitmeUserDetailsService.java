@@ -69,7 +69,7 @@ public class FitmeUserDetailsService implements UserDetailsService {
         if (appUser.getGender() != null) {
             gender = appUser.getGender() == 0 ? "M" : "F";
         }
-        return new FitMeUser(appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
+        return new FitMeUser(appUser.getUserID(), appUser.getEmail(), appUser.getPassword(), appUser.getFirstName(),
                 appUser.getLastName(), gender, appUser.getRole().getRoleID() == 0 ? "ROLE_MEMBER" : "ROLE_MANAGER",
                 appUser.getPhone(), appUser.getProfileImageUrl(),
                 appUser.getIsPremium());
