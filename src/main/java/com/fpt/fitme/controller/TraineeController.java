@@ -25,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -123,7 +125,19 @@ public class TraineeController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+    }
+
+    @GetMapping("/log/weight")
+    public ResponseEntity<?> getAllWeightLog() {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+
+            List<WeightLogDTO> weightLogDTOS = logService.getAllWeightLogsByWeek(trainee);
+            return new ResponseEntity<>(weightLogDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("favorite/{type}/{id}")

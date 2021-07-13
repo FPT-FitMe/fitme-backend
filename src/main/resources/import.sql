@@ -233,6 +233,20 @@ VALUES (51, 1, 7, 10),
        (54, 4, 2, 10),
        (55, 5, 1, 10);
 
+INSERT INTO weight_log(weight_log_id, created_at, value, trainee_user_id)
+VALUES (1, '2021-07-06 11:23:26.988', 71.3, 1),
+       (2, '2021-07-09 11:23:26.988', 71.2, 1),
+       (3, '2021-07-12 11:23:26.988', 71.3, 1),
+       (4, '2021-07-15 11:23:26.988', 71.2, 1),
+       (5, '2021-07-22 11:23:26.988', 71.1, 1),
+       (6, '2021-07-23 11:23:26.988', 71.0, 1),
+       (7, '2021-07-27 11:23:26.988', 70.9, 1),
+       (8, '2021-07-30 11:23:26.988', 70.85, 1),
+       (9, '2021-08-01 11:23:26.988', 70.5, 1),
+       (10, '2021-08-10 11:23:26.988', 70.2, 1),
+       (11, '2021-08-14 11:23:26.988', 70.25, 1);
+
+select setval('weight_log_weight_log_id_seq', 11);
 select setval('workout_workout_id_seq', 10);
 select setval('workout_exercise_workout_exercise_id_seq', 55);
 -- alter sequence workout_workout_id_seq restart with 11;

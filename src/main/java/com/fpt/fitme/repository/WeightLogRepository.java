@@ -10,4 +10,6 @@ import java.util.Set;
 public interface WeightLogRepository extends CrudRepository<WeightLog, Long> {
 
     public Set<WeightLog> findAllByCreatedAtBetweenAndTrainee(Date from, Date to, AppUser trainee);
+
+    public Set<WeightLog> findAllByTrainee(AppUser trainee);
 }
