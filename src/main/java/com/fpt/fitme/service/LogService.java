@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -124,6 +121,40 @@ public class LogService {
         result = new HashSet<>();
         for (WeightLog weightLog : weightLogs) {
             result.add(modelMapper.map(weightLog, WeightLogDTO.class));
+        }
+        return result;
+    }
+
+    public List<WeightLogDTO> getAllWeightLogsByWeek(AppUser trainee) throws Exception {
+        List<WeightLogDTO> result;
+        Set<WeightLog> weightLogs = weightLogRepository.findAllByTrainee(trainee);
+        if (weightLogs.isEmpty()) {
+            throw new NotFoundException("No log found!");
+        }
+        result = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        WeightLog prevLog = null;
+        int weightLogIndex = 0;
+        for (WeightLog weightLog : weightLogs) {
+            calendar.setTime(weightLog.getCreatedAt());
+            int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            int currentDate = calendar.get(Calendar.DATE);
+            int prevDayOfWeek;
+            if (prevLog != null) {
+                calendar.setTime(prevLog.getCreatedAt());
+                prevDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                int prevDate = calendar.get(Calendar.DATE);
+
+                if ((prevDayOfWeek >= currentDayOfWeek || prevDayOfWeek == 1) && prevDate != currentDate) {
+                    result.add(modelMapper.map(prevLog, WeightLogDTO.class));
+                }
+            }
+            if (weightLogIndex == weightLogs.size() - 1) {
+                result.add(modelMapper.map(weightLog, WeightLogDTO.class));
+            } else {
+                weightLogIndex++;
+                prevLog = weightLog;
+            }
         }
         return result;
     }
