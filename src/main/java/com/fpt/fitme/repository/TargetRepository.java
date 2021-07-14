@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface TargetRepository extends CrudRepository<Target, Long> {
 
     public Target getTargetByTrainee(AppUser trainee);
+
+    public Target getTargetByTraineeAndHasFinished(AppUser trainee, Boolean hasFinished);
 }

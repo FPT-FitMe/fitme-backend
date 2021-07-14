@@ -5,20 +5,17 @@ import com.fpt.fitme.dto.log.AllLogsDTO;
 import com.fpt.fitme.dto.log.MealLogDTO;
 import com.fpt.fitme.dto.log.WeightLogDTO;
 import com.fpt.fitme.dto.log.WorkoutLogDTO;
-
 import com.fpt.fitme.dto.plan.PlanDTO;
 import com.fpt.fitme.dto.plan.PlanMealDTO;
 import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
+import com.fpt.fitme.dto.target.TargetWeightDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
 import com.fpt.fitme.entity.log.WeightLog;
 import com.fpt.fitme.entity.log.WorkoutLog;
 import com.fpt.fitme.model.PlanStatusRequest;
 import com.fpt.fitme.model.SurveyCompletionRequest;
 import com.fpt.fitme.repository.AppUserRepository;
-import com.fpt.fitme.service.FitmeUserDetailsService;
-import com.fpt.fitme.service.LogService;
-import com.fpt.fitme.service.PlanService;
-import com.fpt.fitme.service.TraineeService;
+import com.fpt.fitme.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +32,9 @@ public class TraineeController {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private TargetService targetService;
 
     @Autowired
     private FitmeUserDetailsService fitmeUserDetailsService;
@@ -239,6 +239,17 @@ public class TraineeController {
             AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
             PlanWorkoutDTO updateWorkoutPlan = planService.updateWorkoutPlan(trainee, planWorkoutId, request.getStatus());
             return new ResponseEntity<>(updateWorkoutPlan, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/targetWeight")
+    public ResponseEntity<?> getTraineeTargetWeight() {
+        try {
+            AppUser trainee = fitmeUserDetailsService.getUserByAuthorization();
+            TargetWeightDTO targetWeightDTO = targetService.getCurrentTargetWeight(trainee);
+            return new ResponseEntity<>(targetWeightDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
