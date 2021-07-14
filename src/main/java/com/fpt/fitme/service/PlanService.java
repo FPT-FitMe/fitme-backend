@@ -56,7 +56,7 @@ public class PlanService {
     public PlanDTO getDailyPlan(AppUser trainee, String dateString) throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = simpleDateFormat.parse(dateString);
-        Target target = targetRepository.getTargetByTrainee(trainee);
+        Target target = targetRepository.getTargetByTraineeAndHasFinished(trainee, false);
         Plan plan = planRepository.getPlanByDateAndTarget(date, target);
         if (plan == null) {
             throw new NotFoundException("No plan found at date: " + dateString);
