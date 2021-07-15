@@ -49,6 +49,9 @@ public class FitmeUserDetailsService implements UserDetailsService {
         try {
             AppUser appUser = appUserRepository.getAppUserByEmail(email);
             String roleName = appUser.getRole().getRoleName();
+
+            if (!appUser.getIsActive())
+                throw new UsernameNotFoundException("User not found with email: " + email);
             if (roleName.equals("Manager")) {
                 roles = Collections.singletonList(new SimpleGrantedAuthority("ROLE_MANAGER"));
 

@@ -129,7 +129,7 @@ public class MealService {
         if (!(optionalMeal.isPresent() && optionalMeal.get().getIsActive())) throw new Exception("mealID not found!");
 
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(meal.getCoachProfile().getCoachID());
-        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        if (!(coachProfile.isPresent())) throw new Exception("coachID not found!");
 
         Set<Tag> tags = new HashSet<>();
         for (Tag tag : meal.getTags()) {
