@@ -6,7 +6,7 @@ INSERT INTO public.app_user (user_id,age,created_date,diet_preference_type,email
 (0,18,'2021-07-05 11:23:26.988',2,'conmeo1@gmail.com',2,'Ngô',1,182.0,true,true,'2021-07-05 11:23:26.988','Đức','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000001','memberImageLink1',0.7,0),
 (1,18,'2021-07-05 11:23:26.988',2,'conmeo2@gmail.com',2,'Kim',1,182.0,true,false,'2021-07-05 11:23:26.988','Hằng','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000003','memberImageLink2',1.0,0),
 (2,40,'2021-07-05 11:23:26.988',NULL,'admin@fitme.vn',NULL,'Cẩm',1,NULL,true,NULL,'2021-07-05 11:23:26.988','Long','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000002','managerImage1',NULL,1),
-(3,NULL,'2021-06-19 23:56:21.57',NULL,'conmeo3@gmail.com',NULL,'Hữu',NULL,NULL,true,false,'2021-06-19 23:56:21.57','Huy','$2a$10$EvTHoGcXD4fBbi9m8Dhs/eMYRsFcvW3zY.G1j8nZ8GaSfv8QQK9/C',NULL,NULL,NULL,0);
+(3,NULL,'2021-06-19 23:56:21.57',2,'conmeo3@gmail.com',2,'Hữu',1,175.0,true,false,'2021-06-19 23:56:21.57','Huy','$2a$10$EvTHoGcXD4fBbi9m8Dhs/eMYRsFcvW3zY.G1j8nZ8GaSfv8QQK9/C',NULL,NULL,1.0,0);
 
 select setval('app_user_user_id_seq', 3);
 
@@ -199,7 +199,7 @@ INSERT INTO public.target (id,complete_date,has_finished,start_date,starting_bmi
 select setval('target_id_seq', 1);
 
 INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) VALUES
-(18,'2021-07-06 11:23:26.988',71.3,1),
+(1,'2021-07-06 11:23:26.988',71.3,1),
 (2,'2021-07-09 11:23:26.988',71.2,1),
 (3,'2021-07-12 11:23:26.988',71.3,1),
 (4,'2021-07-15 11:23:26.988',71.2,1),
@@ -210,7 +210,7 @@ INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) V
 (9,'2021-08-01 11:23:26.988',70.5,1),
 (10,'2021-08-10 11:23:26.988',70.2,1);
 INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) VALUES
-(19,'2021-08-14 11:23:26.988',70.25,1),
+(11,'2021-08-14 11:23:26.988',70.25,1),
 (12,'2021-06-19 00:13:55.695',69.0,3),
 (13,'2021-06-19 00:14:20.146',69.0,3),
 (14,'2021-06-26 00:14:40.7',68.5,3),
@@ -218,7 +218,7 @@ INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) V
 (16,'2021-07-10 00:15:22.405',68.0,3),
 (17,'2021-07-15 00:15:56.516',67.5,3);
 
-select setval('weight_log_weight_log_id_seq', 19);
+select setval('weight_log_weight_log_id_seq', 17);
 
 INSERT INTO public.plan (plan_id,"date",target_id) VALUES
 (2,'2021-06-19 00:00:00',1),
