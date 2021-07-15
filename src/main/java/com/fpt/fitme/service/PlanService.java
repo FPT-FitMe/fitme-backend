@@ -4,6 +4,7 @@ import com.fpt.fitme.dto.plan.PlanDTO;
 import com.fpt.fitme.dto.plan.PlanMealDTO;
 import com.fpt.fitme.dto.plan.PlanWorkoutDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.log.WeightLog;
 import com.fpt.fitme.entity.meal.Meal;
 import com.fpt.fitme.entity.plan.Plan;
 import com.fpt.fitme.entity.plan.PlanMeal;
@@ -49,6 +50,9 @@ public class PlanService {
 
     @Autowired
     private WorkoutRepository workoutRepository;
+
+    @Autowired
+    private WeightLogRepository weightLogRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -111,6 +115,11 @@ public class PlanService {
             float startingBMI = currentWeight / (float) Math.pow(heightInMeter, 2);
             float targetBMI = targetWeight / (float) Math.pow(heightInMeter, 2);
             int caloriesPerDay;
+
+            WeightLog firstWeightLog = new WeightLog();
+            firstWeightLog.setTrainee(trainee);
+            firstWeightLog.setCreatedAt(new Date());
+            weightLogRepository.save(firstWeightLog);
 
             float kgChangeRatePerMonth = Math.abs(targetWeight - currentWeight) / (durationInDays / 30);
 
