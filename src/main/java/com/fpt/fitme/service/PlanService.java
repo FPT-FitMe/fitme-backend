@@ -199,7 +199,7 @@ public class PlanService {
                 List<Meal> diners = getMealsInPeriod(dietPreference, 7L, (int) (caloriesPerDay * 0.2));
 
                 //Plan workout
-                Iterable<Workout> workoutsAllIter = workoutRepository.findAll();
+                Iterable<Workout> workoutsAllIter = workoutRepository.getWorkoutByIsPremiumAndIsActive(false, true);
                 List<Workout> workoutsAll = new ArrayList<>();
                 for (Workout workout : workoutsAllIter) {
                     workoutsAll.add(workout);
@@ -261,7 +261,7 @@ public class PlanService {
     private List<Meal> getMealsInPeriod(Long dietPreference, Long mealPeriod, int minCalo) {
         Set<Tag> mealTags = new HashSet<>();
         mealTags.add(tagRepository.findById(mealPeriod).get());
-        List<Meal> meals = mealRepository.findMealsByTagsIn(mealTags);
+        List<Meal> meals = mealRepository.findMealsByTagsInAndIsActive(mealTags, true);
         List<Meal> filteredMeals = new ArrayList<>();
         for (Meal meal : meals) {
             if (meal.getCalories() >= minCalo &&
