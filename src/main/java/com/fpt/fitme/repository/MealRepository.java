@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface MealRepository extends CrudRepository<Meal, Long> {
 
-    List<Meal> findMealsByTagsIn(Set<Tag> tags);
+    List<Meal> findMealsByTagsInAndIsActive(Set<Tag> tags, Boolean isActive);
 
     List<Meal> findMealsByTags(Tag tag);
 

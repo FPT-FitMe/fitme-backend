@@ -20,5 +20,7 @@ public interface WorkoutRepository extends CrudRepository<Workout, Long> {
 
     List<Workout> getWorkoutsByTags(Tag tag);
 
+    List<Workout> getWorkoutByIsPremiumAndIsActive(Boolean isPremium, Boolean isActive);
+
     List<Workout> getWorkoutsByCoachProfile(CoachProfile coachProfile);
 }
