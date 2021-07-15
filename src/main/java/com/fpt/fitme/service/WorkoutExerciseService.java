@@ -9,7 +9,6 @@ import com.fpt.fitme.repository.ExerciseRepository;
 import com.fpt.fitme.repository.TagRepository;
 import com.fpt.fitme.repository.WorkoutExerciseRepository;
 import com.fpt.fitme.repository.WorkoutRepository;
-import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,11 +148,10 @@ public class WorkoutExerciseService {
             throw new Exception("workoutID not found!");
 
         List<WorkoutExercise> list = workoutExerciseRepository.getWorkout_ExerciseByWorkoutID(workoutOptional.get());
-        if (list.isEmpty())
-            throw new Exception("Workout does not have any Exercise!");
-
-        workoutExerciseRepository.deleteAll(list);
-        workoutOptional.get().setTags(null);//setTag null -> workout empty
+        if (!list.isEmpty()) {
+            workoutExerciseRepository.deleteAll(list);
+            workoutOptional.get().setTags(null);//setTag null -> workout empty
+        }
     }
 
     public List<WorkoutExerciseDTO> updateExerciseListByOrder(long workoutID, Exercise[] exercises) throws Exception{

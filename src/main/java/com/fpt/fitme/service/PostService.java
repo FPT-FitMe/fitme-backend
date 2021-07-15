@@ -102,7 +102,7 @@ public class PostService {
         Optional<Post> optionalPost = postRepository.findById(id);
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(post.getCoachProfile().getCoachID());
 
-        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        if (!(coachProfile.isPresent())) throw new Exception("coachID not found!");
 
         if (!(optionalPost.isPresent() && optionalPost.get().getIsActive())) throw new Exception("postID not found!");
         Post postToUpdate = optionalPost.get();

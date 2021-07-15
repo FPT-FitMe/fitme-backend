@@ -119,7 +119,7 @@ public class WorkoutService {
         Optional<Workout> optionalWorkout = workoutRepository.findById(id);
         Optional<CoachProfile> coachProfile = coachProfileRepository.findById(workout.getCoachProfile().getCoachID());
 
-        if (!(coachProfile.isPresent() && coachProfile.get().getIsActive())) throw new Exception("coachID not found!");
+        if (!(coachProfile.isPresent())) throw new Exception("coachID not found!");
 
         if (optionalWorkout.isPresent() && optionalWorkout.get().getIsActive()) {
             Workout workoutToUpdate = optionalWorkout.get();
