@@ -1,9 +1,15 @@
+INSERT INTO public.post (content_body,content_header,created_date,image_url,is_active,last_modified_date,post_name,reading_time,coach_profile_coach_id,creator_user_id)
+VALUES  ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Nước vô cùng quan trọng với cơ thể','2021-07-14 19:38:45.407','https://images.unsplash.com/photo-1600679472233-eabc13b79f07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:38:45.407','Tại sao bạn cần nước?',7,0,2),
+        ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Fastfood gây ảnh hưởng xấu tới cơ thể','2021-07-14 19:39:30.402','https://images.unsplash.com/photo-1529973565457-a60a2ccf750d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:39:30.402','Hạn chế ăn fastfood',10,1,2),
+        ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Rau xanh cung cấp nhiều vitamin và dưỡng chất','2021-07-14 19:40:26.936','https://images.unsplash.com/photo-1565895405139-e188df996e0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=733&q=80',true,'2021-07-14 19:40:26.936','Rau xanh tốt cho cơ thể bạn',8,1,2);
+
 insert into app_user_role
 values (0, 'Trainee'),
        (1, 'Manager');
 insert into coach_profile (coach_id,coach_name,contact,introduction,image_url,is_active)
 values (0,'Lalisa','lalisa@gmail.com','Hi im Lalisa','https://i.pinimg.com/originals/0f/56/51/0f56511d7e416da63782dd0cc73816f1.png',true),
        (1,'Rose','rose@gmail.com','Hi im Rose','https://i.imgur.com/zCiPWRn.jpeg',true),
+<<<<<<< HEAD
 <<<<<<< HEAD
        (2,'Ariana Grande','arina@gmail.com','Hi im Arina Grande','"https://i.imgur.com/u4EVYZC.jpg',true);
 -- select setval('coach_profile_coach_id_seq', 1);
@@ -18,6 +24,11 @@ INSERT INTO public.post (content_body,content_header,created_date,image_url,is_a
 	 ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Fastfood gây ảnh hưởng xấu tới cơ thể','2021-07-14 19:39:30.402','https://images.unsplash.com/photo-1529973565457-a60a2ccf750d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:39:30.402','Hạn chế ăn fastfood',10,1,2),
 	 ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Rau xanh cung cấp nhiều vitamin và dưỡng chất','2021-07-14 19:40:26.936','https://images.unsplash.com/photo-1565895405139-e188df996e0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=733&q=80',true,'2021-07-14 19:40:26.936','Rau xanh tốt cho cơ thể bạn',8,1,2);
 >>>>>>> 453c2ad (Add fake data)
+=======
+       (2,'Ariana Grande','arina@gmail.com','Hi im Arina Grande','"https://i.imgur.com/u4EVYZC.jpg',true);
+-- select setval('coach_profile_coach_id_seq', 1);
+-- alter sequence coach_profile_coach_id_seq restart with 1;
+>>>>>>> accee57 (Fix fake data for meal,post,pratice)
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
                       gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity,
                       role_role_id, is_active, created_date, last_modified_date)
@@ -89,10 +100,14 @@ VALUES (1, 600, 2.0, 7, '2021-07-05 11:29:08.178',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 7.5, 'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, false,
         '2021-07-05 11:31:25.836', 'Hủ tiếu giảm cân', 0, 2),
 <<<<<<< HEAD
+<<<<<<< HEAD
        (8, 900.0, 2.0, 7, '2021-07-05 11:32:02.899',
 =======
        (8, 900.0, 2.0, 7000, '2021-07-05 11:32:02.899',
 >>>>>>> 453c2ad (Add fake data)
+=======
+       (8, 900.0, 2.0, 7, '2021-07-05 11:32:02.899',
+>>>>>>> accee57 (Fix fake data for meal,post,pratice)
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 9.0, 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80', true, false,
         '2021-07-05 11:32:02.899', 'Carry gà', 0, 2),
        (9, 550.0, 1.0, 7, '2021-07-05 11:32:17.613',
@@ -102,10 +117,13 @@ VALUES (1, 600, 2.0, 7, '2021-07-05 11:29:08.178',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 2.0, 'https://images.unsplash.com/photo-1495214783159-3503fd1b572d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80', true, false,
         '2021-07-05 11:32:33.08', 'Pancake trái cây', 0, 2);
 <<<<<<< HEAD
+<<<<<<< HEAD
 select setval('meal_meal_id_seq', 10);
 =======
 
 >>>>>>> 453c2ad (Add fake data)
+=======
+>>>>>>> accee57 (Fix fake data for meal,post,pratice)
 select setval('meal_meal_id_seq', 10);
 -- alter sequence meal_meal_id_seq restart with 11;
 INSERT INTO public.tag (tag_id, tag_name, tag_type,is_active)
@@ -279,4 +297,9 @@ VALUES (1, '2021-07-06 11:23:26.988', 71.3, 1),
 select setval('weight_log_weight_log_id_seq', 11);
 select setval('workout_workout_id_seq', 10);
 select setval('workout_exercise_workout_exercise_id_seq', 55);
+<<<<<<< HEAD
 -- alter sequence workout_workout_id_seq restart with 11;
+=======
+-- alter sequence workout_workout_id_seq restart with 11;
+
+>>>>>>> accee57 (Fix fake data for meal,post,pratice)
