@@ -119,6 +119,7 @@ public class PlanService {
             WeightLog firstWeightLog = new WeightLog();
             firstWeightLog.setTrainee(trainee);
             firstWeightLog.setCreatedAt(new Date());
+            firstWeightLog.setValue(currentWeight);
             weightLogRepository.save(firstWeightLog);
 
             float kgChangeRatePerMonth = Math.abs(targetWeight - currentWeight) / (durationInDays / 30);

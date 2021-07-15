@@ -2,6 +2,7 @@ package com.fpt.fitme.service;
 
 import com.fpt.fitme.dto.target.TargetWeightDTO;
 import com.fpt.fitme.entity.appuser.AppUser;
+import com.fpt.fitme.entity.log.WeightLog;
 import com.fpt.fitme.entity.target.Target;
 import com.fpt.fitme.repository.TargetRepository;
 import com.fpt.fitme.repository.WeightLogRepository;
@@ -23,7 +24,8 @@ public class TargetService {
         if (currentTarget == null) {
             throw new Exception("No target found");
         }
-        float currentWeight = weightLogRepository.findTop1ByTraineeOrderByCreatedAtDesc(trainee).getValue();
+        WeightLog latestWeightLog = weightLogRepository.findTop1ByTraineeOrderByCreatedAtDesc(trainee);
+        float currentWeight = latestWeightLog.getValue();
         float targetWeight = currentTarget.getTargetBMI() * (float) Math.pow(trainee.getHeight() / 100, 2);
         TargetWeightDTO result = new TargetWeightDTO();
         result.setCurrentWeight(currentWeight);
