@@ -14,7 +14,7 @@ import java.util.Set;
 public class Plan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "plan_id")
     private Long planID;
 

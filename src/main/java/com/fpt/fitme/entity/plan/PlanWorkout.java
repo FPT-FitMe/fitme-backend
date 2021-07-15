@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class PlanWorkout {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "plan_workout")
     private Long id;
 

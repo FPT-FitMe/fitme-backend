@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class PlanMeal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "plan_meal_id")
     private Long id;
 
