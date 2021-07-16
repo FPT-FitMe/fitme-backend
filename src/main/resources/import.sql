@@ -6,7 +6,7 @@ INSERT INTO public.app_user (user_id,age,created_date,diet_preference_type,email
 (0,18,'2021-07-05 11:23:26.988',2,'conmeo1@gmail.com',2,'Ngô',1,182.0,true,true,'2021-07-05 11:23:26.988','Đức','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000001','memberImageLink1',0.7,0),
 (1,18,'2021-07-05 11:23:26.988',2,'conmeo2@gmail.com',2,'Kim',1,182.0,true,false,'2021-07-05 11:23:26.988','Hằng','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000003','memberImageLink2',1.0,0),
 (2,40,'2021-07-05 11:23:26.988',NULL,'admin@fitme.vn',NULL,'Cẩm',1,NULL,true,NULL,'2021-07-05 11:23:26.988','Long','$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu','00000002','managerImage1',NULL,1),
-(3,NULL,'2021-06-19 23:56:21.57',2,'conmeo3@gmail.com',2,'Hữu',1,175.0,true,false,'2021-06-19 23:56:21.57','Huy','$2a$10$EvTHoGcXD4fBbi9m8Dhs/eMYRsFcvW3zY.G1j8nZ8GaSfv8QQK9/C',NULL,NULL,1.0,0);
+(3,22,'2021-06-19 23:56:21.57',2,'conmeo3@gmail.com',2,'Hữu',1,175.0,true,false,'2021-06-19 23:56:21.57','Huy','$2a$10$EvTHoGcXD4fBbi9m8Dhs/eMYRsFcvW3zY.G1j8nZ8GaSfv8QQK9/C',NULL,NULL,1.0,0);
 
 select setval('app_user_user_id_seq', 3);
 
@@ -41,7 +41,7 @@ INSERT INTO public.exercise (exercise_id,base_duration,base_kcal,base_rep_per_ro
 (1,60,20,10,'2021-07-05 11:23:26.988','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1598136490941-30d885318abd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80',true,'2021-07-05 11:23:26.988','Nâng chân','https://media.giphy.com/media/UQa44aVsUd6t7lIigt/giphy.gif',2),
 (2,70,20,12,'2021-07-05 11:23:40.265','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1551984427-6d77a1918093?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=653&q=80',true,'2021-07-05 11:23:40.265','Đạp xe','https://media.giphy.com/media/57Uzij2DnzdBvGi3qv/giphy.gif',2),
 (3,120,25,15,'2021-07-05 11:23:51.878','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',true,'2021-07-05 11:23:51.878','Gập bụng','https://media.giphy.com/media/uGP4yfwMnf8Tm/giphy.gif',2),
-(4,120,30,15,'2021-07-05 11:24:00.132','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1598632640487-6ea4a4e8b963?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80',true,'2021-07-05 11:24:00.132','Plank','https://media.giphy.com/media/xT8qBff8cRRFf7k2u4/giphy.gif',2),
+(4,120,30,1,'2021-07-05 11:24:00.132','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1598632640487-6ea4a4e8b963?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80',true,'2021-07-05 11:24:00.132','Plank','https://media.giphy.com/media/xT8qBff8cRRFf7k2u4/giphy.gif',2),
 (5,120,40,16,'2021-07-05 11:24:12.006','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',true,'2021-07-05 11:24:12.006','Kéo tay trước','https://media.giphy.com/media/WsFX0H7qz5M1o8VpxH/giphy.gif',2),
 (6,60,20,10,'2021-07-05 11:24:29.067','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',true,'2021-07-05 11:24:29.067','Hít đất','https://media.giphy.com/media/7e3P2VsI7Js2c/giphy.gif',2),
 (7,90,20,12,'2021-07-05 11:24:45.307','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','https://images.unsplash.com/photo-1599058917727-824293170100?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80',true,'2021-07-05 11:24:45.307','Chạy chân chạm hông','https://media.giphy.com/media/JRlqKEzTDKci5JPcaL/giphy.gif',2),
@@ -198,27 +198,7 @@ INSERT INTO public.target (id,complete_date,has_finished,start_date,starting_bmi
 
 select setval('target_id_seq', 1);
 
-INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) VALUES
-(1,'2021-07-06 11:23:26.988',71.3,1),
-(2,'2021-07-09 11:23:26.988',71.2,1),
-(3,'2021-07-12 11:23:26.988',71.3,1),
-(4,'2021-07-15 11:23:26.988',71.2,1),
-(5,'2021-07-22 11:23:26.988',71.1,1),
-(6,'2021-07-23 11:23:26.988',71.0,1),
-(7,'2021-07-27 11:23:26.988',70.9,1),
-(8,'2021-07-30 11:23:26.988',70.85,1),
-(9,'2021-08-01 11:23:26.988',70.5,1),
-(10,'2021-08-10 11:23:26.988',70.2,1);
-INSERT INTO public.weight_log (weight_log_id,created_at,value,trainee_user_id) VALUES
-(11,'2021-08-14 11:23:26.988',70.25,1),
-(12,'2021-06-19 00:13:55.695',69.0,3),
-(13,'2021-06-19 00:14:20.146',69.0,3),
-(14,'2021-06-26 00:14:40.7',68.5,3),
-(15,'2021-07-03 00:15:06.613',67.5,3),
-(16,'2021-07-10 00:15:22.405',68.0,3),
-(17,'2021-07-15 00:15:56.516',67.5,3);
 
-select setval('weight_log_weight_log_id_seq', 17);
 
 INSERT INTO public.plan (plan_id,"date",target_id) VALUES
 (2,'2021-06-19 00:00:00',1),
