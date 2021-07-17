@@ -8,10 +8,6 @@ values (0,'Lalisa','lalisa@gmail.com','Hi im Lalisa','https://i.pinimg.com/origi
 
 -- select setval('coach_profile_coach_id_seq', 1);
 -- alter sequence coach_profile_coach_id_seq restart with 1;
-INSERT INTO public.post (content_body,content_header,created_date,image_url,is_active,last_modified_date,post_name,reading_time,coach_profile_coach_id,creator_user_id) VALUES
-	 ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Nước vô cùng quan trọng với cơ thể','2021-07-14 19:38:45.407','https://images.unsplash.com/photo-1600679472233-eabc13b79f07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:38:45.407','Tại sao bạn cần nước?',7,0,2),
-	 ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Fastfood gây ảnh hưởng xấu tới cơ thể','2021-07-14 19:39:30.402','https://images.unsplash.com/photo-1529973565457-a60a2ccf750d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:39:30.402','Hạn chế ăn fastfood',10,1,2),
-	 ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Rau xanh cung cấp nhiều vitamin và dưỡng chất','2021-07-14 19:40:26.936','https://images.unsplash.com/photo-1565895405139-e188df996e0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=733&q=80',true,'2021-07-14 19:40:26.936','Rau xanh tốt cho cơ thể bạn',8,1,2);
 
 insert into app_user (user_id, age, diet_preference_type, email, exercise_frequency_type, first_name,
                       gender, height, is_premium, last_name, password, phone, profile_image_url, workout_intensity,
@@ -25,6 +21,12 @@ values (0, 18, 2, 'conmeo1@gmail.com', 2, 'Ngô', 1, 182, true, 'Đức',
        (2, 40, null, 'admin@fitme.vn', null, 'Cẩm', 1, null, null, 'Long',
         '$2y$12$A.ciYhmETo0aS3OMkbkvROfxNFXjVyyB2m2OGJX9/hwkjZNSSYoUu', '00000002', 'managerImage1', null, 1, true, '2021-07-05 11:23:26.988', '2021-07-05 11:23:26.988');
 select setval('app_user_user_id_seq', 2);
+
+INSERT INTO public.post (post_id, content_body, content_header, created_date, image_url, is_active, last_modified_date, post_name, reading_time, coach_profile_coach_id, creator_user_id) VALUES
+(1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Nước vô cùng quan trọng với cơ thể','2021-07-14 19:38:45.407','https://images.unsplash.com/photo-1600679472233-eabc13b79f07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:38:45.407','Tại sao bạn cần nước?',7,0,2),
+(2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Fastfood gây ảnh hưởng xấu tới cơ thể','2021-07-14 19:39:30.402','https://images.unsplash.com/photo-1529973565457-a60a2ccf750d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80',true,'2021-07-14 19:39:30.402','Hạn chế ăn fastfood',10,1,2),
+(3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do','Rau xanh cung cấp nhiều vitamin và dưỡng chất','2021-07-14 19:40:26.936','https://images.unsplash.com/photo-1565895405139-e188df996e0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=733&q=80',true,'2021-07-14 19:40:26.936','Rau xanh tốt cho cơ thể bạn',8,1,2);
+select setval('post_post_id_seq', 3);
 -- alter sequence app_user_user_id_seq restart with 3;
 INSERT INTO exercise (exercise_id, base_duration, base_kcal, base_rep_per_round, created_date, description, image_url,
                       is_active, last_modified_date, exercise_name, video_url, creator_user_id)
@@ -118,13 +120,13 @@ INSERT INTO meal_tag (meal_id, tag_id)
 VALUES (1, 4),
        (2, 7),
        (3, 5),
-       (4, 4),
-       (5, 5),
+       (4, 7),
+       (5, 7),
        (6, 7),
        (7, 4),
        (7, 5),
-       (8, 7),
-       (9, 4),
+       (8, 4),
+       (9, 5),
        (10, 7);
 -- theo diet type: cai nay set cho nguoi an chay het
 INSERT INTO meal_tag (meal_id, tag_id)
@@ -141,23 +143,23 @@ INSERT INTO public.workout (workout_id, created_date, description, estimated_cal
                             is_active, is_premium, last_modified_date, "level", workout_name, coach_profile_coach_id,
                             creator_user_id)
 VALUES (1, '2021-07-05 11:21:21.938', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 715, 120,
-        'https://images.unsplash.com/photo-1599058917212-d750089bc07e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80', true, true, '2021-07-05 11:21:21.938', 2, 'Full body workout', 0, 2),
+        'https://images.unsplash.com/photo-1599058917212-d750089bc07e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80', true, false, '2021-07-05 11:21:21.938', 2, 'Full body workout', 0, 2),
        (2, '2021-07-05 11:21:26.319', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 750, 150,
-        'https://images.unsplash.com/photo-1533681717801-1bbd2ec8d269?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80', true, true, '2021-07-05 11:21:26.319', 2, 'Morning workout', 0, 2),
+        'https://images.unsplash.com/photo-1533681717801-1bbd2ec8d269?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80', true, false, '2021-07-05 11:21:26.319', 2, 'Morning workout', 0, 2),
        (3, '2021-07-05 11:21:29.588', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 565, 120,
-        'https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80', true, true, '2021-07-05 11:21:29.588', 2, 'Arm workout', 0, 2),
+        'https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80', true, false, '2021-07-05 11:21:29.588', 2, 'Arm workout', 0, 2),
        (4, '2021-07-05 11:21:33.64', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 540, 45,
-        'https://images.unsplash.com/photo-1434682772747-f16d3ea162c3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, true, '2021-07-05 11:21:33.64', 2, 'Leg workout', 0, 2),
+        'https://images.unsplash.com/photo-1434682772747-f16d3ea162c3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, false, '2021-07-05 11:21:33.64', 2, 'Leg workout', 0, 2),
        (5, '2021-07-05 11:21:37.645', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 575, 75,
         'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80', true, true, '2021-07-05 11:21:37.645', 2, 'Abs workout', 0, 2),
        (6, '2021-07-05 11:21:40.838', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 350, 60,
-        'https://images.unsplash.com/photo-1434682881908-b43d0467b798?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, true, '2021-07-05 11:21:40.838', 2, 'Cardio workout', 0, 2),
+        'https://images.unsplash.com/photo-1434682881908-b43d0467b798?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, false, '2021-07-05 11:21:40.838', 2, 'Cardio workout', 0, 2),
        (7, '2021-07-05 11:21:43.855', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 440, 60,
         'https://images.unsplash.com/photo-1434754205268-ad3b5f549b11?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80', true, true, '2021-07-05 11:21:43.855', 2, 'Back workout', 0, 2),
        (8, '2021-07-05 11:21:47.43', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 1565, 90,
-        'https://images.unsplash.com/photo-1598136490929-292a0a7890c2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80', true, true, '2021-07-05 11:21:47.43', 2, 'Strenght workout', 0, 2),
+        'https://images.unsplash.com/photo-1598136490929-292a0a7890c2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80', true, false, '2021-07-05 11:21:47.43', 2, 'Strenght workout', 0, 2),
        (9, '2021-07-05 11:21:50.443', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 750, 80,
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80', true, true, '2021-07-05 11:21:50.443', 2, 'Endurance workout', 0, 2),
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80', true, false, '2021-07-05 11:21:50.443', 2, 'Endurance workout', 0, 2),
        (10, '2021-07-05 11:22:04.329', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do', 425, 120,
         'https://images.unsplash.com/photo-1480264104733-84fb0b925be3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80', true, true, '2021-07-05 11:22:04.329', 1, 'Bodyweight workout', 0, 2);
 
